@@ -1,0 +1,321 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id         Int      @id @default(autoincrement())
+  first_name String   @db.VarChar(100)
+  last_name  String   @db.VarChar(100)
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+}
+
+model Student {
+  id                    Int                    @id @default(autoincrement())
+  student_id            String                 @unique
+  first_name            String                 @db.VarChar(100)
+  last_name             String                 @db.VarChar(100)
+  gender                UserGender             @default(MALE)
+  email                 String                 @unique
+  password              String
+  date_of_birth         DateTime
+  address               String?                @db.VarChar(100)
+  phone                 String?                @db.VarChar(20)
+  created_at            DateTime               @default(now())
+  department            Department?            @relation(fields: [departmentId], references: [id])
+  departmentId          Int?
+  class                 Class                  @relation(fields: [classId], references: [id])
+  classId               Int
+  exams                 StudentExam[]
+  answers               StudentAnswer[]
+  assignmentSubmissions AssignmentSubmission[]
+  announcementReplies   AnnouncementReply[]
+  courses               StudentEnrollment[]
+
+  @@index([first_name, last_name])
+  @@index([email])
+  @@index([student_id])
+}
+
+model Teacher {
+  id            Int                 @id @default(autoincrement())
+  teacher_id    String              @unique
+  first_name    String              @db.VarChar(100)
+  last_name     String              @db.VarChar(100)
+  gender        UserGender          @default(MALE)
+  email         String              @unique
+  password      String
+  date_of_birth DateTime
+  address       String?             @db.VarChar(100)
+  phone         String?             @db.VarChar(20)
+  hire_date     DateTime
+  qualification String
+  departments   DepartmentTeacher[]
+  classes       ClassTeacher[]
+  exams         Exam[]
+  assignments   Assignment[]
+  announcements Announcement[]
+  courses       CourseOffering[]
+
+  @@index([first_name, last_name])
+  @@index([email])
+  @@index([teacher_id])
+}
+
+enum UserGender {
+  MALE
+  FEMALE
+}
+
+// Start Semester & CourseOffering & StudentEnrollment
+
+model Semester {
+  id               String           @id @default(cuid())
+  name             String
+  startDate        DateTime
+  endDate          DateTime
+  isActive         Boolean          @default(true)
+  registerDeadline DateTime
+  courses          CourseOffering[]
+}
+
+model CourseOffering {
+  id              String               @id @default(cuid())
+  hall            String
+  maxCapacity     Int
+  course          Course               @relation(fields: [courseId], references: [id])
+  courseId        Int
+  teacher         Teacher              @relation(fields: [teacherId], references: [id])
+  teacherId       Int
+  semester        Semester             @relation(fields: [semesterId], references: [id])
+  semesterId      String
+  students        StudentEnrollment[]
+  exams           Exam[]
+  assignments     Assignment[]
+  requiredCourses PrerequisiteCourse[] @relation("OfferingToPrerequisites")
+
+  @@unique([courseId, teacherId, semesterId])
+}
+
+model PrerequisiteCourse {
+  id               Int            @id @default(autoincrement())
+  courseOffering   CourseOffering @relation("OfferingToPrerequisites", fields: [courseOfferingId], references: [id])
+  courseOfferingId String
+  requiredCourse   Course         @relation("CourseAsPrerequisite", fields: [courseId], references: [id])
+  courseId         Int
+
+  @@unique([courseOfferingId, courseId])
+}
+
+model StudentEnrollment {
+  id               String           @id @default(cuid())
+  student          Student          @relation(fields: [studentId], references: [id])
+  studentId        Int
+  enrollmentDate   DateTime         @default(now())
+  finalGrade       Float?
+  status           EnrollmentStatus @default(ACTIVE)
+  courseOffering   CourseOffering   @relation(fields: [courseOfferingId], references: [id])
+  courseOfferingId String
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  WITHDRAWN
+  COMPLETED
+}
+
+// End Semester & CourseOffering & StudentEnrollment
+
+model Course {
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  code                 String
+  credit_hours         Int
+  isElective           Boolean              @default(false)
+  department           Department?          @relation(fields: [departmentId], references: [id])
+  departmentId         Int?
+  classes              ClassCourse[]
+  CourseOffering       CourseOffering[]
+  usedAsPrerequisiteIn PrerequisiteCourse[] @relation("CourseAsPrerequisite")
+}
+
+model Department {
+  id       Int                 @id @default(autoincrement())
+  name     String
+  students Student[]
+  teachers DepartmentTeacher[]
+  courses  Course[]
+  classes  Class[]
+}
+
+model Class {
+  id            Int            @id @default(autoincrement())
+  name          String
+  department    Department     @relation(fields: [departmentId], references: [id])
+  departmentId  Int
+  teachers      ClassTeacher[]
+  courses       ClassCourse[]
+  students      Student[]
+  exams         Exam[]
+  announcements Announcement[]
+}
+
+// Start Pivots Tables for Course & Department & Class
+
+model DepartmentTeacher {
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId Int
+  teacher      Teacher    @relation(fields: [teacherId], references: [id])
+  teacherId    Int
+
+  @@id([departmentId, teacherId])
+}
+
+model ClassTeacher {
+  class     Class   @relation(fields: [classId], references: [id])
+  classId   Int
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  teacherId Int
+
+  @@id([teacherId, classId])
+}
+
+model ClassCourse {
+  class    Class  @relation(fields: [classId], references: [id])
+  classId  Int
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+
+  @@id([courseId, classId])
+}
+
+// End Pivots Tables for Course & Department & Class
+
+// Start Exam Schema
+
+model Exam {
+  id               String         @id @default(cuid())
+  title            String
+  startDate        DateTime
+  endDate          DateTime
+  totalMark        Int
+  status           ExamStatus     @default(SCHEDULED)
+  teacher          Teacher        @relation(fields: [teacherId], references: [id])
+  teacherId        Int
+  students         StudentExam[]
+  class            Class          @relation(fields: [classId], references: [id])
+  classId          Int
+  questions        ExamQuestion[]
+  created_at       DateTime       @default(now())
+  course           CourseOffering @relation(fields: [courseOfferingId], references: [id])
+  courseOfferingId String
+}
+
+enum ExamStatus {
+  SCHEDULED
+  ONGOING
+  ENDED
+  CANCELLED
+}
+
+model StudentExam {
+  exam        Exam      @relation(fields: [examId], references: [id])
+  examId      String
+  student     Student   @relation(fields: [studentId], references: [id])
+  studentId   Int
+  score       Float?
+  completedAt DateTime?
+
+  @@id([examId, studentId])
+}
+
+model StudentAnswer {
+  id             Int          @id @default(autoincrement())
+  answer         String
+  question       ExamQuestion @relation(fields: [examQuestionId], references: [id])
+  examQuestionId Int
+  score          Float
+  student        Student      @relation(fields: [studentId], references: [id])
+  studentId      Int
+}
+
+model ExamQuestion {
+  id          Int             @id @default(autoincrement())
+  question    String
+  rightAnswer String
+  mark        Float
+  type        ExamType        @default(WRITE)
+  chooses     String[]
+  exam        Exam            @relation(fields: [examId], references: [id])
+  examId      String
+  answers     StudentAnswer[]
+}
+
+enum ExamType {
+  CHOOSE
+  WRITE
+}
+
+// End Exam Schema
+
+// Start Assignment Schema
+
+model Assignment {
+  id                   String                 @id @default(cuid())
+  title                String
+  description          String
+  deadline             DateTime
+  created_at           DateTime               @default(now())
+  external_url         String
+  teacher              Teacher                @relation(fields: [teacherId], references: [id])
+  teacherId            Int
+  assignmentSubmission AssignmentSubmission[]
+  course               CourseOffering         @relation(fields: [courseOfferingId], references: [id])
+  courseOfferingId     String
+}
+
+model AssignmentSubmission {
+  id           String     @id @default(cuid())
+  external_url String
+  submited_at  DateTime   @default(now())
+  grade        Float?
+  feedback     String?
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId String
+  student      Student    @relation(fields: [studentId], references: [id])
+  studentId    Int
+}
+
+// End Assignment Schema
+
+// Start Announcement Schema
+
+model Announcement {
+  id                  String              @id @default(cuid())
+  title               String
+  content             String
+  created_at          DateTime            @default(now())
+  teacher             Teacher             @relation(fields: [teacherId], references: [id])
+  teacherId           Int
+  class               Class               @relation(fields: [classId], references: [id])
+  announcementReplies AnnouncementReply[]
+  classId             Int
+}
+
+model AnnouncementReply {
+  id             String       @id @default(cuid())
+  content        String
+  created_at     DateTime     @default(now())
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  announcementId String
+  student        Student      @relation(fields: [studentId], references: [id])
+  studentId      Int
+}
+
+// End Announcement Schema
