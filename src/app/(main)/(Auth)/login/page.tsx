@@ -117,9 +117,7 @@ export default function LoginPage() {
           <p className="text-sm text-red-500">{errors.password.message}</p>
         )}
 
-        <Button
-          disabled={isPending}
-          className="bg-main-text font-bold text-black hover:bg-main-text h-10 btn-shadow">
+        <Button variant={"mainWithShadow"} disabled={isPending}>
           {isPending ? (
             <div className="flex items-center gap-1">
               <SmallLoader />

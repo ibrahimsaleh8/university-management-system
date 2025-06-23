@@ -13,10 +13,11 @@ import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import FormAddTeacher from "../../admin/teachers/_components/FormAddTeacher";
 import AddStudentForm from "../../admin/students/_components/AddStudentForm";
+import AddDepartmentForm from "../../admin/departments/_components/AddDepartmentForm";
 
 type Props = {
   token: string;
-  AddType: "Teacher" | "Student";
+  AddType: "Teacher" | "Student" | "Department";
 };
 
 export default function AddingModel({ token, AddType }: Props) {
@@ -50,6 +51,11 @@ export default function AddingModel({ token, AddType }: Props) {
             {/* Form Add New Student */}
             {AddType == "Student" && (
               <AddStudentForm setClose={setClose} token={token} />
+            )}
+
+            {/* Form Add New Department */}
+            {AddType == "Department" && (
+              <AddDepartmentForm setClose={setClose} token={token} />
             )}
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -57,11 +57,11 @@ model Teacher {
   hire_date     DateTime
   qualification String
   departments   DepartmentTeacher[]
-  classes       ClassTeacher[]
   exams         Exam[]
   assignments   Assignment[]
   announcements Announcement[]
   courses       CourseOffering[]
+  classes       Class[]
 
   @@index([first_name, last_name])
   @@index([email])
@@ -71,6 +71,13 @@ model Teacher {
 enum UserGender {
   MALE
   FEMALE
+}
+
+model AcademicYear {
+  id                Int                 @id @default(autoincrement())
+  year_label        String              @unique
+  level_number      Int
+  StudentEnrollment StudentEnrollment[]
 }
 
 // Start Semester & CourseOffering & StudentEnrollment
@@ -97,8 +104,8 @@ model CourseOffering {
   semesterId      String
   students        StudentEnrollment[]
   exams           Exam[]
-  assignments     Assignment[]
   requiredCourses PrerequisiteCourse[] @relation("OfferingToPrerequisites")
+  classes         Class[]
 
   @@unique([courseId, teacherId, semesterId])
 }
@@ -122,6 +129,8 @@ model StudentEnrollment {
   status           EnrollmentStatus @default(ACTIVE)
   courseOffering   CourseOffering   @relation(fields: [courseOfferingId], references: [id])
   courseOfferingId String
+  academicYear     AcademicYear     @relation(fields: [academicYearId], references: [id])
+  academicYearId   Int
 }
 
 enum EnrollmentStatus {
@@ -140,14 +149,14 @@ model Course {
   isElective           Boolean              @default(false)
   department           Department?          @relation(fields: [departmentId], references: [id])
   departmentId         Int?
-  classes              ClassCourse[]
   CourseOffering       CourseOffering[]
   usedAsPrerequisiteIn PrerequisiteCourse[] @relation("CourseAsPrerequisite")
 }
 
 model Department {
   id       Int                 @id @default(autoincrement())
-  name     String
+  name     String              @unique
+  code     String              @unique
   students Student[]
   teachers DepartmentTeacher[]
   courses  Course[]
@@ -155,15 +164,18 @@ model Department {
 }
 
 model Class {
-  id            Int            @id @default(autoincrement())
-  name          String
-  department    Department     @relation(fields: [departmentId], references: [id])
-  departmentId  Int
-  teachers      ClassTeacher[]
-  courses       ClassCourse[]
-  students      Student[]
-  exams         Exam[]
-  announcements Announcement[]
+  id               Int            @id @default(autoincrement())
+  name             String
+  department       Department     @relation(fields: [departmentId], references: [id])
+  departmentId     Int
+  course           CourseOffering @relation(fields: [courseOfferingId], references: [id])
+  teacher          Teacher        @relation(fields: [teacherId], references: [id])
+  students         Student[]
+  exams            Exam[]
+  announcements    Announcement[]
+  assignments      Assignment[]
+  courseOfferingId String
+  teacherId        Int
 }
 
 // Start Pivots Tables for Course & Department & Class
@@ -175,24 +187,6 @@ model DepartmentTeacher {
   teacherId    Int
 
   @@id([departmentId, teacherId])
-}
-
-model ClassTeacher {
-  class     Class   @relation(fields: [classId], references: [id])
-  classId   Int
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
-  teacherId Int
-
-  @@id([teacherId, classId])
-}
-
-model ClassCourse {
-  class    Class  @relation(fields: [classId], references: [id])
-  classId  Int
-  course   Course @relation(fields: [courseId], references: [id])
-  courseId Int
-
-  @@id([courseId, classId])
 }
 
 // End Pivots Tables for Course & Department & Class
@@ -276,8 +270,8 @@ model Assignment {
   teacher              Teacher                @relation(fields: [teacherId], references: [id])
   teacherId            Int
   assignmentSubmission AssignmentSubmission[]
-  course               CourseOffering         @relation(fields: [courseOfferingId], references: [id])
-  courseOfferingId     String
+  class                Class                  @relation(fields: [classId], references: [id])
+  classId              Int
 }
 
 model AssignmentSubmission {

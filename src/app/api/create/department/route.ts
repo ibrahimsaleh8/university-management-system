@@ -1,46 +1,64 @@
 import { AdminAuthGuard } from "@/lib/AuthGuard/AdminAuthGuard";
+import {
+  departmentDataSchema,
+  departmentDataType,
+} from "@/validation/DepartmentDataSchema";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
-    const depratmentName = (await req.json()) as {
-      name: string;
-    };
+    const depratmentData = (await req.json()) as departmentDataType;
 
     // Start Check Admin Authorize
     const authVerify = await AdminAuthGuard(req);
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Admin Authorize
 
-    if (!depratmentName.name) {
+    const validation = departmentDataSchema.safeParse(depratmentData);
+
+    if (!validation.success) {
       return NextResponse.json(
-        { message: "Department Name is required" },
+        { message: validation.error.errors[0].message },
         { status: 400 }
       );
     }
 
-    const isExist = await prisma.department.findFirst({
+    const isNameExist = await prisma.department.findFirst({
       where: {
-        name: { equals: depratmentName.name },
+        name: { equals: depratmentData.name },
       },
     });
 
-    if (isExist) {
+    if (isNameExist) {
       return NextResponse.json(
-        { message: "Department is already exist" },
+        { message: "Department Name is already exist" },
+        { status: 400 }
+      );
+    }
+
+    const isCodeExist = await prisma.department.findFirst({
+      where: {
+        code: { equals: depratmentData.code },
+      },
+    });
+
+    if (isCodeExist) {
+      return NextResponse.json(
+        { message: "Department Code is already exist" },
         { status: 400 }
       );
     }
 
     await prisma.department.create({
       data: {
-        name: depratmentName.name,
+        name: depratmentData.name,
+        code: depratmentData.code,
       },
     });
 
     return NextResponse.json(
       {
-        message: `Department ${depratmentName.name} has been created successfully`,
+        message: `Department ${depratmentData.name} has been created successfully`,
       },
       { status: 201 }
     );

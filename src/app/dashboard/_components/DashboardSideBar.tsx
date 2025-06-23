@@ -3,7 +3,7 @@ import {
   Users,
   Home,
   School,
-  BookOpen,
+  ChartBarStacked,
   Newspaper,
   NotepadText,
   Settings,
@@ -44,13 +44,13 @@ const admin_links = [
   },
   {
     title: "Classes",
-    url: "#",
+    url: "/dashboard/admin/classes",
     icon: School,
   },
   {
-    title: "Lessons",
-    url: "#",
-    icon: BookOpen,
+    title: "Departments",
+    url: "/dashboard/admin/departments",
+    icon: ChartBarStacked,
   },
   {
     title: "Exams",

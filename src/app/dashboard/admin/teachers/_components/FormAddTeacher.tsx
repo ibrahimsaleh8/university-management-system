@@ -170,10 +170,7 @@ export default function FormAddTeacher({ setClose, token }: Props) {
         </div>
         <ErrorMessage error1={errors.qualification} error2={errors.phone} />
 
-        <Button
-          disabled={isPending}
-          type="submit"
-          className="bg-main-text hover:bg-main-text capitalize hover:text-black text-black">
+        <Button variant={"mainWithShadow"} disabled={isPending} type="submit">
           {isPending ? (
             <div className="flex items-center gap-1">
               Loading....
