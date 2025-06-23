@@ -89,6 +89,7 @@ model Semester {
   endDate          DateTime
   isActive         Boolean          @default(true)
   registerDeadline DateTime
+  registerBegin    DateTime
   courses          CourseOffering[]
 }
 

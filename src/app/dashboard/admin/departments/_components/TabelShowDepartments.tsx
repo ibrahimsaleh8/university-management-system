@@ -64,8 +64,7 @@ export default function TabelShowDepartments() {
                 <TabelSkeleton />
               </TableCell>
             </TableRow>
-          ) : (
-            departments &&
+          ) : departments && departments.length > 0 ? (
             departments.map((dep, indx) => (
               <TableRow key={dep.id}>
                 <TableCell>{indx + 1}</TableCell>
@@ -81,6 +80,10 @@ export default function TabelShowDepartments() {
                 </TableCell>
               </TableRow>
             ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={7}>No Departments Found</TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

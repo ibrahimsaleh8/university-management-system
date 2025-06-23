@@ -14,10 +14,11 @@ import { useEffect, useRef, useState } from "react";
 import FormAddTeacher from "../../admin/teachers/_components/FormAddTeacher";
 import AddStudentForm from "../../admin/students/_components/AddStudentForm";
 import AddDepartmentForm from "../../admin/departments/_components/AddDepartmentForm";
+import SemestrAddForm from "../../admin/semesters/_components/SemestrAddForm";
 
 type Props = {
   token: string;
-  AddType: "Teacher" | "Student" | "Department";
+  AddType: "Teacher" | "Student" | "Department" | "Semester";
 };
 
 export default function AddingModel({ token, AddType }: Props) {
@@ -56,6 +57,11 @@ export default function AddingModel({ token, AddType }: Props) {
             {/* Form Add New Department */}
             {AddType == "Department" && (
               <AddDepartmentForm setClose={setClose} token={token} />
+            )}
+
+            {/* Form Add New Semester */}
+            {AddType == "Semester" && (
+              <SemestrAddForm setClose={setClose} token={token} />
             )}
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -8,6 +8,7 @@ import {
   NotepadText,
   Settings,
   LogOut,
+  CalendarRange,
 } from "lucide-react";
 
 import {
@@ -51,6 +52,11 @@ const admin_links = [
     title: "Departments",
     url: "/dashboard/admin/departments",
     icon: ChartBarStacked,
+  },
+  {
+    title: "Semesters",
+    url: "/dashboard/admin/semesters",
+    icon: CalendarRange,
   },
   {
     title: "Exams",

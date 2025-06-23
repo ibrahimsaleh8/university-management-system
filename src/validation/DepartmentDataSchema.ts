@@ -5,7 +5,7 @@ export const departmentDataSchema = z.object({
     .string({
       required_error: "Name is required",
     })
-    .min(3, { message: "Name should be more than 3 chars" }),
+    .min(3, { message: "Name must be at least 3 characters" }),
   code: z
     .string({
       required_error: "Code is required",
