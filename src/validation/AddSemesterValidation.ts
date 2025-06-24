@@ -35,7 +35,7 @@ export const addSemesterValidation = z
     message: "Register begin date must be before deadline",
     path: ["registerDeadline"],
   })
-  .refine((data) => data.registerBegin >= data.startDate, {
+  .refine((data) => data.registerBegin <= data.startDate, {
     message: "Register begin date must be after or equal to semester start",
     path: ["registerBegin"],
   });

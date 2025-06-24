@@ -87,7 +87,7 @@ model Semester {
   name             String
   startDate        DateTime
   endDate          DateTime
-  isActive         Boolean          @default(true)
+  isActive         Boolean          @default(false)
   registerDeadline DateTime
   registerBegin    DateTime
   courses          CourseOffering[]
