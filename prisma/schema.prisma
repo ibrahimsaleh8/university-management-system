@@ -62,6 +62,7 @@ model Teacher {
   announcements Announcement[]
   courses       CourseOffering[]
   classes       Class[]
+  schedules     CourseSchedule[]
 
   @@index([first_name, last_name])
   @@index([email])
@@ -78,6 +79,7 @@ model AcademicYear {
   year_label        String              @unique
   level_number      Int
   StudentEnrollment StudentEnrollment[]
+  CourseOffering    CourseOffering[]
 }
 
 // Start Semester & CourseOffering & StudentEnrollment
@@ -107,6 +109,9 @@ model CourseOffering {
   exams           Exam[]
   requiredCourses PrerequisiteCourse[] @relation("OfferingToPrerequisites")
   classes         Class[]
+  courseSchedule  CourseSchedule[]
+  academicYear    AcademicYear         @relation(fields: [academicYearId], references: [id])
+  academicYearId  Int
 
   @@unique([courseId, teacherId, semesterId])
 }
@@ -150,7 +155,7 @@ model Course {
   isElective           Boolean              @default(false)
   department           Department?          @relation(fields: [departmentId], references: [id])
   departmentId         Int?
-  CourseOffering       CourseOffering[]
+  courseOffering       CourseOffering[]
   usedAsPrerequisiteIn PrerequisiteCourse[] @relation("CourseAsPrerequisite")
 }
 
@@ -314,3 +319,29 @@ model AnnouncementReply {
 }
 
 // End Announcement Schema
+
+// Start Schedule Schema
+
+model CourseSchedule {
+  id               String         @id @default(cuid())
+  course           CourseOffering @relation(fields: [courseOfferingId], references: [id])
+  courseOfferingId String
+  dayOfWeek        WeekDay
+  startTime        String
+  endTime          String
+  teacher          Teacher        @relation(fields: [teacherId], references: [id])
+  teacherId        Int
+
+  @@unique([courseOfferingId, dayOfWeek, startTime])
+}
+
+enum WeekDay {
+  SATURDAY
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+}
+
+// End Schedule Schema

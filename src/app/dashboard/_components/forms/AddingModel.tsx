@@ -15,10 +15,20 @@ import FormAddTeacher from "../../admin/teachers/_components/FormAddTeacher";
 import AddStudentForm from "../../admin/students/_components/AddStudentForm";
 import AddDepartmentForm from "../../admin/departments/_components/AddDepartmentForm";
 import SemestrAddForm from "../../admin/semesters/_components/SemestrAddForm";
+import FormAddCourse from "../../admin/courses/_components/FormAddCourse";
+import CourseOfferingForm from "../../admin/courses/_components/CourseOfferingForm";
+import AcadimicYearForm from "../../admin/departments/_components/AcadimicYearForm";
 
 type Props = {
   token: string;
-  AddType: "Teacher" | "Student" | "Department" | "Semester";
+  AddType:
+    | "Teacher"
+    | "Student"
+    | "Department"
+    | "Semester"
+    | "Course"
+    | "Course-offering"
+    | "Academic Year";
 };
 
 export default function AddingModel({ token, AddType }: Props) {
@@ -62,6 +72,21 @@ export default function AddingModel({ token, AddType }: Props) {
             {/* Form Add New Semester */}
             {AddType == "Semester" && (
               <SemestrAddForm setClose={setClose} token={token} />
+            )}
+
+            {/* Form Add New Course */}
+            {AddType == "Course" && (
+              <FormAddCourse setClose={setClose} token={token} />
+            )}
+
+            {/* Form Add New Course-Offering */}
+            {AddType == "Course-offering" && (
+              <CourseOfferingForm setClose={setClose} token={token} />
+            )}
+
+            {/* Form Add New Acadimic Years */}
+            {AddType == "Academic Year" && (
+              <AcadimicYearForm setClose={setClose} token={token} />
             )}
           </AlertDialogHeader>
           <AlertDialogFooter>

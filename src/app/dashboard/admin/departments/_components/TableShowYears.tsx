@@ -10,11 +10,10 @@ import {
 } from "@/components/ui/table";
 import { ChevronsRight } from "lucide-react";
 import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
-import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
+import { GetAllYears } from "@/lib/GetAllYears";
 
-export default function TabelShowDepartments() {
-  const { departments, error, isError, isLoading } = GetDepartmentsQuery();
-
+export default function TableShowYears() {
+  const { error, isError, isLoading, years } = GetAllYears();
   if (isError && error) throw new Error(error.message);
 
   return (
@@ -23,30 +22,26 @@ export default function TabelShowDepartments() {
         <TableHeader>
           <TableRow>
             <TableHead>#</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Code</TableHead>
-            <TableHead>Teachers</TableHead>
+            <TableHead>Label</TableHead>
+            <TableHead>Number</TableHead>
             <TableHead>Students</TableHead>
-            <TableHead>Courses</TableHead>
             <TableHead>Info</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading && !departments ? (
+          {isLoading && !years ? (
             <TableRow>
-              <TableCell colSpan={7}>
+              <TableCell colSpan={5}>
                 <TabelSkeleton count={4} />
               </TableCell>
             </TableRow>
-          ) : departments && departments.length > 0 ? (
-            departments.map((dep, indx) => (
-              <TableRow key={dep.id}>
+          ) : years && years.length > 0 ? (
+            years.map((year, indx) => (
+              <TableRow key={year.id}>
                 <TableCell>{indx + 1}</TableCell>
-                <TableCell>{dep.name}</TableCell>
-                <TableCell className="uppercase">{dep.code}</TableCell>
-                <TableCell>{dep._count.teachers}</TableCell>
-                <TableCell>{dep._count.students}</TableCell>
-                <TableCell>{dep._count.courses}</TableCell>
+                <TableCell>{year.year_label}</TableCell>
+                <TableCell>{year.level_number}</TableCell>
+                <TableCell>{year._count.StudentEnrollment}</TableCell>
                 <TableCell>
                   <Button className="bg-white hover:bg-white text-black">
                     <ChevronsRight />
@@ -56,7 +51,7 @@ export default function TabelShowDepartments() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={7}>No Departments Found</TableCell>
+              <TableCell colSpan={7}>No Years Found</TableCell>
             </TableRow>
           )}
         </TableBody>

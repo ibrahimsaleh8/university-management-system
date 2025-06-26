@@ -5,7 +5,7 @@ type Props = {
   label: string;
   type: string;
   placeholder: string;
-  register: UseFormRegisterReturn;
+  register?: UseFormRegisterReturn;
   isError: boolean;
   classes?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;

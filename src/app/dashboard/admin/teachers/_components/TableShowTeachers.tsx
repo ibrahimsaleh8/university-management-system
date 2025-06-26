@@ -18,6 +18,7 @@ import TabelSkeleton from "./TabelSkeleton";
 import { NumberOfTeachers } from "@/variables/Pagination";
 import AddingModel from "../../../_components/forms/AddingModel";
 import SearchInTeacherTable from "./SearchInTeacherTable";
+import { GetTeachers } from "@/lib/GetTeachers";
 
 type Props = {
   token: string;
@@ -30,12 +31,7 @@ export type TeachersDataType = {
   teacher_id: string;
   qualification: string;
 };
-async function getAllTeachers(pageNumber: number): Promise<TeachersDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/teachers?page=${pageNumber}`
-  );
-  return res.data;
-}
+
 async function getNumberOfTeachers(): Promise<{ numbers: number }> {
   const res = await axios.get(`${MainDomain}/api/get/teachers-number`);
   return res.data;
@@ -49,10 +45,10 @@ export default function TableShowTeachers({ token }: Props) {
 
   const [searched, setSearched] = useState(false);
 
-  const { data: teachers, isLoading } = useQuery({
-    queryKey: ["get_all_teachers", activePaginateNumber],
-    queryFn: () => getAllTeachers(activePaginateNumber),
-  });
+  const { error, isError, isLoading, teachers } =
+    GetTeachers(activePaginateNumber);
+
+  if (error && isError) throw new Error(error.message);
 
   const { data: teachersNumber } = useQuery({
     queryKey: ["get_teacher_numbers"],

@@ -9,6 +9,8 @@ import {
   Settings,
   LogOut,
   CalendarRange,
+  BookOpenText,
+  BookText,
 } from "lucide-react";
 
 import {
@@ -24,12 +26,11 @@ import { usePathname } from "next/navigation";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
-import { useAppSelector } from "@/redux/hooks";
 import { MotionHighlight } from "@/components/animate-ui/effects/motion-highlight";
 
 const admin_links = [
   {
-    title: "Home",
+    title: "Overview",
     url: "/dashboard/admin",
     icon: Home,
   },
@@ -44,12 +45,12 @@ const admin_links = [
     icon: Users,
   },
   {
-    title: "Classes",
-    url: "/dashboard/admin/classes",
-    icon: School,
+    title: "Courses",
+    url: "/dashboard/admin/courses",
+    icon: BookText,
   },
   {
-    title: "Departments",
+    title: "Departments & Years",
     url: "/dashboard/admin/departments",
     icon: ChartBarStacked,
   },
@@ -73,7 +74,26 @@ const admin_links = [
     url: "#",
     icon: HiOutlineSpeakerphone,
   },
+  {
+    title: "Classes",
+    url: "/dashboard/admin/classes",
+    icon: School,
+  },
 ];
+
+const teacher_links = [
+  {
+    title: "Overview",
+    url: "/dashboard/teacher",
+    icon: Home,
+  },
+  {
+    title: "Courses",
+    url: "/dashboard/teacher/courses",
+    icon: BookOpenText,
+  },
+];
+
 const otherLinks = [
   {
     title: "Profile",
@@ -91,9 +111,8 @@ const otherLinks = [
     icon: LogOut,
   },
 ];
-export default function DashboardSideBar() {
+export default function DashboardSideBar({ role }: { role: string }) {
   const pathname = usePathname();
-  const { role } = useAppSelector((state) => state.user.user);
   return (
     <>
       <Sidebar>
@@ -113,6 +132,27 @@ export default function DashboardSideBar() {
                       className="bg-main-text rounded-md !text-Main-black"
                       boundsOffset={{ top: -1, left: -1 }}>
                       {admin_links.map((item) => (
+                        <Link
+                          key={item.title}
+                          href={item.url}
+                          className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
+                            pathname == item.url
+                              ? "bg-main-text text-black"
+                              : ""
+                          }`}>
+                          <item.icon />
+                          <span className="!text-[.855rem]">{item.title}</span>
+                        </Link>
+                      ))}
+                    </MotionHighlight>
+                  ) : role == "teacher" ? (
+                    <MotionHighlight
+                      hover
+                      mode="parent"
+                      containerClassName="flex flex-col gap-3 "
+                      className="bg-main-text rounded-md !text-Main-black"
+                      boundsOffset={{ top: -1, left: -1 }}>
+                      {teacher_links.map((item) => (
                         <Link
                           key={item.title}
                           href={item.url}

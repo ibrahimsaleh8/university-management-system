@@ -64,7 +64,7 @@ export default function TabelShowSemesters() {
         <TableBody>
           {isLoading && !semestersData ? (
             <TableRow>
-              <TableCell colSpan={7}>
+              <TableCell colSpan={8}>
                 <TabelSkeleton />
               </TableCell>
             </TableRow>
@@ -97,7 +97,7 @@ export default function TabelShowSemesters() {
             ))
           ) : (
             <TableRow>
-              <TableCell className="text-center" colSpan={7}>
+              <TableCell className="text-center" colSpan={8}>
                 No Semesters Found
               </TableCell>
             </TableRow>
