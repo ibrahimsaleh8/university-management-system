@@ -27,7 +27,7 @@ import {
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SmallLoader from "@/components/Global/SmallLoader";
 import GlobalToast from "@/components/Global/GlobalToast";
 import { ErrorResponseType } from "@/lib/globalTypes";
@@ -49,12 +49,13 @@ async function createNewOffering(
 }
 export default function CourseOfferingForm({ setClose, token }: Props) {
   const [hasPreRequired, setHasPreRequired] = useState(false);
-
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationKey: ["add_course_offering"],
     mutationFn: (data: { offerData: courseOfferingDataType; token: string }) =>
       createNewOffering(data.offerData, data.token),
     onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["get_all_courses_offering"] });
       setClose(true);
       GlobalToast({
         title: "Course offering has been created successfully",
@@ -175,7 +176,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
 
         {/* Teachers */}
         {loadingTeachers && !teachers ? (
-          <Skeleton className="h-10 rounded-md w-full" />
+          <Skeleton className="h-10 rounded-md w-full sm:mt-4" />
         ) : (
           teachers && (
             <div className="flex flex-col gap-1 w-full text-left">

@@ -14,15 +14,39 @@ import { ChevronsRight } from "lucide-react";
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 
+type CourseOfferingDataType = {
+  id: string;
+  academicYear: {
+    year_label: string;
+  };
+  course: {
+    name: string;
+  };
+  hall: string;
+  maxCapacity: number;
+  semester: {
+    name: string;
+    isActive: boolean;
+  };
+  _count: {
+    students: number;
+  };
+};
+
+async function getAllCoursesOffering(): Promise<CourseOfferingDataType[]> {
+  const res = await axios.get(`${MainDomain}/api/get/course-offering`);
+  return res.data;
+}
+
 export default function TabelShowCoursesOffers() {
   const {
-    data: courses,
+    data: coursesOffers,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["get_all_courses"],
-    queryFn: getAllCourses,
+    queryKey: ["get_all_courses_offering"],
+    queryFn: getAllCoursesOffering,
   });
 
   if (isError) throw new Error(error.message);
@@ -33,30 +57,36 @@ export default function TabelShowCoursesOffers() {
           <TableRow>
             <TableHead>#</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Code</TableHead>
-            <TableHead>Credit Hours</TableHead>
-            <TableHead>Department</TableHead>
-            <TableHead>Is Elective</TableHead>
+            <TableHead>Academic Year</TableHead>
+            <TableHead>Hall</TableHead>
+            <TableHead>Capacity</TableHead>
+            <TableHead>Semester</TableHead>
+            <TableHead>Students</TableHead>
             <TableHead>Info</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <>
-            {isLoading && !courses ? (
+            {isLoading && !coursesOffers ? (
               <TableRow>
-                <TableCell colSpan={7}>
+                <TableCell colSpan={8}>
                   <TabelSkeleton />
                 </TableCell>
               </TableRow>
-            ) : courses && courses.length > 0 ? (
-              courses.map((course, indx) => (
+            ) : coursesOffers && coursesOffers.length > 0 ? (
+              coursesOffers.map((course, indx) => (
                 <TableRow key={course.id}>
                   <TableCell>{indx + 1}</TableCell>
-                  <TableCell>{course.name}</TableCell>
-                  <TableCell className="uppercase">{course.code}</TableCell>
-                  <TableCell>{course.credit_hours}</TableCell>
-                  <TableCell>{course.department.name}</TableCell>
-                  <TableCell>{course.isElective ? "true" : "false"}</TableCell>
+                  <TableCell>{course.course.name}</TableCell>
+                  <TableCell>{course.academicYear.year_label}</TableCell>
+                  <TableCell>{course.hall}</TableCell>
+                  <TableCell>{course.maxCapacity}</TableCell>
+                  <TableCell>
+                    {course.semester.name}{" "}
+                    {course.semester.isActive ? "<Active>" : "Not Active"}
+                  </TableCell>
+                  <TableCell>{course._count.students}</TableCell>
+
                   <TableCell>
                     <Button className="bg-white hover:bg-white text-black">
                       <ChevronsRight />
@@ -66,7 +96,9 @@ export default function TabelShowCoursesOffers() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7}>No Courses Found</TableCell>
+                <TableCell className="text-center" colSpan={8}>
+                  No Courses Found
+                </TableCell>
               </TableRow>
             )}
           </>
