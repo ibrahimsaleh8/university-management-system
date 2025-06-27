@@ -20,7 +20,7 @@ import {
 } from "@/components/animate-ui/radix/radio-group";
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import GlobalToast from "@/components/Global/GlobalToast";
@@ -48,7 +48,7 @@ export default function FormAddCourse({ setClose, token }: Props) {
     resolver: zodResolver(addCourseSchema),
     mode: "all",
   });
-
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationKey: ["create_new_course"],
     mutationFn: (data: { courseData: courseDataType; token: string }) =>
@@ -62,6 +62,7 @@ export default function FormAddCourse({ setClose, token }: Props) {
     },
     onSuccess: () => {
       setClose(true);
+      queryClient.refetchQueries({ queryKey: ["get_all_courses"] });
       GlobalToast({
         title: "Course has been created successfully",
         icon: "success",

@@ -8,27 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MainDomain } from "@/variables/MainDomain";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronsRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-type semesterDataType = {
-  id: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  registerBegin: string;
-  registerDeadline: string;
-  isActive: boolean;
-};
-
-async function getAllSemesters(): Promise<semesterDataType[]> {
-  const res = await axios.get(`${MainDomain}/api/get/semester`);
-  return res.data;
-}
+import { GetAllSemesters } from "@/lib/GetAllSemesters";
 
 function timeConverter(time: string) {
   const t = new Date(time);
@@ -36,16 +20,8 @@ function timeConverter(time: string) {
 }
 
 export default function TabelShowSemesters() {
-  const {
-    data: semestersData,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["get_all_semesters"],
-    queryFn: getAllSemesters,
-  });
-  if (isError) throw new Error(error.message);
+  const { error, isError, isLoading, semestersData } = GetAllSemesters();
+  if (isError && error) throw new Error(error.message);
   return (
     <div>
       <Table>

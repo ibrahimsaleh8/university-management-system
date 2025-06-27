@@ -7,39 +7,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
 import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronsRight } from "lucide-react";
-import axios from "axios";
-import { MainDomain } from "@/variables/MainDomain";
+import { GetAllMainCourses } from "@/lib/GetAllMainCourses";
 
-type coursesDataType = {
-  id: number;
-  code: string;
-  name: string;
-  credit_hours: number;
-  department: {
-    name: string;
-  };
-  isElective: boolean;
-};
-async function getAllCourses(): Promise<coursesDataType[]> {
-  const res = await axios.get(`${MainDomain}/api/get/course`);
-  return res.data;
-}
 export default function TableShowCourses() {
-  const {
-    data: courses,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["get_all_courses"],
-    queryFn: getAllCourses,
-  });
+  const { courses, error, isError, isLoading } = GetAllMainCourses();
 
-  if (isError) throw new Error(error.message);
+  if (isError && error) throw new Error(error.message);
+
   return (
     <>
       <Table>
