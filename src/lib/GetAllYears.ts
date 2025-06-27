@@ -7,7 +7,7 @@ type academicYearsDataType = {
   year_label: string;
   level_number: number;
   _count: {
-    StudentEnrollment: number;
+    students: number;
   };
 };
 

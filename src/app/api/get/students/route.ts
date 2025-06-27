@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
         first_name: true,
         last_name: true,
         email: true,
-        class: { select: { id: true, name: true } },
+        academicYear: { select: { year_label: true } },
       },
       orderBy: {
         first_name: "asc",

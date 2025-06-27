@@ -1,4 +1,6 @@
 import GlobalToast from "@/components/Global/GlobalToast";
+import { GetAllYears } from "@/lib/GetAllYears";
+import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import {
   addStudentDataType,
@@ -6,7 +8,7 @@ import {
 } from "@/validation/AddStudentSchema";
 import { MainDomain } from "@/variables/MainDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,15 +17,6 @@ type Props = {
   token: string;
 };
 
-type ClassInfoType = {
-  id: number;
-  name: string;
-};
-// Get Classes
-async function getClasses(): Promise<ClassInfoType[]> {
-  const res = await axios.get(`${MainDomain}/api/get/class`);
-  return res.data;
-}
 // Add New Student
 async function addNewStudent(studentData: addStudentDataType, token: string) {
   await axios.post(`${MainDomain}/api/create/student`, studentData, {
@@ -44,7 +37,7 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     mode: "all",
   });
   const [showPass, setShowPass] = useState(false);
-
+  const queryClient = useQueryClient();
   const { isPending, mutate: addNewStd } = useMutation({
     mutationKey: ["add_student"],
     mutationFn: (data: { stdData: addStudentDataType; token: string }) =>
@@ -52,6 +45,7 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     onSuccess: () => {
       setClose(true);
       GlobalToast({ title: "Student added success", icon: "success" });
+      queryClient.refetchQueries({ queryKey: ["get_all_student"] });
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({
@@ -62,22 +56,33 @@ export const useAddStudent = ({ setClose, token }: Props) => {
   });
 
   const handleStudentFormSubmit: SubmitHandler<addStudentDataType> = (data) => {
-    console.log(data);
     addNewStd({
       stdData: data,
       token,
     });
   };
 
-  const { data: classes, isLoading } = useQuery({
-    queryKey: ["get_all_classes"],
-    queryFn: () => getClasses(),
-  });
+  // ****** Department api ******
+  const {
+    departments,
+    error: errorDepratment,
+    isError: isErrorDepartment,
+    isLoading: loadingDepartment,
+  } = GetDepartmentsQuery();
+  if (errorDepratment && isErrorDepartment)
+    throw new Error(errorDepratment.message);
+
+  // ****** Academic Years api ******
+  const {
+    error: errorYears,
+    isError: isErrorYears,
+    isLoading: loadingYears,
+    years,
+  } = GetAllYears();
+  if (errorYears && isErrorYears) throw new Error(errorYears.message);
 
   return {
     handleStudentFormSubmit,
-    classes,
-    isLoading,
     isPending,
     showPass,
     setShowPass,
@@ -85,5 +90,9 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     register,
     handleSubmit,
     setValue,
+    loadingDepartment,
+    departments,
+    loadingYears,
+    years,
   };
 };

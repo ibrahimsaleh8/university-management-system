@@ -22,16 +22,18 @@ type Props = {
 
 export default function AddStudentForm({ token, setClose }: Props) {
   const {
-    classes,
     errors,
     handleStudentFormSubmit,
     handleSubmit,
-    isLoading,
     isPending,
     register,
     setShowPass,
     setValue,
     showPass,
+    departments,
+    loadingDepartment,
+    loadingYears,
+    years,
   } = useAddStudent({ token, setClose });
 
   return (
@@ -155,36 +157,72 @@ export default function AddStudentForm({ token, setClose }: Props) {
       </div>
       <ErrorMessage error1={errors.address} error2={errors.phone} />
 
-      {/* Classes */}
-      {isLoading && !classes ? (
-        <>
+      <div className="flex items-center gap-3 flex-col sm:flex-row">
+        {/* Departments */}
+        {loadingDepartment && !departments ? (
           <Skeleton className="h-9 rounded-md w-full" />
-        </>
-      ) : (
-        classes && (
-          <div className="flex flex-col gap-1 items-start">
-            <label htmlFor="class" className="text-sm">
-              Class:
-            </label>
-            <Select
-              onValueChange={(e: string) => setValue("classId", parseInt(e))}>
-              <SelectTrigger
-                id="class"
-                className="w-full bg-Second-black border-soft-border cursor-pointer">
-                <SelectValue placeholder="Classes" />
-              </SelectTrigger>
-              <SelectContent className="bg-Second-black text-white border-soft-border">
-                {classes.map((stdClass) => (
-                  <SelectItem value={stdClass.id.toString()} key={stdClass.id}>
-                    {stdClass.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )
-      )}
-      <ErrorMessage error1={errors.classId} />
+        ) : (
+          departments && (
+            <div className="flex flex-col gap-1 items-start w-full">
+              <label htmlFor="class" className="text-sm">
+                Department:
+              </label>
+              <Select
+                onValueChange={(e: string) =>
+                  setValue("departmentId", parseInt(e))
+                }>
+                <SelectTrigger
+                  id="class"
+                  className="w-full bg-Second-black border-soft-border cursor-pointer">
+                  <SelectValue placeholder="Department" />
+                </SelectTrigger>
+                <SelectContent className="bg-Second-black text-white border-soft-border">
+                  {departments.map((depart) => (
+                    <SelectItem value={`${depart.id}`} key={depart.id}>
+                      {depart.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )
+        )}
+
+        {/* Academic Years */}
+        {loadingYears && !years ? (
+          <Skeleton className="h-9 rounded-md w-full" />
+        ) : (
+          years && (
+            <div className="flex flex-col gap-1 items-start w-full">
+              <label htmlFor="academic" className="text-sm">
+                Academic Year:
+              </label>
+              <Select
+                onValueChange={(e: string) =>
+                  setValue("academicYearId", parseInt(e))
+                }>
+                <SelectTrigger
+                  id="academic"
+                  className="w-full bg-Second-black border-soft-border cursor-pointer">
+                  <SelectValue placeholder="Academic Year" />
+                </SelectTrigger>
+                <SelectContent className="bg-Second-black text-white border-soft-border">
+                  {years.map((year) => (
+                    <SelectItem value={`${year.id}`} key={year.id}>
+                      {year.year_label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )
+        )}
+      </div>
+
+      <ErrorMessage
+        error1={errors.departmentId}
+        error2={errors.academicYearId}
+      />
 
       <Button variant={"mainWithShadow"} disabled={isPending} type="submit">
         {isPending ? (

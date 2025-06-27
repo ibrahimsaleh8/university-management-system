@@ -21,9 +21,8 @@ export type StudentResDataType = {
   first_name: string;
   last_name: string;
   email: string;
-  class: {
-    id: number;
-    name: string;
+  academicYear: {
+    year_label: string;
   };
 };
 
@@ -57,7 +56,7 @@ export default function ShowStudentsTable({ token }: { token: string }) {
             <TableHead>ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Class</TableHead>
+            <TableHead>Year</TableHead>
             <TableHead>Details</TableHead>
           </TableRow>
         </TableHeader>
@@ -76,7 +75,7 @@ export default function ShowStudentsTable({ token }: { token: string }) {
                   <TableCell className="text-sm">{std.student_id}</TableCell>
                   <TableCell>{`${std.first_name} ${std.last_name}`}</TableCell>
                   <TableCell>{std.email}</TableCell>
-                  <TableCell>{std.class.name}</TableCell>
+                  <TableCell>{std.academicYear.year_label}</TableCell>
                   <TableCell>
                     <Button className="bg-white hover:bg-white text-black">
                       <ChevronsRight />

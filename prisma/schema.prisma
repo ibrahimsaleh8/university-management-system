@@ -30,13 +30,14 @@ model Student {
   created_at            DateTime               @default(now())
   department            Department?            @relation(fields: [departmentId], references: [id])
   departmentId          Int?
-  class                 Class                  @relation(fields: [classId], references: [id])
-  classId               Int
   exams                 StudentExam[]
   answers               StudentAnswer[]
   assignmentSubmissions AssignmentSubmission[]
   announcementReplies   AnnouncementReply[]
   courses               StudentEnrollment[]
+  academicYear          AcademicYear?          @relation(fields: [academicYearId], references: [id])
+  academicYearId        Int?
+  classes               Class[]
 
   @@index([first_name, last_name])
   @@index([email])
@@ -75,11 +76,11 @@ enum UserGender {
 }
 
 model AcademicYear {
-  id                Int                 @id @default(autoincrement())
-  year_label        String              @unique
-  level_number      Int
-  StudentEnrollment StudentEnrollment[]
-  CourseOffering    CourseOffering[]
+  id             Int              @id @default(autoincrement())
+  year_label     String           @unique
+  level_number   Int
+  students       Student[]
+  CourseOffering CourseOffering[]
 }
 
 // Start Semester & CourseOffering & StudentEnrollment
@@ -135,8 +136,6 @@ model StudentEnrollment {
   status           EnrollmentStatus @default(ACTIVE)
   courseOffering   CourseOffering   @relation(fields: [courseOfferingId], references: [id])
   courseOfferingId String
-  academicYear     AcademicYear     @relation(fields: [academicYearId], references: [id])
-  academicYearId   Int
 }
 
 enum EnrollmentStatus {

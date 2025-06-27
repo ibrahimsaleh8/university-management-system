@@ -41,7 +41,7 @@ export default function TableShowYears() {
                 <TableCell>{indx + 1}</TableCell>
                 <TableCell>{year.year_label}</TableCell>
                 <TableCell>{year.level_number}</TableCell>
-                <TableCell>{year._count.StudentEnrollment}</TableCell>
+                <TableCell>{year._count.students}</TableCell>
                 <TableCell>
                   <Button className="bg-white hover:bg-white text-black">
                     <ChevronsRight />

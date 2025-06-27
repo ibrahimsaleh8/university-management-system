@@ -25,9 +25,13 @@ export const addStudentSchema = z
       .string()
       .min(1, { message: "Phone is required" })
       .max(20, { message: "Maximum characters is 20 chars" }),
-    classId: z.number({
-      invalid_type_error: "Class Id should be number",
-      required_error: "Class is Required",
+    academicYearId: z.number({
+      invalid_type_error: "Academic Year Id should be number",
+      required_error: "Academic Year is Required",
+    }),
+    departmentId: z.number({
+      invalid_type_error: "Department Id should be number",
+      required_error: "Department is Required",
     }),
   })
   .refine((data) => differenceInYears(new Date(), data.date_of_birth) >= 18, {

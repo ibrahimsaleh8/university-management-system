@@ -26,30 +26,24 @@ export async function POST(req: NextRequest) {
 
     const HashedPassword = await bcrypt.hash(studentData.password, 10);
 
-    const isEmailExist = await prisma.student.findFirst({
+    const isExist = await prisma.student.findFirst({
       where: {
-        email: studentData.email,
+        OR: [
+          { email: studentData.email },
+          {
+            student_id: studentData.student_id,
+          },
+        ],
       },
     });
 
-    if (isEmailExist) {
+    if (isExist) {
+      const msg = `${
+        isExist.email == studentData.email ? "Student Email" : "Student Id"
+      } is is Already exist`;
       return NextResponse.json(
         {
-          message: "Email is Already exist",
-        },
-        { status: 400 }
-      );
-    }
-
-    const isIdExist = await prisma.student.findFirst({
-      where: {
-        student_id: studentData.student_id,
-      },
-    });
-    if (isIdExist) {
-      return NextResponse.json(
-        {
-          message: "Studnet ID is Already exist",
+          message: msg,
         },
         { status: 400 }
       );
@@ -67,7 +61,8 @@ export async function POST(req: NextRequest) {
         address: studentData.address,
         gender: studentData.gender,
         phone: studentData.phone,
-        classId: studentData.classId,
+        academicYearId: studentData.academicYearId,
+        departmentId: studentData.departmentId,
       },
     });
     return NextResponse.json(

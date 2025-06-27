@@ -10,7 +10,7 @@ export async function GET() {
         level_number: true,
         _count: {
           select: {
-            StudentEnrollment: true,
+            students: true,
           },
         },
       },
