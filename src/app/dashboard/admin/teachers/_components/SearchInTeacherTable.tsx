@@ -58,8 +58,9 @@ export default function SearchInTeacherTable({
   });
 
   const HandleSearch = () => {
-    if (searchTxt.trim().length > 0) {
-      mutate({ method: searchBy, searchTxt });
+    const serchTxt = searchTxt.trim();
+    if (serchTxt.length > 0) {
+      mutate({ method: searchBy, searchTxt: serchTxt });
     } else {
       setSearched(false);
     }

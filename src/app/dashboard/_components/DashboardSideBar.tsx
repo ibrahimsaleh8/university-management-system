@@ -11,6 +11,7 @@ import {
   CalendarRange,
   BookOpenText,
   BookText,
+  CalendarDays,
 } from "lucide-react";
 
 import {
@@ -58,6 +59,11 @@ const admin_links = [
     title: "Semesters",
     url: "/dashboard/admin/semesters",
     icon: CalendarRange,
+  },
+  {
+    title: "Tables",
+    url: "/dashboard/admin/tables",
+    icon: CalendarDays,
   },
   {
     title: "Exams",
@@ -120,15 +126,15 @@ export default function DashboardSideBar({ role }: { role: string }) {
           <p className="px-4 font-bold text-center">School-Managment</p>
 
           <SidebarGroup>
-            <SidebarGroupLabel>MENU</SidebarGroupLabel>
+            <SidebarGroupLabel>Main Links</SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="gap-3 mt-4">
+              <SidebarMenu className="mt-2">
                 <>
                   {role == "admin" ? (
                     <MotionHighlight
                       hover
                       mode="parent"
-                      containerClassName="flex flex-col gap-3 "
+                      containerClassName="flex flex-col gap-1 "
                       className="bg-main-text rounded-md !text-Main-black"
                       boundsOffset={{ top: -1, left: -1 }}>
                       {admin_links.map((item) => (
@@ -140,7 +146,7 @@ export default function DashboardSideBar({ role }: { role: string }) {
                               ? "bg-main-text text-black"
                               : ""
                           }`}>
-                          <item.icon />
+                          <item.icon className="w-5 h-5" />
                           <span className="!text-[.855rem]">{item.title}</span>
                         </Link>
                       ))}
@@ -177,12 +183,12 @@ export default function DashboardSideBar({ role }: { role: string }) {
           {/* Other Links */}
 
           <SidebarGroup>
-            <SidebarGroupLabel>MENU</SidebarGroupLabel>
+            <SidebarGroupLabel>Other Links</SidebarGroupLabel>
             <SidebarGroupContent>
               <MotionHighlight
                 hover
                 mode="parent"
-                containerClassName="flex flex-col gap-3 "
+                containerClassName="flex flex-col gap-1"
                 className="bg-main-text rounded-md !text-Main-black"
                 boundsOffset={{ top: -1, left: -1 }}>
                 {otherLinks.map((item) => (

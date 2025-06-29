@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
     const searchTxt = (await request.nextUrl.searchParams.get(
       "text"
     )) as string;
-
     if (!searchMethod) {
       return NextResponse.json(
         { message: "Please input search method" },
@@ -36,7 +35,7 @@ export async function GET(request: NextRequest) {
           first_name: true,
           last_name: true,
           email: true,
-          class: { select: { id: true, name: true } },
+          academicYear: { select: { year_label: true } },
         },
       });
     } else if (searchMethod == "email") {
@@ -50,7 +49,7 @@ export async function GET(request: NextRequest) {
           first_name: true,
           last_name: true,
           email: true,
-          class: { select: { id: true, name: true } },
+          academicYear: { select: { year_label: true } },
         },
       });
     } else if (searchMethod == "name") {
@@ -64,11 +63,10 @@ export async function GET(request: NextRequest) {
           first_name: true,
           last_name: true,
           email: true,
-          class: { select: { id: true, name: true } },
+          academicYear: { select: { year_label: true } },
         },
       });
     }
-
     return NextResponse.json(students, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Server Error =>  " + error });

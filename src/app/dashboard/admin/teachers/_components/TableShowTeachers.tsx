@@ -64,7 +64,6 @@ export default function TableShowTeachers({ token }: Props) {
 
     return res;
   }, [searched, searchedData, teachers]);
-
   const Pages = useMemo(() => {
     return teachersNumber
       ? Math.ceil(teachersNumber.numbers / NumberOfTeachers)
@@ -127,7 +126,7 @@ export default function TableShowTeachers({ token }: Props) {
             )}
           </TableBody>
         </Table>
-        {Data && Data.length > 0 && !searched && (
+        {Pages > 1 && !searched && (
           <TablePagination
             setActiveNumber={setActivePaginateNumber}
             activeNumber={activePaginateNumber}

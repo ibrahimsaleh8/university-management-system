@@ -56,8 +56,10 @@ export default function SearchInStudents({
   });
 
   const HandleSearch = () => {
-    if (searchTxt.trim().length > 0) {
-      mutate({ method: searchBy, searchTxt });
+    const srchTxt = searchTxt.trim();
+
+    if (srchTxt.length > 0) {
+      mutate({ method: searchBy, searchTxt: srchTxt });
     } else {
       setSearched(false);
     }
