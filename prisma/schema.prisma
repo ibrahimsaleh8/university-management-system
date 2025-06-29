@@ -81,6 +81,7 @@ model AcademicYear {
   level_number   Int
   students       Student[]
   CourseOffering CourseOffering[]
+  CourseSchedule CourseSchedule[]
 }
 
 // Start Semester & CourseOffering & StudentEnrollment
@@ -327,9 +328,10 @@ model CourseSchedule {
   courseOfferingId String
   dayOfWeek        WeekDay
   startTime        String
-  endTime          String
   teacher          Teacher        @relation(fields: [teacherId], references: [id])
   teacherId        Int
+  academicYear     AcademicYear   @relation(fields: [academicYearId], references: [id])
+  academicYearId   Int
 
   @@unique([courseOfferingId, dayOfWeek, startTime])
 }

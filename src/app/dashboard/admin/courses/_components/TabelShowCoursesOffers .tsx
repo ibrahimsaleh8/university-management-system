@@ -7,49 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
 import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronsRight } from "lucide-react";
-import axios from "axios";
-import { MainDomain } from "@/variables/MainDomain";
-
-type CourseOfferingDataType = {
-  id: string;
-  academicYear: {
-    year_label: string;
-  };
-  course: {
-    name: string;
-  };
-  hall: string;
-  maxCapacity: number;
-  semester: {
-    name: string;
-    isActive: boolean;
-  };
-  _count: {
-    students: number;
-  };
-};
-
-async function getAllCoursesOffering(): Promise<CourseOfferingDataType[]> {
-  const res = await axios.get(`${MainDomain}/api/get/course-offering`);
-  return res.data;
-}
+import { GetAllCoursesOffering } from "@/lib/GetAllCoursesOffering";
 
 export default function TabelShowCoursesOffers() {
-  const {
-    data: coursesOffers,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["get_all_courses_offering"],
-    queryFn: getAllCoursesOffering,
-  });
+  const { coursesOffers, error, isError, isLoading } = GetAllCoursesOffering();
 
-  if (isError) throw new Error(error.message);
+  if (isError && error) throw new Error(error.message);
   return (
     <>
       <Table>

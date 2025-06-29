@@ -11,7 +11,6 @@ import {
   CalendarRange,
   BookOpenText,
   BookText,
-  CalendarDays,
 } from "lucide-react";
 
 import {
@@ -56,15 +55,11 @@ const admin_links = [
     icon: ChartBarStacked,
   },
   {
-    title: "Semesters",
+    title: "Semesters & Times",
     url: "/dashboard/admin/semesters",
     icon: CalendarRange,
   },
-  {
-    title: "Tables",
-    url: "/dashboard/admin/tables",
-    icon: CalendarDays,
-  },
+
   {
     title: "Exams",
     url: "#",
@@ -198,7 +193,7 @@ export default function DashboardSideBar({ role }: { role: string }) {
                     className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
                       pathname == item.url ? "bg-main-text text-black" : ""
                     }`}>
-                    <item.icon />
+                    <item.icon className="w-5 h-5" />
                     <span>{item.title}</span>
                   </Link>
                 ))}
