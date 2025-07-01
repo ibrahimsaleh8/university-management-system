@@ -29,7 +29,7 @@
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.479.0",
-    "motion": "^12.19.2",
+    "motion": "^12.20.2",
     "next": "15.2.2",
     "radix-ui": "^1.4.2",
     "react": "^19.0.0",

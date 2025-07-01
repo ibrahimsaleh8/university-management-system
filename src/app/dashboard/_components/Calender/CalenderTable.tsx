@@ -1,21 +1,28 @@
 "use client";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/animate-ui/radix/hover-card";
 import { days, workingHours } from "@/variables/TimesVars";
+import DeleteAlert from "../DeleteAlert";
 
-type Event = {
-  day: string; // e.g., "monday"
-  time: string; // e.g., "11:00 AM"
+export type EventDataType = {
+  id: string;
+  day: string;
+  time: string;
   title: string;
+  teacher: string;
 };
 
-// Sample events for demonstration
-const events: Event[] = [
-  { day: "monday", time: "11:00 AM", title: "Team Meeting" },
-  { day: "wednesday", time: "02:00 PM", title: "Doctor Appointment" },
-  { day: "saturday", time: "09:00 AM", title: "Workout Session" },
-];
+type Props = {
+  events: EventDataType[];
+  canDelete: boolean;
+  deleteFn?: (id: string) => void;
+};
 
-export default function CalendarTable() {
+export default function CalendarTable({ events, canDelete, deleteFn }: Props) {
   return (
     <div className="w-full border border-soft-border rounded-md overflow-hidden">
       {/* Days header row */}
@@ -52,9 +59,40 @@ export default function CalendarTable() {
                 key={dayIndex}
                 className="border-r last:border-r-0 border-soft-border h-16 relative hover:bg-main-text transition-colors duration-200 cursor-pointer">
                 {cellEvent && (
-                  <div className="absolute inset-1 bg-main-text text-black text-xs p-1 rounded overflow-hidden">
-                    {cellEvent.title}
-                  </div>
+                  <HoverCard openDelay={0.2} closeDelay={0}>
+                    <HoverCardTrigger className="absolute inset-1 bg-main-text text-sm text-black  p-1 rounded overflow-hidden">
+                      {cellEvent.title}
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-52 p-3 bg-Second-black text-white border-soft-border">
+                      <div className="flex flex-col gap-1 text-[0.775rem]">
+                        <p>
+                          <span className="font-bold">Teacher</span>:{" "}
+                          {cellEvent.teacher}
+                        </p>
+                        <p>
+                          <span className="font-bold">Course</span>:{" "}
+                          {cellEvent.title}
+                        </p>
+                        <p>
+                          <span className="font-bold">Day</span>:{" "}
+                          {cellEvent.day}
+                        </p>
+                        <p>
+                          <span className="font-bold">Time</span>:{" "}
+                          {cellEvent.time}
+                        </p>
+                        {/* Delete Button */}
+                        {canDelete && deleteFn && (
+                          <div className="flex justify-end">
+                            <DeleteAlert
+                              deleteFn={() => deleteFn(cellEvent.id)}
+                              title="Schedual Time"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 )}
               </div>
             );

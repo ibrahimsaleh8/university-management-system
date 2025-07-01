@@ -2,7 +2,7 @@ import React from "react";
 import TabelShowSemesters from "./_components/TabelShowSemesters";
 import AddingModel from "../../_components/forms/AddingModel";
 import { cookies } from "next/headers";
-import CalendarTable from "../../_components/Calender/CalenderTable";
+import ShowScheduals from "./_components/ShowScheduals";
 
 export default async function SemestersPage() {
   const token = (await (await cookies()).get("token")?.value) as string;
@@ -14,11 +14,7 @@ export default async function SemestersPage() {
       </div>
       <TabelShowSemesters />
       <div className="flex flex-col gap-2 pt-4">
-        <div className="flex flex-col sm:flex-row gap-2 justify-between items-center pb-4">
-          <p>Time Tables</p>
-          <AddingModel token={token} AddType="Course Time" />
-        </div>
-        <CalendarTable />
+        <ShowScheduals token={token} />
       </div>
     </div>
   );

@@ -3,6 +3,12 @@ import { adminVerification } from "../jwtVerifications/AdminVerification";
 
 export async function AdminAuthGuard(req: NextRequest) {
   const authHeader = req.headers.get("Authorization") as string;
+  if (!authHeader) {
+    return {
+      isAuth: false,
+      response: NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+    };
+  }
   const token = authHeader.startsWith("Bearer ")
     ? authHeader.split(" ")[1]
     : null;

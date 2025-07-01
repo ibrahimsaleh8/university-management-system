@@ -22,7 +22,7 @@ import {
 import { MainDomain } from "@/variables/MainDomain";
 import { days, workingHours } from "@/variables/TimesVars";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -50,12 +50,13 @@ export default function FormAddTime({ setClose, token }: Props) {
     resolver: zodResolver(courseTimeSchema),
     mode: "all",
   });
-
+  const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
     mutationKey: ["add_schedual"],
     mutationFn: (data: { schedualData: courseTimeDataType; token: string }) =>
       addNewScehedual(data.schedualData, data.token),
     onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["get_schedual_times"] });
       setClose(true);
       GlobalToast({
         title: "Course has been scheduled successfully",
