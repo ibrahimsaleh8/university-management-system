@@ -23,6 +23,7 @@ model Student {
   last_name             String                 @db.VarChar(100)
   gender                UserGender             @default(MALE)
   email                 String                 @unique
+  image                 String                 @default("https://i.ibb.co/NgrTw6jT/student-image.png")
   password              String
   date_of_birth         DateTime
   address               String?                @db.VarChar(100)
@@ -51,6 +52,7 @@ model Teacher {
   last_name     String              @db.VarChar(100)
   gender        UserGender          @default(MALE)
   email         String              @unique
+  image         String              @default("https://i.ibb.co/kV27Z5B3/user-profile.jpg")
   password      String
   date_of_birth DateTime
   address       String?             @db.VarChar(100)

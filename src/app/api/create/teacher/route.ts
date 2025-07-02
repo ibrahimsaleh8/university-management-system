@@ -6,7 +6,9 @@ import {
 import prisma from "@/variables/PrismaVar";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
-
+export type teacherDataTypeServer = AddTeacherDataType & {
+  image: string;
+};
 // Add New Teacher
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +17,7 @@ export async function POST(request: NextRequest) {
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Admin Authorize
 
-    const request_body = (await request.json()) as AddTeacherDataType;
+    const request_body = (await request.json()) as teacherDataTypeServer;
 
     const validation = addTeacherSchema.safeParse(request_body);
 
@@ -68,6 +70,7 @@ export async function POST(request: NextRequest) {
         password: HashedPassword,
         phone: request_body.phone,
         qualification: request_body.qualification,
+        image: request_body.image,
       },
     });
 

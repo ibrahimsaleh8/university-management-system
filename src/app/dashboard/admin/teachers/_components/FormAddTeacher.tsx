@@ -14,6 +14,7 @@ import { Eye, EyeOff } from "lucide-react";
 import SmallLoader from "@/components/Global/SmallLoader";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
+import UploadImage from "@/app/dashboard/_components/forms/UploadImage";
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
   token: string;
@@ -28,22 +29,33 @@ export default function FormAddTeacher({ setClose, token }: Props) {
     showPass,
     setShowPass,
     isPending,
+    image,
+    setImage,
+    uploadingImage,
   } = useAddTeacher({ setClose, token });
   return (
     <>
       {/* Form Adding */}
       <form onSubmit={handleSubmit(HandleForm)} className="flex flex-col gap-4">
         {/* Teacher id */}
-        <InputForm
-          isError={errors.teacher_id != undefined}
-          label="Teacher ID"
-          placeholder="ID (14 digits)"
-          register={register("teacher_id")}
-          type="text"
-          inputMode="numeric"
-          pattern="\d{14}"
-          maxLength={14}
-        />
+        <div className="flex gap-2 flex-col sm:flex-row">
+          <InputForm
+            isError={errors.teacher_id != undefined}
+            label="Teacher ID"
+            placeholder="ID (14 digits)"
+            register={register("teacher_id")}
+            type="text"
+            inputMode="numeric"
+            pattern="\d{14}"
+            maxLength={14}
+          />
+          <UploadImage
+            title="Upload Teaher image"
+            setImage={setImage}
+            image={image}
+          />
+        </div>
+
         <ErrorMessage error1={errors.teacher_id} />
 
         {/* Name */}
@@ -170,10 +182,18 @@ export default function FormAddTeacher({ setClose, token }: Props) {
         </div>
         <ErrorMessage error1={errors.qualification} error2={errors.phone} />
 
-        <Button variant={"mainWithShadow"} disabled={isPending} type="submit">
+        <Button
+          variant={"mainWithShadow"}
+          disabled={isPending || uploadingImage}
+          type="submit">
           {isPending ? (
             <div className="flex items-center gap-1">
               Loading....
+              <SmallLoader />
+            </div>
+          ) : uploadingImage ? (
+            <div className="flex items-center gap-1">
+              Uploading....
               <SmallLoader />
             </div>
           ) : (

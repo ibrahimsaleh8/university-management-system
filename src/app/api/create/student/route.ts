@@ -6,7 +6,9 @@ import {
 import prisma from "@/variables/PrismaVar";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
-
+export type addStdDataType = addStudentDataType & {
+  image: string;
+};
 export async function POST(req: NextRequest) {
   try {
     // Start Check Admin Authorize
@@ -14,7 +16,7 @@ export async function POST(req: NextRequest) {
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Admin Authorize
 
-    const studentData = (await req.json()) as addStudentDataType;
+    const studentData = (await req.json()) as addStdDataType;
 
     const validation = addStudentSchema.safeParse(studentData);
     if (!validation.success) {
@@ -63,6 +65,7 @@ export async function POST(req: NextRequest) {
         phone: studentData.phone,
         academicYearId: studentData.academicYearId,
         departmentId: studentData.departmentId,
+        image: studentData.image,
       },
     });
     return NextResponse.json(

@@ -1,3 +1,4 @@
+import { addStdDataType } from "@/app/api/create/student/route";
 import GlobalToast from "@/components/Global/GlobalToast";
 import { GetAllYears } from "@/lib/GetAllYears";
 import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
@@ -18,7 +19,7 @@ type Props = {
 };
 
 // Add New Student
-async function addNewStudent(studentData: addStudentDataType, token: string) {
+async function addNewStudent(studentData: addStdDataType, token: string) {
   await axios.post(`${MainDomain}/api/create/student`, studentData, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -26,7 +27,19 @@ async function addNewStudent(studentData: addStudentDataType, token: string) {
   });
 }
 
+export async function uploadImageApi(file: File): Promise<{ url: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("pathName", "students");
+  const res = await axios.post(`${MainDomain}/api/upload`, formData);
+  return res.data;
+}
+
 export const useAddStudent = ({ setClose, token }: Props) => {
+  const [image, setImage] = useState<File | null>(null);
+  const [showPass, setShowPass] = useState(false);
+  const [studentData, setStudentData] = useState<addStudentDataType | null>();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -36,11 +49,10 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     resolver: zodResolver(addStudentSchema),
     mode: "all",
   });
-  const [showPass, setShowPass] = useState(false);
-  const queryClient = useQueryClient();
+
   const { isPending, mutate: addNewStd } = useMutation({
     mutationKey: ["add_student"],
-    mutationFn: (data: { stdData: addStudentDataType; token: string }) =>
+    mutationFn: (data: { stdData: addStdDataType; token: string }) =>
       addNewStudent(data.stdData, data.token),
     onSuccess: () => {
       setClose(true);
@@ -55,11 +67,35 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     },
   });
 
+  const { mutate: uploadStdImage, isPending: uploadingImage } = useMutation({
+    mutationKey: ["upload_std_image"],
+    mutationFn: (file: File) => uploadImageApi(file),
+    onError: (err: ErrorResponseType) => {
+      GlobalToast({
+        title: err.response.data.message ?? "Something went wrong",
+        icon: "error",
+      });
+    },
+    onSuccess: (imageUrl) => {
+      if (studentData) {
+        addNewStd({
+          stdData: { ...studentData, image: imageUrl.url },
+          token,
+        });
+      }
+    },
+  });
+
   const handleStudentFormSubmit: SubmitHandler<addStudentDataType> = (data) => {
-    addNewStd({
-      stdData: data,
-      token,
-    });
+    if (!image) {
+      GlobalToast({
+        icon: "error",
+        title: "Please upload image first",
+      });
+      return;
+    }
+    setStudentData(data);
+    uploadStdImage(image);
   };
 
   // ****** Department api ******
@@ -94,5 +130,8 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     departments,
     loadingYears,
     years,
+    image,
+    setImage,
+    uploadingImage,
   };
 };

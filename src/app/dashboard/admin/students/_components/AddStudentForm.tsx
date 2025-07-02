@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAddStudent } from "@/hooks/useAddStudent";
+import UploadImage from "@/app/dashboard/_components/forms/UploadImage";
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
   token: string;
@@ -34,23 +35,34 @@ export default function AddStudentForm({ token, setClose }: Props) {
     loadingDepartment,
     loadingYears,
     years,
+    image,
+    setImage,
+    uploadingImage,
   } = useAddStudent({ token, setClose });
 
   return (
     <form
       onSubmit={handleSubmit(handleStudentFormSubmit)}
-      className="flex flex-col gap-4">
+      className="flex flex-col gap-4 w-full">
       {/* Student Id */}
-      <InputForm
-        isError={errors.student_id != undefined}
-        label="Student ID"
-        placeholder="ID (14 digits)"
-        register={register("student_id")}
-        type="text"
-        inputMode="numeric"
-        pattern="\d{14}"
-        maxLength={14}
-      />
+      {/* Upload Image */}
+      <div className="flex gap-2 flex-col sm:flex-row">
+        <InputForm
+          isError={errors.student_id != undefined}
+          label="Student ID"
+          placeholder="ID (14 digits)"
+          register={register("student_id")}
+          type="text"
+          inputMode="numeric"
+          pattern="\d{14}"
+          maxLength={14}
+        />
+        <UploadImage
+          title="Upload Student image"
+          setImage={setImage}
+          image={image}
+        />
+      </div>
       <ErrorMessage error1={errors.student_id} />
 
       {/* Name */}
@@ -224,10 +236,18 @@ export default function AddStudentForm({ token, setClose }: Props) {
         error2={errors.academicYearId}
       />
 
-      <Button variant={"mainWithShadow"} disabled={isPending} type="submit">
+      <Button
+        variant={"mainWithShadow"}
+        disabled={isPending || uploadingImage}
+        type="submit">
         {isPending ? (
           <div className="flex items-center gap-1">
             Adding....
+            <SmallLoader />
+          </div>
+        ) : uploadingImage ? (
+          <div className="flex items-center gap-1">
+            Uploading....
             <SmallLoader />
           </div>
         ) : (
