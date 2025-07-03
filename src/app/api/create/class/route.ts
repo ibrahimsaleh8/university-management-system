@@ -1,4 +1,4 @@
-import { AdminAuthGuard } from "@/lib/AuthGuard/AdminAuthGuard";
+import { TeacherAuthGuard } from "@/lib/AuthGuard/TeacherAuthGuard";
 import {
   classCreationDataType,
   classCreationSchema,
@@ -8,10 +8,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    // Start Check Admin Authorize
-    const authVerify = await AdminAuthGuard(req);
+    // Start Check Teacher Authorize
+    const authVerify = await TeacherAuthGuard(req);
     if (!authVerify.isAuthorized) return authVerify.response;
-    // End Check Admin Authorize
+    // End Check Teacher Authorize
 
     // Start Parameters Validation
     const classData = (await req.json()) as classCreationDataType;
@@ -26,7 +26,10 @@ export async function POST(req: NextRequest) {
 
     const isClassExist = await prisma.class.findFirst({
       where: {
-        name: { equals: classData.name },
+        OR: [
+          { name: { equals: classData.name } },
+          { courseOfferingId: classData.courseOfferingId },
+        ],
       },
     });
 
@@ -55,6 +58,8 @@ export async function POST(req: NextRequest) {
       data: {
         name: classData.name,
         departmentId: classData.departmentId,
+        teacherId: classData.teacherId,
+        courseOfferingId: classData.courseOfferingId,
       },
     });
 

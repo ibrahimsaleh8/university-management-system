@@ -27,6 +27,7 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
 import { MotionHighlight } from "@/components/animate-ui/effects/motion-highlight";
+import { SiGoogleclassroom } from "react-icons/si";
 
 const admin_links = [
   {
@@ -92,6 +93,11 @@ const teacher_links = [
     title: "Courses",
     url: "/dashboard/teacher/courses",
     icon: BookOpenText,
+  },
+  {
+    title: "Classes",
+    url: "/dashboard/teacher/classes",
+    icon: SiGoogleclassroom,
   },
 ];
 
@@ -162,7 +168,7 @@ export default function DashboardSideBar({ role }: { role: string }) {
                               ? "bg-main-text text-black"
                               : ""
                           }`}>
-                          <item.icon />
+                          <item.icon className="w-5 h-5" />
                           <span>{item.title}</span>
                         </Link>
                       ))}

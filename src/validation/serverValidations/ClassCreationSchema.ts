@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export const classCreationSchema = z.object({
   name: z
     .string({
@@ -9,8 +8,13 @@ export const classCreationSchema = z.object({
     .min(3, { message: "Name should be more than 3" })
     .max(20, { message: "Name should be less than 20" }),
   departmentId: z.number({
-    required_error: "Department id is required",
-    invalid_type_error: "Department id must be Number",
+    required_error: "Department  is required",
+  }),
+  teacherId: z.number({
+    required_error: "Teacher is required",
+  }),
+  courseOfferingId: z.string({
+    required_error: "Course is required",
   }),
 });
 

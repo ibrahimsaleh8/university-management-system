@@ -168,7 +168,7 @@ export default function FormAddTime({ setClose, token }: Props) {
                         value={`${teacher.id}`}>{`${teacher.first_name} ${teacher.last_name}`}</SelectItem>
                     ))
                   ) : (
-                    <SelectItem disabled value="">
+                    <SelectItem disabled value="none">
                       No Teachers Found
                     </SelectItem>
                   )}
@@ -202,7 +202,7 @@ export default function FormAddTime({ setClose, token }: Props) {
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem disabled value="">
+                    <SelectItem disabled value="none">
                       No Courses Found
                     </SelectItem>
                   )}

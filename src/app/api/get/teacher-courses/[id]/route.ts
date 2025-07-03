@@ -1,0 +1,50 @@
+import prisma from "@/variables/PrismaVar";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = await context.params;
+    if (!id) {
+      return NextResponse.json({ message: "Id is missing" }, { status: 400 });
+    }
+    const teacher = await prisma.teacher.findUnique({ where: { id: +id } });
+    if (!teacher) {
+      return NextResponse.json(
+        { message: "Teacher doesn't exist" },
+        { status: 404 }
+      );
+    }
+    const teacherClasses = await prisma.class.findMany({
+      where: {
+        teacherId: +id,
+      },
+      select: { courseOfferingId: true },
+    });
+    console.log("teacherClasses", teacherClasses);
+    const teacherCourses = await prisma.courseOffering.findMany({
+      where: {
+        teacherId: +id,
+      },
+      select: {
+        id: true,
+        course: { select: { name: true } },
+      },
+    });
+    const courses = teacherCourses
+      .filter((c) => !teacherClasses.find((e) => e.courseOfferingId === c.id))
+      .map((c) => ({
+        id: c.id,
+        course: c.course.name,
+      }));
+    return NextResponse.json(courses, { status: 200 });
+  } catch (error) {
+    console.error("Delete Schedule Error:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

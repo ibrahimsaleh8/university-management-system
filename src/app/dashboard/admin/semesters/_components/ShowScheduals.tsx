@@ -110,7 +110,7 @@ export default function ShowScheduals({ token }: { token: string }) {
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem className="capitalize" disabled value="">
+                    <SelectItem className="capitalize" disabled value="none">
                       no years found
                     </SelectItem>
                   )}

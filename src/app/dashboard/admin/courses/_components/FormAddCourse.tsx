@@ -135,7 +135,7 @@ export default function FormAddCourse({ setClose, token }: Props) {
                     ))
                   ) : (
                     <>
-                      <SelectItem disabled value="">
+                      <SelectItem disabled value="none">
                         No Departments Found
                       </SelectItem>
                     </>

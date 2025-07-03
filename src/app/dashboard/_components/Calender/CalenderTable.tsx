@@ -14,6 +14,8 @@ export type EventDataType = {
   time: string;
   title: string;
   teacher: string;
+  academicYear?: string;
+  hall?: string;
 };
 
 type Props = {
@@ -81,6 +83,20 @@ export default function CalendarTable({ events, canDelete, deleteFn }: Props) {
                           <span className="font-bold">Time</span>:{" "}
                           {cellEvent.time}
                         </p>
+
+                        {cellEvent.academicYear && (
+                          <p>
+                            <span className="font-bold">Grade</span>:{" "}
+                            {cellEvent.academicYear}
+                          </p>
+                        )}
+                        {cellEvent.hall && (
+                          <p>
+                            <span className="font-bold">Hall</span>:{" "}
+                            {cellEvent.hall}
+                          </p>
+                        )}
+
                         {/* Delete Button */}
                         {canDelete && deleteFn && (
                           <div className="flex justify-end">

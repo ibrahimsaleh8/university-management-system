@@ -164,7 +164,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                         value={`${course.id}`}>{`${course.name}`}</SelectItem>
                     ))
                   ) : (
-                    <SelectItem disabled value="">
+                    <SelectItem disabled value="none">
                       No Courses Found
                     </SelectItem>
                   )}
@@ -195,7 +195,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                         value={`${tech.id}`}>{`${tech.first_name} ${tech.last_name}`}</SelectItem>
                     ))
                   ) : (
-                    <SelectItem disabled value="">
+                    <SelectItem disabled value="none">
                       No Teachers Found
                     </SelectItem>
                   )}
@@ -232,7 +232,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                       }>`}</SelectItem>
                     ))
                   ) : (
-                    <SelectItem disabled value="">
+                    <SelectItem disabled value="none">
                       No Semesters Found
                     </SelectItem>
                   )}
@@ -263,7 +263,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                         value={`${year.id}`}>{`${year.year_label}`}</SelectItem>
                     ))
                   ) : (
-                    <SelectItem disabled value="">
+                    <SelectItem disabled value="none">
                       No Academic Years Found
                     </SelectItem>
                   )}
@@ -335,7 +335,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                           value={`${course.id}`}>{`${course.name}`}</SelectItem>
                       ))
                     ) : (
-                      <SelectItem disabled value="">
+                      <SelectItem disabled value="none">
                         No Courses Found
                       </SelectItem>
                     )}

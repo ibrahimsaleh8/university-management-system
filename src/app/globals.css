@@ -133,6 +133,17 @@
   background-color: var(--color-main-text);
   color: black;
 }
+
+.clip-path-div {
+  clip-path: polygon(
+    0px 0%,
+    100% 0,
+    100% calc(100% - 17px),
+    calc(100% - 28px) 100%,
+    0 100%,
+    0% 30px
+  );
+}
 /* Loader */
 .loader {
   border-radius: 50%;
