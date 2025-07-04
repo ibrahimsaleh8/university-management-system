@@ -173,7 +173,7 @@ model Department {
 
 model Class {
   id               Int            @id @default(autoincrement())
-  name             String
+  name             String         @unique
   department       Department     @relation(fields: [departmentId], references: [id])
   departmentId     Int
   course           CourseOffering @relation(fields: [courseOfferingId], references: [id])
