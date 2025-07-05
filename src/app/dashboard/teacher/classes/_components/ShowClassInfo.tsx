@@ -7,18 +7,13 @@ import { BookText, UserRound } from "lucide-react";
 import { useParams } from "next/navigation";
 import { PiStudent } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ClassSkeleton from "./ClassSkeleton";
+import TeacherClassAnnouncments from "./TeacherClassAnnouncments";
 export type TeacherClassDataType = {
   course: {
     id: number;
     name: string;
   };
-  announcements: {
-    id: number;
-    title: string;
-    content: string;
-    created_at: Date;
-    replies: number;
-  }[];
   assignments: {
     id: number;
     title: string;
@@ -36,6 +31,9 @@ export type TeacherClassDataType = {
     status: string;
   }[];
   students: number;
+  name: string;
+  teacher: string;
+  classId: number;
 };
 
 async function getTeacherClassInformation(
@@ -44,11 +42,11 @@ async function getTeacherClassInformation(
   const res = await axios.get(`${MainDomain}/api/get/class/${name}`);
   return res.data;
 }
-export default function ShowClassInfo() {
+export default function ShowClassInfo({ token }: { token: string }) {
   const params = useParams();
   const className = params.name as string;
 
-  const { data, error, isError } = useQuery({
+  const { data, error, isError, isLoading } = useQuery({
     queryKey: ["teacher_class_info", className],
     queryFn: () => getTeacherClassInformation(className),
   });
@@ -58,35 +56,40 @@ export default function ShowClassInfo() {
   console.log("data", data);
   return (
     <div className="flex flex-col gap-3">
-      {/* Class Header */}
-      <div className="w-full bg-Second-black flex flex-col items-center gap-3 rounded-md justify-center px-3 py-4">
-        <p className="capitalize font-bold text-main-text">
-          {className.split("%20").join(" ")}
-        </p>
+      {isLoading && !data ? (
+        <ClassSkeleton />
+      ) : (
+        data && (
+          <div className="w-full bg-Second-black flex flex-col items-center gap-3 rounded-md justify-center px-3 py-4">
+            <p className="capitalize font-bold text-main-text">{data.name}</p>
 
-        <div className="flex items-center gap-4 text-sm mt-auto flex-wrap justify-center">
-          <p className="flex items-center gap-1">
-            <UserRound className="w-4 h-4" />
-            <span className="font-[500]">Teacher</span>: Ibrahim
-          </p>
-          <p className="flex items-center gap-1">
-            <BookText className="w-4 h-4" />
-            <span className="font-[500]">Course</span>: Course-1
-          </p>
-          <p className="flex items-center gap-1">
-            <PiStudent className="w-4 h-4" />
-            <span className="font-[500]">Students</span>: 4
-          </p>
-        </div>
-      </div>
+            <div className="flex items-center gap-4 text-sm mt-auto flex-wrap justify-center">
+              <p className="flex items-center gap-1">
+                <UserRound className="w-4 h-4" />
+                <span className="font-[500]">Teacher</span>: {data.teacher}
+              </p>
+              <p className="flex items-center gap-1">
+                <BookText className="w-4 h-4" />
+                <span className="font-[500]">Course</span>: {data.course.name}
+              </p>
+              <p className="flex items-center gap-1">
+                <PiStudent className="w-4 h-4" />
+                <span className="font-[500]">Students</span>: {data.students}
+              </p>
+            </div>
+          </div>
+        )
+      )}
 
       {/* Tabs */}
-      <Tabs defaultValue="account" className="w-fit ">
-        <TabsList className="bg-transparent px-2 rounded-sm gap-4">
-          <TabsTrigger className="px-4 py-1 cursor-pointer" value="account">
+      <Tabs defaultValue="announcements" className="w-full">
+        <TabsList className="bg-transparent px-2 rounded-sm gap-4 flex-wrap">
+          <TabsTrigger
+            className="px-4 py-1 cursor-pointer"
+            value="announcements">
             Announcements
           </TabsTrigger>
-          <TabsTrigger className="px-4 py-1 cursor-pointer" value="password">
+          <TabsTrigger className="px-4 py-1 cursor-pointer" value="assignments">
             Assignments
           </TabsTrigger>
           <TabsTrigger className="px-4 py-1 cursor-pointer" value="exams">
@@ -96,13 +99,22 @@ export default function ShowClassInfo() {
             Students
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="account">
-          Make changes to your account here.
+
+        <TabsContent value="announcements">
+          <TeacherClassAnnouncments
+            className={className}
+            classId={data ? data.classId : 0}
+            token={token}
+          />
         </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="assignments">
+          Change your password here.
+        </TabsContent>
         <TabsContent value="exams">Change your password here.</TabsContent>
         <TabsContent value="students">Change your password here.</TabsContent>
       </Tabs>
+
+      {/* Skeleaton */}
     </div>
   );
 }

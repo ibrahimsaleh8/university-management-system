@@ -1,9 +1,11 @@
+import { cookies } from "next/headers";
 import ShowClassInfo from "../_components/ShowClassInfo";
 
-export default function ClassTeacherPage() {
+export default async function ClassTeacherPage() {
+  const token = (await (await cookies()).get("token")?.value) as string;
   return (
     <div>
-      <ShowClassInfo />
+      <ShowClassInfo token={token} />
     </div>
   );
 }

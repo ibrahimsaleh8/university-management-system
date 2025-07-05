@@ -20,6 +20,7 @@ import CourseOfferingForm from "../../admin/courses/_components/CourseOfferingFo
 import AcadimicYearForm from "../../admin/departments/_components/AcadimicYearForm";
 import FormAddTime from "../../admin/semesters/_components/FormAddTime";
 import FormAddClass from "../../teacher/classes/_components/FormAddClass";
+import TeacherAnnouncmentForm from "../../teacher/classes/_components/TeacherAnnouncmentForm";
 
 type Props = {
   token: string;
@@ -32,10 +33,20 @@ type Props = {
     | "Course-offering"
     | "Academic Year"
     | "Course Time"
-    | "Class";
+    | "Class"
+    | "Teacher Announcement";
+  title?: string;
+  classId?: number;
+  className?: string;
 };
 
-export default function AddingModel({ token, AddType }: Props) {
+export default function AddingModel({
+  token,
+  AddType,
+  title,
+  classId,
+  className,
+}: Props) {
   const [close, setClose] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -49,7 +60,7 @@ export default function AddingModel({ token, AddType }: Props) {
     <>
       <AlertDialog>
         <AlertDialogTrigger className="bg-transparent font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
-          Add {AddType}
+          Add {title ?? AddType}
         </AlertDialogTrigger>
         <AlertDialogContent className="bg-Main-black text-white border-soft-border sm:!max-w-[37rem] max-h-[97vh] sm:overflow-visible overflow-y-auto overflow-x-hidden">
           <AlertDialogHeader>
@@ -101,6 +112,16 @@ export default function AddingModel({ token, AddType }: Props) {
             {/* Form Add New Class */}
             {AddType == "Class" && (
               <FormAddClass setClose={setClose} token={token} />
+            )}
+
+            {/* Form Add New Announcment in teacher class */}
+            {AddType == "Teacher Announcement" && classId && className && (
+              <TeacherAnnouncmentForm
+                className={className}
+                classId={classId}
+                setClose={setClose}
+                token={token}
+              />
             )}
           </AlertDialogHeader>
           <AlertDialogFooter>

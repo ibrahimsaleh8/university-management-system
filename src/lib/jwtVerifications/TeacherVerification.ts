@@ -15,6 +15,7 @@ export const teacherVerification = async (token: string) => {
         isTeacher: true,
         data: {
           email: teacherAccount.email,
+          id: teacherAccount.id,
         },
       }
     : { isTeacher: false, data: null };

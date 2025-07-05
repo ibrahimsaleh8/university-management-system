@@ -13,15 +13,6 @@ export async function GET(
         name,
       },
       select: {
-        announcements: {
-          select: {
-            id: true,
-            title: true,
-            content: true,
-            _count: { select: { announcementReplies: true } },
-            created_at: true,
-          },
-        },
         course: {
           select: { id: true, course: { select: { name: true, code: true } } },
         },
@@ -50,6 +41,9 @@ export async function GET(
             students: true,
           },
         },
+        name: true,
+        teacher: { select: { first_name: true, last_name: true } },
+        id: true,
       },
     });
 
@@ -64,13 +58,6 @@ export async function GET(
         id: teacherClass?.course.id,
         name: teacherClass?.course.course.name,
       },
-      announcements: teacherClass.announcements.map((an) => ({
-        id: an.id,
-        title: an.title,
-        content: an.content,
-        created_at: an.created_at,
-        replies: an._count.announcementReplies,
-      })),
       assignments: teacherClass.assignments.map((assig) => ({
         id: assig.id,
         title: assig.title,
@@ -82,6 +69,9 @@ export async function GET(
       })),
       exams: teacherClass.exams,
       students: teacherClass._count.students,
+      name: teacherClass.name,
+      teacher: `${teacherClass.teacher.first_name} ${teacherClass.teacher.last_name}`,
+      classId: teacherClass.id,
     };
 
     return NextResponse.json(classData, { status: 200 });
