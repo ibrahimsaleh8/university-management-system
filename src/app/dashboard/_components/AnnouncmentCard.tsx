@@ -1,5 +1,5 @@
 "use client";
-import { MessageSquareQuote, Trash2 } from "lucide-react";
+import { MessageSquareQuote } from "lucide-react";
 import AnnouncmentOperations from "../teacher/classes/_components/AnnouncmentOperations";
 export type AnnouncementInfoType = {
   id: string;
@@ -57,9 +57,14 @@ export default function AnnouncmentCard({
             token={token ?? ""}
             className={className}
           />
-          <p className="flex items-center gap-1 border border-red-500 text-red-500 w-fit px-4 py-1 rounded-md text-sm hover:bg-red-500 font-medium hover:text-white duration-300">
-            <Trash2 className="w-4 h-4" /> Delete
-          </p>
+          <AnnouncmentOperations
+            annId={id}
+            content={content}
+            title={title}
+            type="delete"
+            token={token ?? ""}
+            className={className}
+          />
         </div>
       </div>
     </div>

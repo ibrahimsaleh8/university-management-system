@@ -40,7 +40,7 @@ export default function UpdateAnn({
   const [annTitle, setAnnTitle] = useState(title ?? "");
   const [annContent, setAnnContent] = useState(content ?? "");
   const queryClient = useQueryClient();
-  console.log("className", className);
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["update_ann", annId],
     mutationFn: (data: {
@@ -75,7 +75,6 @@ export default function UpdateAnn({
       return;
     }
     mutate({ data, id: annId, token });
-    console.log(data);
   };
   return (
     <div className="flex flex-col gap-3">

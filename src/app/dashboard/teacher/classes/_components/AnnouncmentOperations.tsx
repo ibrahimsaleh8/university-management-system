@@ -8,17 +8,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Pencil, X } from "lucide-react";
+import { Pencil, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import UpdateAnn from "./UpdateAnn";
+import DeleteAnn from "./DeleteAnn";
 
 type Props = {
   type: "delete" | "edit" | "replies";
-  annId: string;
   title?: string;
   content?: string;
   className?: string;
   token: string;
+  annId: string;
 };
 
 export default function AnnouncmentOperations({
@@ -36,10 +37,11 @@ export default function AnnouncmentOperations({
       closeRef.current?.click();
     }
   }, [close]);
-
   const classes =
     type == "edit"
       ? "border-main-text text-main-text hover:bg-main-text hover:text-black"
+      : type == "delete"
+      ? "border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
       : "";
 
   return (
@@ -51,13 +53,22 @@ export default function AnnouncmentOperations({
       }}>
       <AlertDialogTrigger
         className={`cursor-pointer flex items-center gap-1 border  w-fit px-4 py-1 rounded-md text-sm  font-medium duration-300 ${classes}`}>
-        <Pencil className="w-4 h-4" /> Edit
+        {type == "edit" && (
+          <>
+            <Pencil className="w-4 h-4" /> Edit
+          </>
+        )}
+        {type == "delete" && (
+          <>
+            <Trash2 className="w-4 h-4" /> Delete
+          </>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-Main-black text-white border-soft-border sm:!max-w-[37rem] max-h-[97vh] sm:overflow-visible overflow-y-auto overflow-x-hidden">
         <AlertDialogHeader>
           <AlertDialogTitle>
             {type == "delete"
-              ? "Confirm Deletion"
+              ? "Confirm Deletion ?"
               : type == "edit"
               ? "Edit Announcement"
               : ""}
@@ -72,6 +83,15 @@ export default function AnnouncmentOperations({
               annId={annId}
               content={content as string}
               title={title as string}
+              token={token}
+              setClose={setClose}
+            />
+          )}
+
+          {type == "delete" && (
+            <DeleteAnn
+              className={className ?? ""}
+              annId={annId}
               token={token}
               setClose={setClose}
             />
