@@ -29,6 +29,7 @@ export async function GET(
         created_at: true,
         _count: { select: { announcementReplies: true } },
       },
+      orderBy: { created_at: "desc" },
     });
     const announcmnetsData = announcmnets.map((ann) => ({
       id: ann.id,

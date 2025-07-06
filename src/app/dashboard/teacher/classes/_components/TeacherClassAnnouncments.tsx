@@ -52,7 +52,12 @@ export default function TeacherClassAnnouncments({
         {announcements.length > 0 ? (
           <div className="flex flex-col gap-3">
             {announcements.map((ann) => (
-              <AnnouncmentCard {...ann} key={ann.id} />
+              <AnnouncmentCard
+                className={className}
+                token={token}
+                {...ann}
+                key={ann.id}
+              />
             ))}
           </div>
         ) : (

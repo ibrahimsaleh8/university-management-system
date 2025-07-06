@@ -1,18 +1,30 @@
 "use client";
-import { MessageSquareQuote, Pencil, Trash2 } from "lucide-react";
+import { MessageSquareQuote, Trash2 } from "lucide-react";
+import AnnouncmentOperations from "../teacher/classes/_components/AnnouncmentOperations";
 export type AnnouncementInfoType = {
-  id: number;
+  id: string;
   title: string;
   content: string;
   created_at: Date;
   replies: number;
+  token?: string;
+  className?: string;
 };
 export default function AnnouncmentCard({
   content,
   created_at,
   replies,
   title,
+  id,
+  token,
+  className,
 }: AnnouncementInfoType) {
+  const ann_created_at = `${new Date(created_at).getDate()}/${
+    new Date(created_at).getMonth() + 1
+  }/${new Date(created_at).getFullYear()} - ${new Date(
+    created_at
+  ).toLocaleTimeString()}`;
+
   return (
     <div className="bg-Second-black border overflow-hidden border-soft-border w-full p-2 px-4 pb-4 rounded-sm flex flex-col gap-3">
       {/* Header */}
@@ -22,9 +34,7 @@ export default function AnnouncmentCard({
           className="text-lg font-medium capitalize line-clamp-1">
           {title}
         </p>
-        <p className="ml-auto text-sm text-low-white">
-          {new Date(created_at).toString()}
-        </p>
+        <p className="ml-auto text-xs text-low-white">{ann_created_at}</p>
       </div>
       {/* Content */}
       <div className="pb-1">
@@ -39,9 +49,14 @@ export default function AnnouncmentCard({
 
         {/* Operations */}
         <div className="flex items-center gap-4 ">
-          <p className="flex items-center gap-1 border border-main-text text-main-text w-fit px-4 py-1 rounded-md text-sm hover:bg-main-text font-medium hover:text-black duration-300">
-            <Pencil className="w-4 h-4" /> Edit
-          </p>
+          <AnnouncmentOperations
+            annId={id}
+            content={content}
+            title={title}
+            type="edit"
+            token={token ?? ""}
+            className={className}
+          />
           <p className="flex items-center gap-1 border border-red-500 text-red-500 w-fit px-4 py-1 rounded-md text-sm hover:bg-red-500 font-medium hover:text-white duration-300">
             <Trash2 className="w-4 h-4" /> Delete
           </p>

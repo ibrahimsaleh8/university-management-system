@@ -7,13 +7,14 @@ type Props = {
   register?: UseFormRegisterReturn;
   isError: boolean;
   classes?: string;
-};
+} & React.InputHTMLAttributes<HTMLTextAreaElement>;
 export default function TextAreaForm({
   isError,
   label,
   placeholder,
   register,
   classes,
+  ...htmlAttributes
 }: Props) {
   return (
     <div className={`flex flex-col gap-1.5 w-full items-start ${classes}`}>
@@ -27,6 +28,7 @@ export default function TextAreaForm({
         } `}
         id={label}
         placeholder={placeholder}
+        {...htmlAttributes}
       />
     </div>
   );

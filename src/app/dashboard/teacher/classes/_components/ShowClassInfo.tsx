@@ -50,17 +50,15 @@ export default function ShowClassInfo({ token }: { token: string }) {
     queryKey: ["teacher_class_info", className],
     queryFn: () => getTeacherClassInformation(className),
   });
-
   if (error && isError) throw new Error(error.message);
 
-  console.log("data", data);
   return (
     <div className="flex flex-col gap-3">
       {isLoading && !data ? (
         <ClassSkeleton />
       ) : (
         data && (
-          <div className="w-full bg-Second-black flex flex-col items-center gap-3 rounded-md justify-center px-3 py-4">
+          <div className="card-black-shadow w-full bg-Second-black flex flex-col items-center gap-3 rounded-md justify-center px-3 py-4">
             <p className="capitalize font-bold text-main-text">{data.name}</p>
 
             <div className="flex items-center gap-4 text-sm mt-auto flex-wrap justify-center">
