@@ -62,7 +62,7 @@ export default function AddingModel({
         <AlertDialogTrigger className="bg-transparent font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
           Add {title ?? AddType}
         </AlertDialogTrigger>
-        <AlertDialogContent className="bg-Main-black text-white border-soft-border sm:!max-w-[37rem] max-h-[97vh] sm:overflow-visible overflow-y-auto overflow-x-hidden">
+        <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="border-b pb-2 border-soft-border flex items-center justify-between pt-2 capitalize font-bold">
               Add New {AddType.toLowerCase()}

@@ -64,7 +64,7 @@ export default function AnnouncmentOperations({
           </>
         )}
       </AlertDialogTrigger>
-      <AlertDialogContent className="bg-Main-black text-white border-soft-border sm:!max-w-[37rem] max-h-[97vh] sm:overflow-visible overflow-y-auto overflow-x-hidden">
+      <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
             {type == "delete"
