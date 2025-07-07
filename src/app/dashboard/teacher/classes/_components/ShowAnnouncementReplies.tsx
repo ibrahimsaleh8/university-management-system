@@ -19,7 +19,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import axios from "axios";
+import { MainDomain } from "@/variables/MainDomain";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 export type ReplyDataType = {
   id: string;
   student: {
@@ -30,54 +34,42 @@ export type ReplyDataType = {
   created_at: string;
 };
 
-const dummyReplies = [
-  {
-    id: "rep1",
-    student: {
-      name: "Alice Johnson",
-      image: "https://randomuser.me/api/portraits/women/1.jpg",
-    },
-    content: "I found this announcement really helpful, thank you!",
-    created_at: "2025-07-06T09:30:00Z",
-  },
-  {
-    id: "rep2",
-    student: {
-      name: "Bob Smith",
-      image: "https://randomuser.me/api/portraits/men/2.jpg",
-    },
-    content: "Can you clarify the deadline mentioned?",
-    created_at: "2025-07-06T10:15:00Z",
-  },
-  {
-    id: "rep3",
-    student: {
-      name: "Clara Nguyen",
-      image: "https://randomuser.me/api/portraits/women/3.jpg",
-    },
-    content: "Thanks for the update!",
-    created_at: "2025-07-06T11:00:00Z",
-  },
-  {
-    id: "rep4",
-    student: {
-      name: "Daniel Kim",
-      image: "https://randomuser.me/api/portraits/men/4.jpg",
-    },
-    content: "Will there be a follow-up meeting?",
-    created_at: "2025-07-06T11:45:00Z",
-  },
-];
+async function getAnnReplies(annId: string): Promise<ReplyDataType[]> {
+  const res = await axios.get(
+    `${MainDomain}/api/get/announcement-replies/${annId}`
+  );
+  return res.data;
+}
 
 type Props = {
   replies: number;
   annId: string;
 };
 type repliesTimes = "most_recent" | "oldest_first";
-export default function ShowAnnouncementReplies({ replies }: Props) {
+export default function ShowAnnouncementReplies({ replies, annId }: Props) {
   const [filterTime, setFilterTime] = useState<repliesTimes>("most_recent");
+  const [open, setOpen] = useState(false);
+
+  const { isLoading, data, error, isError } = useQuery({
+    queryKey: ["announcement_replies", annId],
+    queryFn: () => getAnnReplies(annId),
+    enabled: open,
+  });
+  if (error && isError) throw new Error(error.message);
+  const repliesData = useMemo(() => {
+    if (data) {
+      const rep = [...data];
+      rep.sort((a, b) =>
+        filterTime === "oldest_first"
+          ? new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          : new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+      return rep;
+    }
+  }, [data, filterTime]);
+
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger className="cursor-pointer flex items-center gap-1 border border-white hover:bg-white hover:text-black duration-300 w-fit px-4 py-1 rounded-md text-sm font-medium">
         <MessageSquareQuote className="w-4 h-4" />
         Replies ({replies})
@@ -89,7 +81,7 @@ export default function ShowAnnouncementReplies({ replies }: Props) {
             <AlertDialogTitle>Replies</AlertDialogTitle>
 
             <Select
-              defaultValue={filterTime}
+              value={filterTime}
               onValueChange={(e: repliesTimes) => setFilterTime(e)}>
               <SelectTrigger className="w-fit border-0">
                 <SelectValue placeholder="Time of Replies" />
@@ -102,13 +94,29 @@ export default function ShowAnnouncementReplies({ replies }: Props) {
               </SelectContent>
             </Select>
           </div>
-          <ScrollArea className="h-96 flex flex-col gap-3 w-full rounded-md p-2">
-            <div className="flex flex-col gap-3 items-start justify-start">
-              {dummyReplies.map((reply) => (
-                <AnnouncmentReplyCard {...reply} key={reply.id} />
-              ))}
+
+          {isLoading && !repliesData ? (
+            <div className="flex flex-col gap-3">
+              <Skeleton className="w-full h-32 rounded-md" />
+              <Skeleton className="w-full h-32 rounded-md" />
+              <Skeleton className="w-full h-32 rounded-md" />
             </div>
-          </ScrollArea>
+          ) : (
+            repliesData &&
+            (repliesData.length > 0 ? (
+              <ScrollArea className="h-96 flex flex-col gap-3 w-full rounded-md p-2">
+                <div className="flex flex-col gap-3 w-full">
+                  {repliesData.map((reply) => (
+                    <AnnouncmentReplyCard {...reply} key={reply.id} />
+                  ))}
+                </div>
+              </ScrollArea>
+            ) : (
+              <div className="w-full text-low-white h-32 bg-Second-black rounded-md flex items-center justify-center">
+                No replies found..
+              </div>
+            ))
+          )}
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel className="bg-red-500 h-7 w-7 rounded-sm !p-2 text-white border-red-500 hover:bg-red-600 hover:text-white duration-300 absolute sm:top-[-10px] sm:right-[-10px]  top-1 right-1">

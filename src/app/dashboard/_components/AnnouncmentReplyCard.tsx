@@ -18,23 +18,19 @@ export default function AnnouncmentReplyCard(reply: ReplyDataType) {
         {/* Header */}
         <div className="flex items-start gap-2">
           <img
-            className="w-14 h-14 rounded-full object-cover object-center"
+            className="w-10 h-10 rounded-full object-cover object-center"
             src={reply.student.image}
             alt="Student Image"
           />
-          <div className="flex flex-col gap-1 text-left">
+          <div className="flex flex-col gap-1 text-left text-sm">
             <p>{reply.student.name}</p>
             <p className="text-xs text-low-white">{time}</p>
           </div>
         </div>
 
         {/* Body */}
-        <div className="pl-3 pb-3 text-left">
-          <p>
-            {reply.content}
-            {reply.content}
-            {reply.content}
-          </p>
+        <div className="pl-3 pb-1 text-left w-full">
+          <p className="text-sm">{reply.content}</p>
         </div>
       </div>
     </MotionEffect>
