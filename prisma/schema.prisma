@@ -184,6 +184,8 @@ model Class {
   assignments      Assignment[]
   courseOfferingId String
   teacherId        Int
+
+  @@index([id, name])
 }
 
 // Start Pivots Tables for Course & Department & Class
@@ -274,7 +276,7 @@ model Assignment {
   description          String
   deadline             DateTime
   created_at           DateTime               @default(now())
-  external_url         String
+  external_url         String?
   teacher              Teacher                @relation(fields: [teacherId], references: [id])
   teacherId            Int
   assignmentSubmission AssignmentSubmission[]

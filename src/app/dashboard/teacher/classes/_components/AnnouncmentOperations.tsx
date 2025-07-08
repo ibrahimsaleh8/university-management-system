@@ -52,7 +52,7 @@ export default function AnnouncmentOperations({
         }
       }}>
       <AlertDialogTrigger
-        className={`cursor-pointer flex items-center gap-1 border  w-fit px-4 py-1 rounded-md text-sm  font-medium duration-300 ${classes}`}>
+        className={`cursor-pointer flex items-center gap-1 border  w-full px-4 py-1 rounded-md text-sm  font-medium duration-300 ${classes}`}>
         {type == "edit" && (
           <>
             <Pencil className="w-4 h-4" /> Edit

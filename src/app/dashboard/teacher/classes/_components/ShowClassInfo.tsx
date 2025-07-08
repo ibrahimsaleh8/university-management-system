@@ -9,20 +9,12 @@ import { PiStudent } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ClassSkeleton from "./ClassSkeleton";
 import TeacherClassAnnouncments from "./TeacherClassAnnouncments";
+import ClassAssignments from "./ClassAssignments";
 export type TeacherClassDataType = {
   course: {
     id: number;
     name: string;
   };
-  assignments: {
-    id: number;
-    title: string;
-    description: string;
-    deadline: Date;
-    external_url: string | null;
-    created_at: Date;
-    submissions: number;
-  }[];
   exams: {
     id: number;
     title: string;
@@ -51,7 +43,7 @@ export default function ShowClassInfo({ token }: { token: string }) {
     queryFn: () => getTeacherClassInformation(className),
   });
   if (error && isError) throw new Error(error.message);
-
+  console.log("data", data);
   return (
     <div className="flex flex-col gap-3">
       {isLoading && !data ? (
@@ -106,7 +98,11 @@ export default function ShowClassInfo({ token }: { token: string }) {
           />
         </TabsContent>
         <TabsContent value="assignments">
-          Change your password here.
+          <ClassAssignments
+            className={className}
+            token={token}
+            classId={data ? data.classId : 0}
+          />
         </TabsContent>
         <TabsContent value="exams">Change your password here.</TabsContent>
         <TabsContent value="students">Change your password here.</TabsContent>

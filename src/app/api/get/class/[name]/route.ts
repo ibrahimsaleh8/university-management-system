@@ -16,17 +16,6 @@ export async function GET(
         course: {
           select: { id: true, course: { select: { name: true, code: true } } },
         },
-        assignments: {
-          select: {
-            id: true,
-            created_at: true,
-            title: true,
-            deadline: true,
-            description: true,
-            external_url: true,
-            _count: { select: { assignmentSubmission: true } },
-          },
-        },
         exams: {
           select: {
             id: true,
@@ -58,15 +47,7 @@ export async function GET(
         id: teacherClass?.course.id,
         name: teacherClass?.course.course.name,
       },
-      assignments: teacherClass.assignments.map((assig) => ({
-        id: assig.id,
-        title: assig.title,
-        description: assig.description,
-        deadline: assig.deadline,
-        external_url: assig.external_url,
-        created_at: assig.created_at,
-        submissions: assig._count.assignmentSubmission,
-      })),
+
       exams: teacherClass.exams,
       students: teacherClass._count.students,
       name: teacherClass.name,

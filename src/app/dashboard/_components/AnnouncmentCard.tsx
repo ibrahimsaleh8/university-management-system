@@ -2,6 +2,7 @@
 import { timeConverter } from "@/lib/TimeConverter";
 import AnnouncmentOperations from "../teacher/classes/_components/AnnouncmentOperations";
 import ShowAnnouncementReplies from "../teacher/classes/_components/ShowAnnouncementReplies";
+import OperationsDropdown from "./OperationsDropdown";
 export type AnnouncementInfoType = {
   id: string;
   title: string;
@@ -44,21 +45,27 @@ export default function AnnouncmentCard({
 
         {/* Operations */}
         <div className="flex items-center gap-4 ">
-          <AnnouncmentOperations
-            annId={id}
-            content={content}
-            title={title}
-            type="edit"
-            token={token ?? ""}
-            className={className}
-          />
-          <AnnouncmentOperations
-            annId={id}
-            content={content}
-            title={title}
-            type="delete"
-            token={token ?? ""}
-            className={className}
+          <OperationsDropdown
+            components={[
+              <AnnouncmentOperations
+                annId={id}
+                content={content}
+                title={title}
+                type="edit"
+                token={token ?? ""}
+                className={className}
+                key={1}
+              />,
+              <AnnouncmentOperations
+                annId={id}
+                content={content}
+                title={title}
+                type="delete"
+                token={token ?? ""}
+                className={className}
+                key={2}
+              />,
+            ]}
           />
         </div>
       </div>

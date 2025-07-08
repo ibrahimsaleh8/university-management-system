@@ -7,35 +7,42 @@ type Props = {
 
 export default function GlobalToast({ title, icon }: Props) {
   if (icon == "success") {
-    toast.success(title, {
+    toast(`✅ ${title}`, {
       closeButton: true,
       style: {
-        background: "#046e2b",
-        color: "#fff",
+        background: "#1a1919",
+        color: "#41ed00",
+        borderColor: "#232323",
+        fontWeight: "bold",
       },
     });
   } else if (icon == "error") {
-    toast.error(title, {
+    toast(`❌ ${title}`, {
       closeButton: true,
       style: {
-        background: "#dc2626",
-        color: "#fff",
+        background: "#1a1919",
+        color: "#f80000",
+        borderColor: "#232323",
       },
     });
   } else if (icon == "info") {
-    toast.info(title, {
+    toast(`ℹ️ ${title}`, {
       closeButton: true,
       style: {
-        background: "#032c86",
-        color: "#fff",
+        background: "#1a1919",
+        color: "#3b76f6",
+        borderColor: "#232323",
+        fontWeight: "bold",
       },
     });
   } else if (icon == "warning") {
-    toast.warning(title, {
+    toast(`⚠️ ${title}`, {
       closeButton: true,
       style: {
-        background: "#b47d1e",
-        color: "#fff",
+        background: "#1a1919",
+        color: "#e69200",
+        borderColor: "#232323",
+        fontWeight: "bold",
       },
     });
   }
