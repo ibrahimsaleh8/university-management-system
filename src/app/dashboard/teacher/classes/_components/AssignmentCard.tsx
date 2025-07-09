@@ -8,10 +8,13 @@ import OperationsDropdown from "@/app/dashboard/_components/OperationsDropdown";
 
 export default function AssignmentCard({
   data,
+  token,
+  className,
 }: {
   data: ClassAssignmentsDataType;
+  token: string;
+  className: string;
 }) {
-  console.log("data.external_url", data.external_url);
   const time = timeConverter(data.created_at);
   return (
     <div className="w-full p-3  bg-Second-black rounded-md flex flex-col gap-2">
@@ -44,7 +47,28 @@ export default function AssignmentCard({
         )}
         <div className="ml-auto">
           <OperationsDropdown
-            components={[<AssignmentModel type="edit" key={1} />]}
+            components={[
+              <AssignmentModel
+                token={token}
+                type="edit"
+                className={className}
+                assignmentData={{
+                  deadline: data.deadline,
+                  description: data.description,
+                  title: data.title,
+                  external_url: data.external_url ?? undefined,
+                  id: data.id,
+                }}
+                key={1}
+              />,
+              <AssignmentModel
+                token={token}
+                type="delete"
+                className={className}
+                assignmentId={data.id}
+                key={1}
+              />,
+            ]}
           />
         </div>
       </div>

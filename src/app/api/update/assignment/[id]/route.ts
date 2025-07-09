@@ -1,8 +1,8 @@
 import { TeacherAuthGuard } from "@/lib/AuthGuard/TeacherAuthGuard";
 import {
-  AnnouncementUpdateSchema,
-  annUpdateDataType,
-} from "@/validation/EditAnnouncementSchema";
+  updateAssignmentDataType,
+  updateAssignmentSchema,
+} from "@/validation/EditAssignmentSchema";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,10 +15,14 @@ export async function PUT(
     const authVerify = await TeacherAuthGuard(req);
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Teacher Authorize
-    const { id } = await params.params;
-    const annData = (await req.json()) as annUpdateDataType;
 
-    const validation = AnnouncementUpdateSchema.safeParse(annData);
+    const { id } = await params.params;
+
+    if (!id) {
+      return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
+    }
+    const assignData = (await req.json()) as updateAssignmentDataType;
+    const validation = updateAssignmentSchema.safeParse(assignData);
 
     if (!validation.success) {
       return NextResponse.json(
@@ -27,31 +31,33 @@ export async function PUT(
       );
     }
 
-    const isExist = await prisma.announcement.findUnique({
+    const isExist = await prisma.assignment.findUnique({
       where: {
         id,
       },
     });
     if (!isExist) {
       return NextResponse.json(
-        { message: "Announcement doesn't exist" },
+        { message: "Assignment doesn't exist" },
         { status: 404 }
       );
     }
 
-    await prisma.announcement.update({
+    await prisma.assignment.update({
       where: {
         id,
       },
       data: {
-        title: annData.title,
-        content: annData.content,
+        title: assignData.title,
+        description: assignData.description,
+        deadline: assignData.deadline,
+        external_url: assignData.external_url ?? undefined,
       },
     });
 
     return NextResponse.json(
       {
-        message: "Announcement has been updated successfully",
+        message: "Assignment has been updated successfully",
       },
       { status: 200 }
     );

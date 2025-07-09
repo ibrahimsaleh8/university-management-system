@@ -25,7 +25,7 @@ import {
 } from "@/validation/AddAssignmentSchema";
 import { MainDomain } from "@/variables/MainDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -33,6 +33,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   classId: number;
+  className: string;
   token: string;
 };
 async function createNewAssignment(data: assignmentDataType, token: string) {
@@ -42,8 +43,10 @@ async function createNewAssignment(data: assignmentDataType, token: string) {
     },
   });
 }
-export default function AddAssignment({ classId, token }: Props) {
+export default function AddAssignment({ classId, token, className }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const queryClient = useQueryClient();
+
   const [isExternalUrl, setIsExternalUrl] = useState(false);
   const {
     register,
@@ -64,6 +67,9 @@ export default function AddAssignment({ classId, token }: Props) {
       GlobalToast({
         title: "Assignment has been created successfully",
         icon: "success",
+      });
+      queryClient.refetchQueries({
+        queryKey: ["class_assignments", className],
       });
     },
     onError: (err: ErrorResponseType) => {

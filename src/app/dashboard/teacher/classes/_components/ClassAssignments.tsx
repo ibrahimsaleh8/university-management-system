@@ -43,13 +43,18 @@ export default function ClassAssignments({ classId, token, className }: Props) {
   return (
     <div className="flex flex-col gap-3">
       {/* Add Assignment */}
-      <AddAssignment classId={classId} token={token} />
+      <AddAssignment className={className} classId={classId} token={token} />
       {isLoading ? (
         <>Loading</>
       ) : (
         assignments &&
         assignments.map((assign) => (
-          <AssignmentCard data={assign} key={assign.id} />
+          <AssignmentCard
+            className={className}
+            token={token}
+            data={assign}
+            key={assign.id}
+          />
         ))
       )}
     </div>
