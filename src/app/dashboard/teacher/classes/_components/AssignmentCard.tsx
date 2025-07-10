@@ -1,6 +1,6 @@
 "use client";
 import { timeConverter } from "@/lib/TimeConverter";
-import { ClipboardList, SquareArrowOutUpRight } from "lucide-react";
+import { Check, ClipboardList, SquareArrowOutUpRight } from "lucide-react";
 import AssignmentModel from "./AssignmentModel";
 import { ClassAssignmentsDataType } from "./ClassAssignments";
 import Link from "next/link";
@@ -33,7 +33,6 @@ export default function AssignmentCard({
         <p>{data.description} </p>
       </div>
       {/* Link */}
-
       <div className="flex items-end gap-3 justify-between">
         {data.external_url && (
           <div className="flex flex-col gap-1 mt-3">
@@ -45,7 +44,14 @@ export default function AssignmentCard({
             </Link>
           </div>
         )}
-        <div className="ml-auto">
+
+        <div className="ml-auto flex items-center gap-3">
+          <div className="bg-soft-border px-4 py-1.5 rounded-md cursor-pointer">
+            <p className="flex items-center gap-1 text-xs">
+              <Check className="w-4 h-4" />
+              Submissions: {data.submissions}
+            </p>
+          </div>
           <OperationsDropdown
             components={[
               <AssignmentModel

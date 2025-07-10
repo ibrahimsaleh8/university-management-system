@@ -38,7 +38,7 @@ model Student {
   courses               StudentEnrollment[]
   academicYear          AcademicYear?          @relation(fields: [academicYearId], references: [id])
   academicYearId        Int?
-  classes               Class[]
+  classes               studentClass[]
 
   @@index([first_name, last_name])
   @@index([email])
@@ -178,14 +178,24 @@ model Class {
   departmentId     Int
   course           CourseOffering @relation(fields: [courseOfferingId], references: [id])
   teacher          Teacher        @relation(fields: [teacherId], references: [id])
-  students         Student[]
   exams            Exam[]
   announcements    Announcement[]
   assignments      Assignment[]
   courseOfferingId String
   teacherId        Int
+  students         studentClass[]
 
   @@index([id, name])
+}
+
+model studentClass {
+  student    Student @relation(fields: [studentId], references: [id])
+  studentId  Int
+  class      Class   @relation(fields: [classId], references: [id])
+  classId    Int
+  classGrade Float   @default(0)
+
+  @@id([classId, studentId])
 }
 
 // Start Pivots Tables for Course & Department & Class

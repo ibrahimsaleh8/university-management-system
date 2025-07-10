@@ -3,6 +3,7 @@ import AddAssignment from "./AddAssignment";
 import { MainDomain } from "@/variables/MainDomain";
 import AssignmentCard from "./AssignmentCard";
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   classId: number;
@@ -39,13 +40,17 @@ export default function ClassAssignments({ classId, token, className }: Props) {
     queryKey: ["class_assignments", className],
     queryFn: () => getAllAssignements(className),
   });
+  console.log(assignments);
   if (isError && error) throw new Error(error.message);
   return (
     <div className="flex flex-col gap-3">
       {/* Add Assignment */}
-      <AddAssignment className={className} classId={classId} token={token} />
+      <div className="flex items-center justify-end">
+        <AddAssignment className={className} classId={classId} token={token} />
+      </div>
+
       {isLoading ? (
-        <>Loading</>
+        <Skeleton className="w-full h-36 rounded-md" />
       ) : (
         assignments &&
         assignments.map((assign) => (

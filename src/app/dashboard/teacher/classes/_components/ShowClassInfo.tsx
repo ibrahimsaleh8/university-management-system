@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ClassSkeleton from "./ClassSkeleton";
 import TeacherClassAnnouncments from "./TeacherClassAnnouncments";
 import ClassAssignments from "./ClassAssignments";
+import ClassStudentsShow from "./ClassStudentsShow";
 export type TeacherClassDataType = {
   course: {
     id: number;
@@ -105,7 +106,9 @@ export default function ShowClassInfo({ token }: { token: string }) {
           />
         </TabsContent>
         <TabsContent value="exams">Change your password here.</TabsContent>
-        <TabsContent value="students">Change your password here.</TabsContent>
+        <TabsContent value="students">
+          <ClassStudentsShow className={className} />
+        </TabsContent>
       </Tabs>
 
       {/* Skeleaton */}
