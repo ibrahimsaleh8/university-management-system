@@ -218,6 +218,7 @@ model Exam {
   title            String
   startDate        DateTime
   endDate          DateTime
+  duration         Int
   totalMark        Int
   status           ExamStatus     @default(SCHEDULED)
   teacher          Teacher        @relation(fields: [teacherId], references: [id])
@@ -274,6 +275,7 @@ model ExamQuestion {
 enum ExamType {
   CHOOSE
   WRITE
+  TRUE_FALSE
 }
 
 // End Exam Schema

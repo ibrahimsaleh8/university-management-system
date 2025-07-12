@@ -3,7 +3,7 @@
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { BookText, UserRound } from "lucide-react";
+import { BookText, ScrollText, UserRound } from "lucide-react";
 import { useParams } from "next/navigation";
 import { PiStudent } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +11,10 @@ import ClassSkeleton from "./ClassSkeleton";
 import TeacherClassAnnouncments from "./TeacherClassAnnouncments";
 import ClassAssignments from "./ClassAssignments";
 import ClassStudentsShow from "./ClassStudentsShow";
+import { TfiAnnouncement } from "react-icons/tfi";
+import { MdOutlineAssignment } from "react-icons/md";
+import Link from "next/link";
+
 export type TeacherClassDataType = {
   course: {
     id: number;
@@ -78,17 +82,24 @@ export default function ShowClassInfo({ token }: { token: string }) {
           <TabsTrigger
             className="px-4 py-1 cursor-pointer"
             value="announcements">
+            <TfiAnnouncement className="w-4 h-4" />
             Announcements
           </TabsTrigger>
           <TabsTrigger className="px-4 py-1 cursor-pointer" value="assignments">
+            <MdOutlineAssignment className="w-4 h-4" />
             Assignments
           </TabsTrigger>
-          <TabsTrigger className="px-4 py-1 cursor-pointer" value="exams">
-            Exams
-          </TabsTrigger>
+
           <TabsTrigger className="px-4 py-1 cursor-pointer" value="students">
+            <PiStudent className="w-4 h-4" />
             Students
           </TabsTrigger>
+          <Link
+            className="flex items-center gap-1"
+            href={`/dashboard/teacher/classes/${className}/add-exam`}>
+            <ScrollText className="w-4 h-4" />
+            Add Exam
+          </Link>
         </TabsList>
 
         <TabsContent value="announcements">
@@ -105,13 +116,13 @@ export default function ShowClassInfo({ token }: { token: string }) {
             classId={data ? data.classId : 0}
           />
         </TabsContent>
-        <TabsContent value="exams">Change your password here.</TabsContent>
+
         <TabsContent value="students">
           <ClassStudentsShow className={className} />
         </TabsContent>
       </Tabs>
 
-      {/* Skeleaton */}
+      {/* Add Exam */}
     </div>
   );
 }
