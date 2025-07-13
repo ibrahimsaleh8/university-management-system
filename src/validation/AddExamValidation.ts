@@ -57,9 +57,9 @@ export const examQuestionSchema = z.object({
 
   question: z
     .string({
-      required_error: "Question is required",
+      required_error: "Question Title is required",
     })
-    .min(1, "Question cannot be empty"),
+    .min(1, "Question Title cannot be empty"),
 
   rightAnswer: z
     .string({
@@ -69,7 +69,8 @@ export const examQuestionSchema = z.object({
 
   chooses: z
     .array(z.string().min(1, "Choice cannot be empty"))
-    .min(2, "At least two choices are required"),
+    .min(2, "At least two choices are required")
+    .optional(),
 });
 
 export type examMainDataType = z.infer<typeof examValidationSchema>;

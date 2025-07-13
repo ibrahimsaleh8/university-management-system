@@ -8,6 +8,7 @@ import {
   examValidationSchema,
 } from "@/validation/AddExamValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronRight } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 // type AddExamDataType = examMainDataType & { questions: examQuestionDataType[] };
@@ -102,10 +103,10 @@ export default function FormAddMainDataOfExam({
       />
       <ErrorMessage error1={errors.totalMark} />
 
-      <div className="flex items-center justify-between">
-        <Button onClick={() => setLevel(1)}>BACK</Button>
-
-        <Button variant={"mainWithShadow"}>Add Exam</Button>
+      <div className="flex items-center justify-end">
+        <Button type="submit" className="gap-1" variant={"mainWithShadow"}>
+          Next <ChevronRight className="w-5 h-5" />
+        </Button>
       </div>
     </form>
   );
