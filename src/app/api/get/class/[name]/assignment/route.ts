@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   _req: NextRequest,
-  context: { params: { name: string } }
+  params: { params: { name: string } }
 ) {
   try {
-    const { name } = await context.params;
+    const { name } = await params.params;
     const teacherClass = await prisma.class.findUnique({
       where: {
         name,
@@ -43,6 +43,9 @@ export async function GET(
     }));
     return NextResponse.json(assignemtnsResponse, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Server Error =>  " + error });
+    return NextResponse.json(
+      { message: "Server Error =>  " + error },
+      { status: 500 }
+    );
   }
 }

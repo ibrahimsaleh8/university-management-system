@@ -13,7 +13,7 @@ import ClassAssignments from "./ClassAssignments";
 import ClassStudentsShow from "./ClassStudentsShow";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { MdOutlineAssignment } from "react-icons/md";
-import Link from "next/link";
+import ShowClassExams from "./ShowClassExams";
 
 export type TeacherClassDataType = {
   course: {
@@ -48,7 +48,7 @@ export default function ShowClassInfo({ token }: { token: string }) {
     queryFn: () => getTeacherClassInformation(className),
   });
   if (error && isError) throw new Error(error.message);
-  console.log("data", data);
+
   return (
     <div className="flex flex-col gap-3">
       {isLoading && !data ? (
@@ -94,12 +94,10 @@ export default function ShowClassInfo({ token }: { token: string }) {
             <PiStudent className="w-4 h-4" />
             Students
           </TabsTrigger>
-          <Link
-            className="flex items-center gap-1"
-            href={`/dashboard/teacher/classes/${className}/add-exam`}>
+          <TabsTrigger className="px-4 py-1 cursor-pointer" value="exams">
             <ScrollText className="w-4 h-4" />
-            Add Exam
-          </Link>
+            Exams
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="announcements">
@@ -119,6 +117,9 @@ export default function ShowClassInfo({ token }: { token: string }) {
 
         <TabsContent value="students">
           <ClassStudentsShow className={className} />
+        </TabsContent>
+        <TabsContent value="exams">
+          <ShowClassExams className={className} />
         </TabsContent>
       </Tabs>
 

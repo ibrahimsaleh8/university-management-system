@@ -9,7 +9,7 @@ import {
 } from "@/validation/AddExamValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronRight } from "lucide-react";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 // type AddExamDataType = examMainDataType & { questions: examQuestionDataType[] };
 type Props = {
@@ -20,7 +20,6 @@ type Props = {
 };
 
 export default function FormAddMainDataOfExam({
-  className,
   setLevel,
   ExamData,
   setExamMainData,
@@ -36,11 +35,7 @@ export default function FormAddMainDataOfExam({
     mode: "all",
     defaultValues: { ...ExamData },
   });
-  useEffect(() => {
-    if (className) {
-      setValue("className", className);
-    }
-  }, [className, setValue]);
+
   const submitNewExam: SubmitHandler<examMainDataType> = (data) => {
     setLevel(2);
     setExamMainData(data);

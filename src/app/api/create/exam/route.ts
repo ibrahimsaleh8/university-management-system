@@ -8,7 +8,10 @@ import {
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-
+export type examAllData = {
+  examMainData: examMainDataType;
+  examQuestionsData: examQuestionDataType[];
+};
 export async function POST(req: NextRequest) {
   try {
     // Start Check Teacher Authorize
@@ -18,10 +21,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
     // End Check Teacher Authorize
-    const examData = (await req.json()) as {
-      examMainData: examMainDataType;
-      examQuestionsData: examQuestionDataType[];
-    };
+    const examData = (await req.json()) as examAllData;
 
     const validationMainData = examValidationSchema.safeParse(
       examData.examMainData
@@ -75,6 +75,10 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json({ message: "Server Error =>  " + error });
+    console.log("Error", error);
+    return NextResponse.json(
+      { message: `Server Error =>  ${error}` },
+      { status: 500 }
+    );
   }
 }

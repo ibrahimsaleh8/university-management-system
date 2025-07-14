@@ -192,6 +192,9 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .card-black-shadow {
   box-shadow: 0px 4px 0px 0px rgb(53 53 53);
 }
+.black-box-shadow {
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
 .class-card {
   clip-path: polygon(
     30px 0%,
