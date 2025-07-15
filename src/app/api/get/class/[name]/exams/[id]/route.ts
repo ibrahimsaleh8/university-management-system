@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  params: { params: { id: string } }
+  params: { params: { id: string; name: string } }
 ) {
   try {
     // Start Check Teacher Authorize
@@ -12,11 +12,14 @@ export async function GET(
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Teacher Authorize
 
-    const { id } = await params.params;
+    const { id, name } = await params.params;
 
     const examData = await prisma.exam.findUnique({
       where: {
         id,
+        class: {
+          name,
+        },
       },
       select: {
         title: true,

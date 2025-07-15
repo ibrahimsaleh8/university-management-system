@@ -7,3 +7,5 @@ export type ErrorResponseType = {
     };
   };
 };
+export type ExamStatusType = "SCHEDULED" | "ONGOING" | "ENDED" | "CANCELLED";
+export type ExamQuestionType = "CHOOSE" | "TRUE_FALSE" | "WRITE";
