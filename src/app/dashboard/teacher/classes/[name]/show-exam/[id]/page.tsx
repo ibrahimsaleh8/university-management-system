@@ -5,6 +5,7 @@ import ExamHeader from "./_components/ExamHeader";
 import ExamInfo from "./_components/ExamInfo";
 import ExamQuestion from "./_components/ExamQuestion";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
+import DeleteExamModel from "./_components/DeleteExamModel";
 
 export type typeExamQuestionDataType = {
   id: number;
@@ -58,7 +59,10 @@ export default async function ShowExamById({
   console.log(examData);
   return (
     <div className="flex flex-col gap-4 sm:px-10 px-3 text-sm">
-      <BackButton withText={false} />
+      <div className="flex items-center justify-between gap-3">
+        <BackButton withText={false} />
+        <DeleteExamModel className={name} examId={id} token={token} />
+      </div>
       {/* HEAD */}
       <div className="flex flex-col gap-3 bg-Second-black p-4 overflow-hidden rounded-md exam-head-dash black-box-shadow">
         {/* Title */}
