@@ -83,24 +83,6 @@ const admin_links = [
   },
 ];
 
-const teacher_links = [
-  {
-    title: "Overview",
-    url: "/dashboard/teacher",
-    icon: Home,
-  },
-  {
-    title: "Courses",
-    url: "/dashboard/teacher/courses",
-    icon: BookOpenText,
-  },
-  {
-    title: "Classes",
-    url: "/dashboard/teacher/classes",
-    icon: SiGoogleclassroom,
-  },
-];
-
 const otherLinks = [
   {
     title: "Profile",
@@ -159,19 +141,36 @@ export default function DashboardSideBar({ role }: { role: string }) {
                       containerClassName="flex flex-col gap-3 "
                       className="bg-main-text rounded-md !text-Main-black"
                       boundsOffset={{ top: -1, left: -1 }}>
-                      {teacher_links.map((item) => (
-                        <Link
-                          key={item.title}
-                          href={item.url}
-                          className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
-                            pathname == item.url
-                              ? "bg-main-text text-black"
-                              : ""
-                          }`}>
-                          <item.icon className="w-5 h-5" />
-                          <span>{item.title}</span>
-                        </Link>
-                      ))}
+                      <Link
+                        href={"/dashboard/teacher"}
+                        className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
+                          pathname == "/dashboard/teacher"
+                            ? "bg-main-text text-black"
+                            : ""
+                        }`}>
+                        <Home className="w-5 h-5" />
+                        <span>Overview</span>
+                      </Link>
+                      <Link
+                        href={"/dashboard/teacher/courses"}
+                        className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
+                          pathname == "/dashboard/teacher/courses"
+                            ? "bg-main-text text-black"
+                            : ""
+                        }`}>
+                        <BookOpenText className="w-5 h-5" />
+                        <span>Courses</span>
+                      </Link>
+                      <Link
+                        href={"/dashboard/teacher/classes"}
+                        className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
+                          pathname.startsWith("/dashboard/teacher/classes")
+                            ? "bg-main-text text-black"
+                            : ""
+                        }`}>
+                        <SiGoogleclassroom className="w-5 h-5" />
+                        <span>Classes</span>
+                      </Link>
                     </MotionHighlight>
                   ) : (
                     <></>

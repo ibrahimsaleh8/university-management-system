@@ -3,6 +3,7 @@ import DashboardSideBar from "./_components/DashboardSideBar";
 import DashboardHeader from "./_components/DashboardHeader";
 import { cookies } from "next/headers";
 import { VerifyUserFromToken } from "@/lib/VerifyUserFromToken";
+import NextTopLoader from "nextjs-toploader";
 
 export default async function DashboardLayout({
   children,
@@ -11,9 +12,9 @@ export default async function DashboardLayout({
 }>) {
   const token = (await (await cookies()).get("token")?.value) as string;
   const user = VerifyUserFromToken(token);
-  console.log("user", user);
   return (
     <div className="bg-Main-black">
+      <NextTopLoader zIndex={1600} color="#b9f821" height={3} easing="ease" />
       <SidebarProvider>
         <div className="flex gap-2 w-full ">
           <DashboardSideBar role={user?.role as string} />

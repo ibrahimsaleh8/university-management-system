@@ -46,7 +46,7 @@ export default function ClassExamCard({
       {/* Bottom */}
       <div className="flex items-center gap-3 justify-between mt-auto flex-wrap">
         {/* Left */}
-        <div className="flex items-center gap-3 text-sm">
+        <div className="flex items-center gap-3 text-sm flex-wrap">
           <p className="flex items-center gap-1">
             <PiShieldCheckFill className="w-5 h-5 text-main-text" />
             Mark : {totalMark}
