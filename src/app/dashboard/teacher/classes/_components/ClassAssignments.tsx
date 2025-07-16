@@ -45,14 +45,14 @@ export default function ClassAssignments({ classId, token, className }: Props) {
   return (
     <div className="flex flex-col gap-3">
       {/* Add Assignment */}
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <p className="font-bold">Class Assignments</p>
         <AddAssignment className={className} classId={classId} token={token} />
       </div>
 
       {isLoading ? (
         <Skeleton className="w-full h-36 rounded-md" />
-      ) : (
-        assignments &&
+      ) : assignments && assignments.length > 0 ? (
         assignments.map((assign) => (
           <AssignmentCard
             className={className}
@@ -61,6 +61,10 @@ export default function ClassAssignments({ classId, token, className }: Props) {
             key={assign.id}
           />
         ))
+      ) : (
+        <div className="w-full h-32 text-low-white rounded-md flex bg-Second-black p-4 items-center justify-center">
+          No Assignments found..
+        </div>
       )}
     </div>
   );

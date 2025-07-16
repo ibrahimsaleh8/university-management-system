@@ -42,7 +42,7 @@ export default function ShowClassExams({ className }: { className: string }) {
       <div className="flex items-center gap-3 justify-between px-3">
         <p className="font-bold">Class Exams</p>
         <Link
-          className="flex items-center gap-1 px-4 py-1 border border-main-text text-main-text hover:bg-main-text hover:text-black duration-300 font-medium rounded-md text-sm"
+          className="flex items-center gap-1 px-4 py-2 border border-main-text text-main-text hover:bg-main-text hover:text-black duration-300 font-medium rounded-md text-sm"
           href={`/dashboard/teacher/classes/${className}/add-exam`}>
           Add Exam
         </Link>

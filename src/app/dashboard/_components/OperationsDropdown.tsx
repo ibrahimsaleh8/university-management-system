@@ -13,9 +13,9 @@ export default function OperationsDropdown({ components }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="cursor-pointer hover:text-main-text"
+        className="cursor-pointer hover:bg-soft-border w-7 h-7 p-1 duration-300 rounded-md hover:text-main-text"
         asChild>
-        <MoreHorizontal />
+        <MoreHorizontal className="w-5 h-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"

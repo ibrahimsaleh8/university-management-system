@@ -1,3 +1,5 @@
+import ExamStatusPadge from "@/app/dashboard/_components/ExamStatusPadge";
+import { ExamStatusType } from "@/lib/globalTypes";
 import { timeConverter } from "@/lib/TimeConverter";
 import { Calendar } from "lucide-react";
 import React from "react";
@@ -9,6 +11,7 @@ type Props = {
   teacherName: string;
   teacherImage: string;
   create_at: string;
+  status: ExamStatusType;
 };
 export default function ExamHeader({
   className,
@@ -16,11 +19,13 @@ export default function ExamHeader({
   create_at,
   teacherImage,
   teacherName,
+  status,
 }: Props) {
   return (
     <div className="flex items-center flex-wrap flex-col border-b pb-3 border-soft-border sm:flex-row gap-3 justify-between">
       {/* Left */}
       <div className="flex flex-col gap-3 w-full sm:w-fit">
+        <ExamStatusPadge status={status} />
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
             <SiGoogleclassroom className="w-5 h-5 text-low-white" />

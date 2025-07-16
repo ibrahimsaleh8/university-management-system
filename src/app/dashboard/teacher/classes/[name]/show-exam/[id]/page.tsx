@@ -46,7 +46,6 @@ export default async function ShowExamById({
 }) {
   const { id, name } = await params;
   const token = (await (await cookies()).get("token")?.value) as string;
-  console.log("Name ", name);
 
   const res = await fetch(`${MainDomain}/api/get/class/${name}/exams/${id}`, {
     headers: {
@@ -64,16 +63,16 @@ export default async function ShowExamById({
         <DeleteExamModel className={name} examId={id} token={token} />
       </div>
       {/* HEAD */}
-      <div className="flex flex-col gap-3 bg-Second-black p-4 overflow-hidden rounded-md exam-head-dash black-box-shadow">
+      <div className="flex flex-col relative gap-3 bg-Second-black p-4 overflow-hidden rounded-md exam-head-dash black-box-shadow">
         {/* Title */}
         <div className="flex items-center justify-center">
           <p className="capitalize sm:text-lg text-base font-medium text-center line-clamp-1">
             {examData.title}
           </p>
         </div>
-
         {/* Header */}
         <ExamHeader
+          status={examData.status}
           className={examData.class.name}
           course={examData.course.course.name}
           create_at={examData.created_at}

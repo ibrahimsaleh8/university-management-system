@@ -1,4 +1,5 @@
 import { TeacherAuthGuard } from "@/lib/AuthGuard/TeacherAuthGuard";
+import { ExamStatusCalc } from "@/lib/ExamStatusCalc";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -62,7 +63,12 @@ export async function GET(
     if (!examData) {
       return NextResponse.json({ message: "Invalid Exam ID" }, { status: 404 });
     }
-
+    const calculatedStatus = ExamStatusCalc(
+      examData.startDate,
+      examData.endDate,
+      examData.status
+    );
+    examData.status = calculatedStatus;
     return NextResponse.json(examData, { status: 200 });
   } catch (error) {
     return NextResponse.json(

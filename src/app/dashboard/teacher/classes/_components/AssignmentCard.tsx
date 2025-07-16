@@ -17,11 +17,11 @@ export default function AssignmentCard({
 }) {
   const time = timeConverter(data.created_at);
   return (
-    <div className="w-full p-3  bg-Second-black rounded-md flex flex-col gap-2">
+    <div className="w-full p-4 black-box-shadow bg-Second-black rounded-md flex flex-col gap-4">
       {/* Header */}
-      <div className="w-full flex items-center gap-3 justify-between">
+      <div className="w-full flex items-center gap-3 justify-between flex-wrap">
         <div className="flex items-center gap-2">
-          <ClipboardList className="w-5 h-5" />
+          <ClipboardList className="w-5 h-5 text-main-text" />
           <p title="adadasdsad" className="font-bold capitalize line-clamp-1">
             {data.title}
           </p>
@@ -33,7 +33,7 @@ export default function AssignmentCard({
         <p>{data.description} </p>
       </div>
       {/* Link */}
-      <div className="flex items-end gap-3 justify-between">
+      <div className="flex items-end gap-3 justify-between flex-wrap">
         {data.external_url && (
           <div className="flex flex-col gap-1 mt-3">
             <Link

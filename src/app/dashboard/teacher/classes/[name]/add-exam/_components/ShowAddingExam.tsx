@@ -1,6 +1,6 @@
 "use client";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Progress } from "@/components/animate-ui/radix/progress";
 import {
@@ -40,6 +40,7 @@ export default function ShowAddingExam({ token }: { token: string }) {
     title: "",
     totalMark: 0,
   });
+  const route = useRouter();
   const [examQuestions, setExamQuestions] = useState<questionDataWithId[]>([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
   const queryClient = useQueryClient();
@@ -53,6 +54,7 @@ export default function ShowAddingExam({ token }: { token: string }) {
         title: "Exam created successfully",
         icon: "success",
       });
+      route.push(`/dashboard/teacher/classes/${className.name}`);
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({
@@ -63,7 +65,6 @@ export default function ShowAddingExam({ token }: { token: string }) {
   });
 
   const HandleAddExam = () => {
-    console.log(examQuestions);
     if (examQuestions.length != numberOfQuestions) {
       GlobalToast({
         title: "Check Questions Fields and save each Question",

@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { MessageSquareQuote, X } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
@@ -70,8 +70,8 @@ export default function ShowAnnouncementReplies({ replies, annId }: Props) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger className="cursor-pointer flex items-center gap-1 border border-white hover:bg-white hover:text-black duration-300 w-fit px-4 py-1 rounded-md text-sm font-medium">
-        <MessageSquareQuote className="w-4 h-4" />
+      <AlertDialogTrigger className="cursor-pointer flex items-center gap-1 border border-[#3f3f3f] hover:bg-white hover:text-black duration-300 w-fit px-4 py-1 rounded-md text-sm font-medium">
+        <MessageCircle className="w-4 h-4" />
         Replies ({replies})
       </AlertDialogTrigger>
       <AlertDialogContent>

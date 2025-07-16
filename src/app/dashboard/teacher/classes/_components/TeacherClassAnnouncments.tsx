@@ -40,7 +40,8 @@ export default function TeacherClassAnnouncments({
   ) : (
     announcements && (
       <div className="flex flex-col gap-3">
-        <div className="flex justify-end">
+        <div className="flex justify-between items-center gap-3 flex-wrap">
+          <p className="font-bold">Class Announcement</p>
           <AddingModel
             title="Announcement"
             AddType="Teacher Announcement"
@@ -61,8 +62,8 @@ export default function TeacherClassAnnouncments({
             ))}
           </div>
         ) : (
-          <div className="w-full h-32 bg-Second-black flex items-center justify-center text-lg text-low-white rounded-md">
-            No announcements founded
+          <div className="w-full h-32 bg-Second-black flex items-center justify-center text-low-white rounded-md">
+            No announcements founded..
           </div>
         )}
       </div>

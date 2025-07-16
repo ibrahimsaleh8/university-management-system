@@ -31,6 +31,7 @@ export default function ClassStudentsShow({ className }: Props) {
   if (error && isError) throw new Error(error.message);
   return (
     <div className="flex flex-col gap-3">
+      <p className="font-bold">Class Studnets</p>
       {isLoading ? (
         <Skeleton className="w-full h-96 rounded-md" />
       ) : data && data.length > 0 ? (
@@ -38,7 +39,9 @@ export default function ClassStudentsShow({ className }: Props) {
           <StudentClassCard grade={std.grade} name={std.name} key={std.id} />
         ))
       ) : (
-        <>No students Found</>
+        <div className="flex items-center justify-center text-low-white w-full h-32 bg-Second-black rounded-md p-4">
+          No students Found..
+        </div>
       )}
     </div>
   );

@@ -89,14 +89,13 @@ export default function ShowClassInfo({ token }: { token: string }) {
             <MdOutlineAssignment className="w-4 h-4" />
             Assignments
           </TabsTrigger>
-
-          <TabsTrigger className="px-4 py-1 cursor-pointer" value="students">
-            <PiStudent className="w-4 h-4" />
-            Students
-          </TabsTrigger>
           <TabsTrigger className="px-4 py-1 cursor-pointer" value="exams">
             <ScrollText className="w-4 h-4" />
             Exams
+          </TabsTrigger>
+          <TabsTrigger className="px-4 py-1 cursor-pointer" value="students">
+            <PiStudent className="w-4 h-4" />
+            Students
           </TabsTrigger>
         </TabsList>
 
@@ -114,12 +113,11 @@ export default function ShowClassInfo({ token }: { token: string }) {
             classId={data ? data.classId : 0}
           />
         </TabsContent>
-
-        <TabsContent value="students">
-          <ClassStudentsShow className={className} />
-        </TabsContent>
         <TabsContent value="exams">
           <ShowClassExams className={className} />
+        </TabsContent>
+        <TabsContent value="students">
+          <ClassStudentsShow className={className} />
         </TabsContent>
       </Tabs>
 
