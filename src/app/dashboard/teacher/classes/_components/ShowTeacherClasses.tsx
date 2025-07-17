@@ -33,7 +33,9 @@ export default function ShowTeacherClasses({ uid }: { uid: number }) {
             {data.length > 0 ? (
               data.map((cls) => <ClassCard {...cls} key={cls.id} />)
             ) : (
-              <></>
+              <div className="w-full bg-Second-black rounded-md h-32 flex items-center justify-center text-low-white">
+                No Classes Found..
+              </div>
             )}
           </>
         )

@@ -16,6 +16,9 @@ export async function GET() {
     });
     return NextResponse.json(semesters, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Server Error =>  " + error });
+    return NextResponse.json(
+      { message: "Server Error =>  " + error },
+      { status: 500 }
+    );
   }
 }

@@ -9,7 +9,7 @@ export default async function TeacherClassesPage() {
   return (
     <div>
       <div className="flex items-center justify-between flex-col sm:flex-row">
-        <p className="text-sm font-bold">Classes</p>
+        <p className="text-sm font-bold">Your Classes</p>
         <AddingModel token={token} AddType="Class" />
       </div>
 

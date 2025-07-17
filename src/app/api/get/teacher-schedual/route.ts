@@ -1,25 +1,20 @@
+import { TeacherAuthGuard } from "@/lib/AuthGuard/TeacherAuthGuard";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  _req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const { id } = await context.params;
-    if (!id) {
-      return NextResponse.json({ message: "Id is missing" }, { status: 400 });
+    // Start Check Teacher Authorize
+    const authVerify = await TeacherAuthGuard(req);
+    if (!authVerify.isAuthorized) return authVerify.response;
+    // End Check Teacher Authorize
+    if (!authVerify.user?.data) {
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
-    const teacher = await prisma.teacher.findUnique({ where: { id: +id } });
-    if (!teacher) {
-      return NextResponse.json(
-        { message: "Teacher doesn't exist" },
-        { status: 404 }
-      );
-    }
+
     const teacherScheduals = await prisma.courseSchedule.findMany({
       where: {
-        teacherId: +id,
+        teacherId: +authVerify.user.data.id,
       },
       select: {
         id: true,
