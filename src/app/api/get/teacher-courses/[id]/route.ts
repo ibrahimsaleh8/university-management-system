@@ -23,7 +23,6 @@ export async function GET(
       },
       select: { courseOfferingId: true },
     });
-    console.log("teacherClasses", teacherClasses);
     const teacherCourses = await prisma.courseOffering.findMany({
       where: {
         teacherId: +id,
@@ -41,7 +40,7 @@ export async function GET(
       }));
     return NextResponse.json(courses, { status: 200 });
   } catch (error) {
-    console.error("Delete Schedule Error:", error);
+    console.error(error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
