@@ -2,15 +2,14 @@
 import {
   Users,
   Home,
-  School,
   ChartBarStacked,
-  Newspaper,
-  NotepadText,
   Settings,
   LogOut,
   CalendarRange,
   BookOpenText,
   BookText,
+  MessageCircleMore,
+  Clock9,
 } from "lucide-react";
 
 import {
@@ -24,7 +23,6 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChalkboardTeacher } from "react-icons/fa";
-import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
 import { MotionHighlight } from "@/components/animate-ui/effects/motion-highlight";
 import { SiGoogleclassroom } from "react-icons/si";
@@ -60,26 +58,15 @@ const admin_links = [
     url: "/dashboard/admin/semesters",
     icon: CalendarRange,
   },
-
   {
-    title: "Exams",
-    url: "#",
-    icon: Newspaper,
+    title: "Events",
+    url: "/dashboard/admin/events",
+    icon: Clock9,
   },
   {
-    title: "Assignments",
-    url: "#",
-    icon: NotepadText,
-  },
-  {
-    title: "Announcements",
-    url: "#",
-    icon: HiOutlineSpeakerphone,
-  },
-  {
-    title: "Classes",
-    url: "/dashboard/admin/classes",
-    icon: School,
+    title: "Messages",
+    url: "/dashboard/admin/messages",
+    icon: MessageCircleMore,
   },
 ];
 

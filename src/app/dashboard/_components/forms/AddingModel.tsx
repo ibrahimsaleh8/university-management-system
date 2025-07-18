@@ -21,6 +21,7 @@ import AcadimicYearForm from "../../admin/departments/_components/AcadimicYearFo
 import FormAddTime from "../../admin/semesters/_components/FormAddTime";
 import FormAddClass from "../../teacher/classes/_components/FormAddClass";
 import TeacherAnnouncmentForm from "../../teacher/classes/_components/TeacherAnnouncmentForm";
+import AddEventForm from "../../admin/events/_components/AddEventForm";
 
 type Props = {
   token: string;
@@ -34,7 +35,8 @@ type Props = {
     | "Academic Year"
     | "Course Time"
     | "Class"
-    | "Teacher Announcement";
+    | "Teacher Announcement"
+    | "Event";
   title?: string;
   classId?: number;
   className?: string;
@@ -112,6 +114,10 @@ export default function AddingModel({
             {/* Form Add New Class */}
             {AddType == "Class" && (
               <FormAddClass setClose={setClose} token={token} />
+            )}
+            {/* Form Add New Event */}
+            {AddType == "Event" && (
+              <AddEventForm setClose={setClose} token={token} />
             )}
 
             {/* Form Add New Announcment in teacher class */}

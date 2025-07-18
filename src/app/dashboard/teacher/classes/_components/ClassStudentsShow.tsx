@@ -32,8 +32,13 @@ export default function ClassStudentsShow({ className }: Props) {
   return (
     <div className="flex flex-col gap-3">
       <p className="font-bold">Class Studnets</p>
+
       {isLoading ? (
-        <Skeleton className="w-full h-96 rounded-md" />
+        <div className="flex flex-col gap-2">
+          <Skeleton className="w-full h-24 rounded-md" />
+          <Skeleton className="w-full h-24 rounded-md" />
+          <Skeleton className="w-full h-24 rounded-md" />
+        </div>
       ) : data && data.length > 0 ? (
         data.map((std) => (
           <StudentClassCard grade={std.grade} name={std.name} key={std.id} />
