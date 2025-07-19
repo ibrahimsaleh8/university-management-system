@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   _req: NextRequest,
-  context: { params: { id: string } }
+  params: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params;
+    const { id } = await params.params;
 
     const teacher = await prisma.teacher.findUnique({ where: { id: +id } });
     if (!teacher) {

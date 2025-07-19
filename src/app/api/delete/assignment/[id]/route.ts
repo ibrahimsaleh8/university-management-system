@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  params: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     // Start Check Teacher Authorize
     const authVerify = await TeacherAuthGuard(req);
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Teacher Authorize
-    const { id } = await params.params;
+    const { id } = await context.params;
 
     if (!id) {
       return NextResponse.json({ message: "Invalid ID" }, { status: 400 });

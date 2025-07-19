@@ -4,13 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const authVerify = await TeacherAuthGuard(req);
     if (!authVerify.isAuthorized) return authVerify.response;
 
-    const { id } = context.params;
+    const { id } = await context.params;
 
     const isExist = await prisma.exam.findUnique({ where: { id } });
     if (!isExist) {

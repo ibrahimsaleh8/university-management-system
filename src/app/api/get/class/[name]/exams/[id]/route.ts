@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  params: { params: { id: string; name: string } }
+  params: { params: Promise<{ id: string; name: string }> }
 ) {
   try {
     // Start Check Teacher Authorize

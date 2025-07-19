@@ -2,11 +2,11 @@ import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
+  _req: NextRequest,
+  params: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params;
+    const { id } = await params.params;
     if (!id) {
       return NextResponse.json({ message: "Id is missing" }, { status: 400 });
     }
