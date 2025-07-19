@@ -17,8 +17,7 @@ async function getAllEvents(): Promise<EventResponseType[]> {
   const res = await axios.get(`${MainDomain}/api/get/event`);
   return res.data;
 }
-// Key => get_all_events
-export default function ShowAllEvents() {
+export default function ShowAllEvents({ token }: { token: string }) {
   const { data, isLoading } = useQuery({
     queryKey: ["get_all_events"],
     queryFn: () => getAllEvents(),
@@ -38,7 +37,12 @@ export default function ShowAllEvents() {
             {data.length > 0 ? (
               <div className="flex flex-col gap-3">
                 {data.map((event) => (
-                  <EventCard canOperate={true} key={event.id} {...event} />
+                  <EventCard
+                    token={token}
+                    canOperate={true}
+                    key={event.id}
+                    {...event}
+                  />
                 ))}
               </div>
             ) : (

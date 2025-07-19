@@ -2,7 +2,7 @@ import { timeConverter } from "@/lib/TimeConverter";
 import { CalendarDays } from "lucide-react";
 import { EventResponseType } from "./ShowAllEvents";
 import OperationsDropdown from "@/app/dashboard/_components/OperationsDropdown";
-import DeleteEvent from "./DeleteEvent";
+import EventOperations from "./EventOperations";
 
 export default function EventCard({
   description,
@@ -10,7 +10,9 @@ export default function EventCard({
   time,
   title,
   canOperate,
-}: EventResponseType & { canOperate: boolean }) {
+  id,
+  token,
+}: EventResponseType & { canOperate: boolean; token: string }) {
   return (
     <div className="exam-head-dash  overflow-hidden bg-Second-black rounded-md w-full p-4  flex flex-col gap-3">
       {/* Header */}
@@ -28,12 +30,32 @@ export default function EventCard({
         </p>
         <p className="text-xs text-low-white">{timeConverter(time)}</p>
       </div>
-      <p className="text-sm">{description} </p>
-      {canOperate && (
-        <div className="flex justify-end items-center">
-          <OperationsDropdown components={[<DeleteEvent key={1} />]} />
-        </div>
-      )}
+      <div className="flex items-end justify-between">
+        <p className="text-sm">{description}</p>
+        {canOperate && (
+          <OperationsDropdown
+            components={[
+              <EventOperations
+                type="Delete Event"
+                id={id}
+                token={token}
+                key={1}
+              />,
+              <EventOperations
+                type="Edit Event"
+                token={token}
+                key={1}
+                eventData={{
+                  description,
+                  id,
+                  time,
+                  title,
+                }}
+              />,
+            ]}
+          />
+        )}
+      </div>
     </div>
   );
 }

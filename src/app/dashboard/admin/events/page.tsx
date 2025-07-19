@@ -12,7 +12,7 @@ export default async function EventsPage() {
         <p className="font-bold">Events</p>
         <AddingModel AddType="Event" token={token} />
       </div>
-      <ShowAllEvents />
+      <ShowAllEvents token={token} />
     </div>
   );
 }
