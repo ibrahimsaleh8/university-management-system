@@ -13,10 +13,10 @@ export default async function DashboardLayout({
   const token = (await (await cookies()).get("token")?.value) as string;
   const user = VerifyUserFromToken(token);
   return (
-    <div className="bg-Main-black">
+    <div className="bg-black">
       <NextTopLoader zIndex={1600} color="#b9f821" height={3} easing="ease" />
       <SidebarProvider>
-        <div className="flex gap-2 w-full ">
+        <div className="flex gap-2 w-full">
           <DashboardSideBar role={user?.role as string} />
 
           <main className="flex flex-col gap-2 w-full overflow-x-hidden sm:pr-3 pt-1">
@@ -25,7 +25,7 @@ export default async function DashboardLayout({
               style={{
                 minHeight: "calc(100vh - 80px)",
               }}
-              className="p-3 w-full rounded-t-2xl relative">
+              className="p-3 w-full rounded-t-lg relative bg-low-black border border-soft-border">
               {children}
             </div>
           </main>

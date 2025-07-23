@@ -44,10 +44,12 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-Main-black: #0c0b09;
-  --color-Second-black: #1a1919;
+  --color-card-bg: #1a1919;
+  --color-Second-black: #1f1e1e;
   --color-main-text: #b9f821;
   --color-low-white: #b4b4b4;
   --color-soft-border: #232323;
+  --color-low-black: #0f0f0f;
 }
 
 :root {
@@ -132,6 +134,9 @@
 ::selection {
   background-color: var(--color-main-text);
   color: black;
+}
+.gradient-background {
+  background: #a5a5a5;
 }
 
 .clip-path-div {
@@ -230,4 +235,9 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.refresh-rotation {
+  rotate: 360deg;
+  transition: 500ms;
 }

@@ -3,7 +3,7 @@ import { LayoutDashboard } from "lucide-react";
 
 export default function DashboardCard() {
   return (
-    <div className="w-full h-36 bg-Second-black text-white rounded-md flex flex-col gap-4  py-4 px-4 ">
+    <div className="w-full h-36  bg-Second-black text-white rounded-md flex flex-col gap-4  py-4 px-4 ">
       {/* Header */}
       <div className="w-full flex items-center gap-2 justify-between">
         <p className="text-[0.7rem] p-1 px-3 bg-white font-medium text-black rounded-sm">

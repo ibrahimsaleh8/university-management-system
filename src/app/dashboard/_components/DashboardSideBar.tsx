@@ -92,7 +92,7 @@ export default function DashboardSideBar({ role }: { role: string }) {
   return (
     <>
       <Sidebar>
-        <SidebarContent className="pt-4 bg-Second-black">
+        <SidebarContent className="pt-4 bg-low-black border border-soft-border m-1 rounded-lg">
           <p className="px-4 font-bold text-center">School-Managment</p>
 
           <SidebarGroup>

@@ -373,3 +373,37 @@ model Event {
   createdAt   DateTime @default(now())
   isFinished  Boolean  @default(false)
 }
+
+model Chat {
+  id        String    @id @default(cuid())
+  email1    String
+  email2    String
+  messages  Message[]
+  createdAt DateTime  @default(now())
+
+  @@index([email1])
+  @@index([email2])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  fromRole  UserRole
+  toRole    UserRole
+  emailFrom String
+  emailTo   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  chatId String
+  chat   Chat   @relation(fields: [chatId], references: [id])
+
+  @@index([emailFrom])
+  @@index([emailTo])
+}
+
+enum UserRole {
+  TEACHER
+  STUDENT
+  ADMIN
+}
