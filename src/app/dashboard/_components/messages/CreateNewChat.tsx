@@ -49,7 +49,7 @@ export default function CreateNewChat() {
     mutationFn: (msgData: CreateMessageDataType) =>
       createNewMessageApi(msgData),
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["get_user_messages"] });
+      queryClient.refetchQueries({ queryKey: ["get_all_chats"] });
       closeRef.current?.click();
       GlobalToast({
         title: "Message Has been sent",
