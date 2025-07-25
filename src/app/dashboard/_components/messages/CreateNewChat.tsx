@@ -26,7 +26,6 @@ import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import InputForm from "../forms/InputForm";
 import TextAreaForm from "../forms/TextAreaForm";
-import { useAppSelector } from "@/redux/hooks";
 import ErrorMessage from "../forms/ErrorMessage";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -46,12 +45,16 @@ async function createNewMessageApi(msgData: CreateMessageDataType): Promise<{
   );
   return res.data;
 }
-
-export default function CreateNewChat() {
+type Props = {
+  role: string;
+  email: string;
+};
+export default function CreateNewChat({ email, role }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   const [emoji, setEmoji] = useState<string>("");
 
+  // Query Api
   const { isPending, mutate } = useMutation({
     mutationKey: ["create_new_message"],
     mutationFn: (msgData: CreateMessageDataType) =>
@@ -73,7 +76,8 @@ export default function CreateNewChat() {
       });
     },
   });
-  const { email, role } = useAppSelector((state) => state.user.user);
+
+  // Handle Form Submit
   const {
     register,
     handleSubmit,
@@ -84,32 +88,41 @@ export default function CreateNewChat() {
   } = useForm<CreateMessageDataType>({
     resolver: zodResolver(CreateMessageSchema),
     mode: "onSubmit",
+    defaultValues: {
+      emailFrom: email,
+      senderRole: role.toUpperCase(),
+    },
   });
+
+  const submitNewMessage: SubmitHandler<CreateMessageDataType> = (data) => {
+    if (data.emailFrom == data.emailTo) {
+      GlobalToast({
+        icon: "error",
+        title: "You can't send message to yourself",
+      });
+      return;
+    }
+    mutate(data);
+  };
+
+  // Handle Emojies
   useEffect(() => {
     if (emoji.length > 0) {
       setValue("message", watch("message") + emoji);
       setEmoji("");
     }
   }, [email, emoji, setValue, watch]);
-
-  useEffect(() => {
-    if (email) {
-      setValue("emailFrom", email);
-    }
-    if (role) {
-      setValue("senderRole", role.toUpperCase());
-    }
-  }, [email, role, setValue]);
-
-  const submitNewMessage: SubmitHandler<CreateMessageDataType> = (data) => {
-    mutate(data);
-  };
-  console.log(errors);
   return (
     <AlertDialog
       onOpenChange={(open) => {
         if (!open) {
-          reset({ emailTo: "", message: "", receiverRole: "" });
+          reset({
+            emailFrom: email,
+            senderRole: role.toUpperCase(),
+            emailTo: "",
+            message: "",
+            receiverRole: "",
+          });
         }
       }}>
       <AlertDialogTrigger className="w-7 h-7 cursor-pointer bg-Second-black flex items-center justify-center rounded-full">

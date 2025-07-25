@@ -25,7 +25,10 @@ export async function POST(req: NextRequest) {
         },
       });
       if (!isValidEmail) {
-        return NextResponse.json({ message: "Invalid email" }, { status: 400 });
+        return NextResponse.json(
+          { message: "there is no Admin for this email" },
+          { status: 400 }
+        );
       }
     } else if (messageData.receiverRole == "TEACHER") {
       const isValidEmail = await prisma.teacher.findUnique({
@@ -34,7 +37,10 @@ export async function POST(req: NextRequest) {
         },
       });
       if (!isValidEmail) {
-        return NextResponse.json({ message: "Invalid email" }, { status: 400 });
+        return NextResponse.json(
+          { message: "there is no Teacher for this email" },
+          { status: 400 }
+        );
       }
     } else if (messageData.receiverRole == "STUDENT") {
       const isValidEmail = await prisma.student.findUnique({
@@ -43,7 +49,10 @@ export async function POST(req: NextRequest) {
         },
       });
       if (!isValidEmail) {
-        return NextResponse.json({ message: "Invalid email" }, { status: 400 });
+        return NextResponse.json(
+          { message: "there is no Student for this email" },
+          { status: 400 }
+        );
       }
     }
 
