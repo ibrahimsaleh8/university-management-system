@@ -50,7 +50,6 @@ export default function ChatBody({ token }: Props) {
   const refreshBtn = useRef<SVGSVGElement>(null);
   const params = useSearchParams();
   const activeChatId = params.get("chatId");
-
   const { data, isError, error, isLoading, refetch } = useQuery({
     queryKey: ["chat_msgs", activeChatId],
     queryFn: () => getChatMessages(activeChatId ?? "", token),
@@ -118,7 +117,11 @@ export default function ChatBody({ token }: Props) {
                         ease: "easeInOut",
                       }}
                       inView>
-                      <SenderMessageCard {...msg} />
+                      <SenderMessageCard
+                        activeChatId={activeChatId}
+                        token={token}
+                        {...msg}
+                      />
                     </MotionEffect>
                   ))}
               </div>

@@ -47,6 +47,16 @@ export async function GET(req: NextRequest) {
         },
         email1: true,
         email2: true,
+        _count: {
+          select: {
+            messages: {
+              where: {
+                isRead: false,
+                emailTo: user.email,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -63,6 +73,7 @@ export async function GET(req: NextRequest) {
         id: ch.id,
         messages: messages,
         userEmail: anotherUser,
+        unreadMessages: ch._count.messages,
       };
     });
     const resChats = await Promise.all(
@@ -72,6 +83,7 @@ export async function GET(req: NextRequest) {
           id: ch.id,
           messages: ch.messages,
           user,
+          unreadMessages: ch.unreadMessages,
         };
       })
     );

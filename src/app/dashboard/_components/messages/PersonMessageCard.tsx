@@ -8,14 +8,14 @@ type Props = {
   id: string;
   isMsgRead: boolean;
   sender: "you" | "another";
+  unreadMessages: number;
 };
 export default function PersonMessageCard({
   image,
   lastMessage,
   name,
   id,
-  isMsgRead,
-  sender,
+  unreadMessages,
 }: Props) {
   const params = useSearchParams();
   const isActive = id == params.get("chatId");
@@ -25,7 +25,7 @@ export default function PersonMessageCard({
       className={`flex items-start overflow-hidden relative gap-2 p-2 border-b border-soft-border hover:bg-Main-black cursor-pointer duration-300 ${
         isActive ? "bg-Second-black" : ""
       }`}>
-      {!isMsgRead && sender == "another" && (
+      {unreadMessages > 0 && (
         <span className="absolute right-1 top-1 block w-2 h-2 bg-red-500 rounded-full"></span>
       )}
       <img

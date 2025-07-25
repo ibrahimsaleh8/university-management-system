@@ -139,12 +139,12 @@ export default function CreateNewChat({ email, role }: Props) {
           className="flex flex-col gap-3">
           {/* Roles && Reciver email */}
           <div className="flex items-center gap-2 flex-col sm:flex-row">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 sm:w-fit w-full">
               <label className="text-sm" htmlFor="rec-role">
                 Receiver Role:
               </label>
               <Select onValueChange={(e) => setValue("receiverRole", e)}>
-                <SelectTrigger id="rec-role" className="w-[180px]">
+                <SelectTrigger id="rec-role" className="sm:w-[180px] w-full">
                   <SelectValue placeholder="Receiver Role" />
                 </SelectTrigger>
                 <SelectContent>
