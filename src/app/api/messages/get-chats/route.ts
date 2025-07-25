@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
             id: true,
             message: true,
             isRead: true,
+            emailFrom: true,
           },
           orderBy: {
             createdAt: "desc",
@@ -52,9 +53,15 @@ export async function GET(req: NextRequest) {
     const arrangedByUser = chats.map((ch) => {
       const currentUser = ch.email1 == user.email ? ch.email1 : ch.email2;
       const anotherUser = currentUser == ch.email1 ? ch.email2 : ch.email1;
+      const messages = ch.messages.map((msg) => ({
+        id: msg.id,
+        message: msg.message,
+        isRead: msg.isRead,
+        sender: msg.emailFrom == currentUser ? "you" : "another",
+      }));
       return {
         id: ch.id,
-        messages: ch.messages,
+        messages: messages,
         userEmail: anotherUser,
       };
     });

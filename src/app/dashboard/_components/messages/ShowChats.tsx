@@ -14,6 +14,7 @@ type MessageChatData = {
   id: string;
   message: string;
   isRead: boolean;
+  sender: "you" | "another";
 };
 
 export type UserMessageData = {
@@ -42,6 +43,7 @@ export default function ShowChats({ token }: { token: string }) {
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ["get_all_chats"],
     queryFn: () => getUserChats(token),
+    refetchOnMount: true,
   });
   if (isError && error) throw new Error(error.message);
   const [searchTxt, setSearchTxt] = useState("");
@@ -92,6 +94,7 @@ export default function ShowChats({ token }: { token: string }) {
             image={
               chat.user.image ?? "https://i.ibb.co/kV27Z5B3/user-profile.jpg"
             }
+            sender={chat.messages[0].sender}
             lastMessage={chat.messages[0].message}
             isMsgRead={chat.messages[0].isRead}
             name={`${chat.user.first_name} ${chat.user.last_name}`}

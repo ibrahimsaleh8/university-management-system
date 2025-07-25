@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check If there is an old chats between them
-    const oldChat = await prisma.chat.findFirst({
+    let chat = await prisma.chat.findFirst({
       where: {
         OR: [
           {
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (oldChat) {
+    if (chat) {
       await prisma.message.create({
         data: {
           emailFrom: messageData.emailFrom,
@@ -74,11 +74,11 @@ export async function POST(req: NextRequest) {
           fromRole: messageData.senderRole as MessageRoles,
           toRole: messageData.receiverRole as MessageRoles,
           message: messageData.message,
-          chatId: oldChat.id,
+          chatId: chat.id,
         },
       });
     } else {
-      const chat = await prisma.chat.create({
+      chat = await prisma.chat.create({
         data: {
           email1: messageData.emailFrom,
           email2: messageData.emailTo,
@@ -96,10 +96,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json(
-      { message: "Message Has been Sent" },
-      { status: 201 }
-    );
+    return NextResponse.json({ chatId: chat.id }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal Server Error " + error },

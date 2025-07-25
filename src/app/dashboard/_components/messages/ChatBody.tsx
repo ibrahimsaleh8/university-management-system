@@ -1,6 +1,6 @@
 "use client";
 import SenderMessageCard from "./SenderMessageCard";
-import { RotateCw, Send } from "lucide-react";
+import { RotateCw } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -8,8 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/animate-ui/radix/tooltip";
 import { useRef } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { MotionEffect } from "@/components/animate-ui/effects/motion-effect";
 import { useSearchParams } from "next/navigation";
 type Props = {
@@ -21,6 +19,8 @@ import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { UserMessageData } from "./ShowChats";
 import { useQuery } from "@tanstack/react-query";
+import SendMessageOnChat from "./SendMessageOnChat";
+import ChatMessagesSkeleton from "./ChatMessagesSkeleton";
 export type ChatMessageDataType = {
   id: string;
   message: string;
@@ -51,19 +51,17 @@ export default function ChatBody({ token }: Props) {
   const params = useSearchParams();
   const activeChatId = params.get("chatId");
 
-  const { data, isError, error, isLoading } = useQuery({
+  const { data, isError, error, isLoading, refetch } = useQuery({
     queryKey: ["chat_msgs", activeChatId],
     queryFn: () => getChatMessages(activeChatId ?? "", token),
     enabled: activeChatId != null,
   });
   if (isError && error) throw new Error(error.message);
-  console.log("CHATD DATA");
-
   return (
     <div className="w-full h-full bg-low-black border border-soft-border rounded-md overflow-x-hidden flex flex-col">
       {activeChatId ? (
         isLoading ? (
-          <>Loading...</>
+          <ChatMessagesSkeleton />
         ) : (
           data && (
             <>
@@ -91,6 +89,7 @@ export default function ChatBody({ token }: Props) {
                   <Tooltip>
                     <TooltipTrigger
                       onClick={() => {
+                        refetch();
                         refreshBtn.current?.classList.add("refresh-rotation");
                         setTimeout(() => {
                           refreshBtn.current?.classList.remove(
@@ -108,47 +107,24 @@ export default function ChatBody({ token }: Props) {
 
               {/* Body */}
               <div className="w-full h-[85%] overflow-y-auto p-3 flex flex-col gap-2">
-                {data.messages.map((msg) => (
-                  <MotionEffect
-                    key={msg.id}
-                    fade
-                    blur="10px"
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeInOut",
-                    }}
-                    inView>
-                    <SenderMessageCard {...msg} />
-                  </MotionEffect>
-                ))}
-                <MotionEffect
-                  fade
-                  blur="10px"
-                  transition={{
-                    duration: 0.5,
-                    ease: "easeInOut",
-                  }}
-                  inView>
-                  <SenderMessageCard
-                    createdAt="2025-07-24T15:41:31.671Z"
-                    id="asdasdfq3e1e"
-                    isRead={true}
-                    message="Nice Work"
-                    sender="another"
-                  />
-                </MotionEffect>
+                {data.messages.length > 0 &&
+                  data.messages.map((msg) => (
+                    <MotionEffect
+                      key={msg.id}
+                      fade
+                      blur="10px"
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeInOut",
+                      }}
+                      inView>
+                      <SenderMessageCard {...msg} />
+                    </MotionEffect>
+                  ))}
               </div>
 
               {/* Send Message */}
-              <div className="w-full bg-Second-black mt-auto flex items-center gap-2 p-2">
-                <Textarea
-                  className="bg-black resize-none h-full"
-                  placeholder="Message"
-                />
-                <Button variant={"mainWithShadow"} className="rounded-full">
-                  <Send className="w-5 h-5" />
-                </Button>
-              </div>
+              <SendMessageOnChat token={token} chatId={data.id} />
             </>
           )
         )

@@ -22,7 +22,7 @@ export default function SenderMessageCard({
         <p className="text-white text-xs">{timeConverter(createdAt)}</p>
         <p className="text-white">{message} </p>
         <div className="flex items-center justify-end">
-          {sender == "you" ? (
+          {sender == "another" ? (
             isReadMess ? (
               <CheckCheck className="w-5 h-5 text-main-text" />
             ) : (

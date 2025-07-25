@@ -22,7 +22,7 @@ import {
 } from "@/validation/CreateMessageSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import InputForm from "../forms/InputForm";
 import TextAreaForm from "../forms/TextAreaForm";
@@ -35,21 +35,31 @@ import { MainDomain } from "@/variables/MainDomain";
 import SmallLoader from "@/components/Global/SmallLoader";
 import GlobalToast from "@/components/Global/GlobalToast";
 import { ErrorResponseType } from "@/lib/globalTypes";
+import EmojiPickerTab from "./EmojiPicker";
 
-async function createNewMessageApi(msgData: CreateMessageDataType) {
-  await axios.post(`${MainDomain}/api/messages/create-message`, msgData);
+async function createNewMessageApi(msgData: CreateMessageDataType): Promise<{
+  chatId: string;
+}> {
+  const res = await axios.post(
+    `${MainDomain}/api/messages/create-message`,
+    msgData
+  );
+  return res.data;
 }
-// get_user_messages
 
 export default function CreateNewChat() {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
+  const [emoji, setEmoji] = useState<string>("");
+
   const { isPending, mutate } = useMutation({
     mutationKey: ["create_new_message"],
     mutationFn: (msgData: CreateMessageDataType) =>
       createNewMessageApi(msgData),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.refetchQueries({ queryKey: ["get_all_chats"] });
+      queryClient.refetchQueries({ queryKey: ["chat_msgs", data.chatId] });
+
       closeRef.current?.click();
       GlobalToast({
         title: "Message Has been sent",
@@ -70,14 +80,23 @@ export default function CreateNewChat() {
     formState: { errors },
     setValue,
     reset,
+    watch,
   } = useForm<CreateMessageDataType>({
     resolver: zodResolver(CreateMessageSchema),
     mode: "onSubmit",
   });
+  useEffect(() => {
+    if (emoji.length > 0) {
+      setValue("message", watch("message") + emoji);
+      setEmoji("");
+    }
+  }, [email, emoji, setValue, watch]);
 
   useEffect(() => {
-    if (email && role) {
+    if (email) {
       setValue("emailFrom", email);
+    }
+    if (role) {
       setValue("senderRole", role.toUpperCase());
     }
   }, [email, role, setValue]);
@@ -85,6 +104,7 @@ export default function CreateNewChat() {
   const submitNewMessage: SubmitHandler<CreateMessageDataType> = (data) => {
     mutate(data);
   };
+  console.log(errors);
   return (
     <AlertDialog
       onOpenChange={(open) => {
@@ -101,62 +121,61 @@ export default function CreateNewChat() {
           <AlertDialogDescription></AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className="flex flex-col gap-3">
-          {/* Email */}
-          <form
-            onSubmit={handleSubmit(submitNewMessage)}
-            className="flex flex-col gap-3">
-            {/* Roles && Reciver email */}
-            <div className="flex items-center gap-2 flex-col sm:flex-row">
-              <div className="flex flex-col gap-1">
-                <label className="text-sm" htmlFor="rec-role">
-                  Receiver Role:
-                </label>
-                <Select onValueChange={(e) => setValue("receiverRole", e)}>
-                  <SelectTrigger id="rec-role" className="w-[180px]">
-                    <SelectValue placeholder="Receiver Role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ADMIN">Admin</SelectItem>
-                    <SelectItem value="TEACHER">Teacher</SelectItem>
-                    <SelectItem value="STUDENT">Student</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <InputForm
-                isError={errors.emailTo != undefined}
-                label="To Email"
-                placeholder="Receiver Email"
-                type="email"
-                register={register("emailTo")}
-              />
+        <form
+          onSubmit={handleSubmit(submitNewMessage)}
+          className="flex flex-col gap-3">
+          {/* Roles && Reciver email */}
+          <div className="flex items-center gap-2 flex-col sm:flex-row">
+            <div className="flex flex-col gap-1">
+              <label className="text-sm" htmlFor="rec-role">
+                Receiver Role:
+              </label>
+              <Select onValueChange={(e) => setValue("receiverRole", e)}>
+                <SelectTrigger id="rec-role" className="w-[180px]">
+                  <SelectValue placeholder="Receiver Role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ADMIN">Admin</SelectItem>
+                  <SelectItem value="TEACHER">Teacher</SelectItem>
+                  <SelectItem value="STUDENT">Student</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <ErrorMessage
-              error1={errors.receiverRole}
-              error2={errors.emailTo}
+            <InputForm
+              isError={errors.emailTo != undefined}
+              label="To Email"
+              placeholder="Receiver Email"
+              type="email"
+              register={register("emailTo")}
             />
-            {/* Message */}
+          </div>
+          <ErrorMessage error1={errors.receiverRole} error2={errors.emailTo} />
+          {/* Message */}
+          <div className="relative">
             <TextAreaForm
               isError={errors.message != undefined}
               label="Message"
               placeholder="Your Message"
               register={register("message")}
             />
-            <ErrorMessage error1={errors.message} />
-            <Button
-              disabled={isPending}
-              variant={"mainWithShadow"}
-              className="w-full">
-              {isPending ? (
-                <>
-                  Sending... <SmallLoader />
-                </>
-              ) : (
-                "Send"
-              )}
-            </Button>
-          </form>
-        </div>
+            <div className="absolute right-0 bottom-0">
+              <EmojiPickerTab setEmoji={setEmoji} />
+            </div>
+          </div>
+          <ErrorMessage error1={errors.message} />
+          <Button
+            disabled={isPending}
+            variant={"mainWithShadow"}
+            className="w-full">
+            {isPending ? (
+              <>
+                Sending... <SmallLoader />
+              </>
+            ) : (
+              "Send"
+            )}
+          </Button>
+        </form>
 
         <AlertDialogFooter>
           <AlertDialogCancel
