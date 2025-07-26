@@ -4,6 +4,13 @@ import { NumberOfStudents } from "@/variables/Pagination";
 import { StudentResDataType } from "@/app/dashboard/admin/students/_components/ShowStudentsTable";
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
+import { GetAllYears } from "@/lib/GetAllYears";
+
+export type FilterGradeType =
+  | "all"
+  | "first-grade"
+  | "second-grade"
+  | "third-grade";
 async function getAllStudents(
   pageNumber: number
 ): Promise<StudentResDataType[]> {
@@ -23,6 +30,16 @@ export const useShowStudentsTable = () => {
   const [SearchedData, setSearchedData] = useState<StudentResDataType[] | null>(
     null
   );
+  const [filterGrade, setFilterGrade] = useState("all");
+
+  const {
+    error: errYears,
+    isError: isErrorYear,
+    isLoading: loadingYears,
+    years,
+  } = GetAllYears();
+
+  if (errYears && isErrorYear) throw new Error(errYears.message);
   const {
     data: allStudents,
     isLoading,
@@ -43,8 +60,18 @@ export const useShowStudentsTable = () => {
   });
 
   const students = useMemo(() => {
-    return searched && SearchedData ? SearchedData : allStudents;
-  }, [SearchedData, allStudents, searched]);
+    if (!allStudents) return undefined;
+
+    if (searched && SearchedData) {
+      return filterGrade !== "all"
+        ? SearchedData.filter((s) => s.academicYear.year_label === filterGrade)
+        : SearchedData;
+    }
+
+    return filterGrade !== "all"
+      ? allStudents.filter((std) => std.academicYear.year_label === filterGrade)
+      : allStudents;
+  }, [SearchedData, allStudents, filterGrade, searched]);
 
   const Pages = useMemo(() => {
     return studentNumber
@@ -61,5 +88,8 @@ export const useShowStudentsTable = () => {
     setCurrentPage,
     searched,
     currentPage,
+    setFilterGrade,
+    loadingYears,
+    years,
   };
 };

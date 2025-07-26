@@ -18,7 +18,8 @@ export async function GET() {
         level_number: "asc",
       },
     });
-    return NextResponse.json(years, { status: 200 });
+    const res = years.filter((y) => y.level_number > 0);
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Server Error => " + error },

@@ -42,6 +42,8 @@ export default function AcadimicYearForm({ token, setClose }: Props) {
     mode: "all",
   });
   const reactQueryClient = useQueryClient();
+
+  // Query Api
   const { isPending, mutate } = useMutation({
     mutationKey: ["add_academic_year"],
     mutationFn: (data: { Yeardata: academicYearDataType; token: string }) =>
@@ -89,7 +91,7 @@ export default function AcadimicYearForm({ token, setClose }: Props) {
         placeholder="Academic Year Level Number"
         onChange={(e) => setValue("level_number", +e.target.value)}
         type="number"
-        min={1}
+        min={0}
         max={6}
       />
       <ErrorMessage error1={errors.level_number} />

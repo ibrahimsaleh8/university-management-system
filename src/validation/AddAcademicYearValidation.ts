@@ -7,7 +7,7 @@ export const academicYearValidation = z.object({
       required_error: "Level Number is required",
       invalid_type_error: "Level Number must be a number",
     })
-    .min(1, { message: "Minimum Level Number is 1" })
+    .min(0, { message: "Minimum Level Number is 0" })
     .max(6, { message: "Maximum Level Number is 6" }),
 });
 

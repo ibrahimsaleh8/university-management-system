@@ -22,7 +22,7 @@ export default function PersonMessageCard({
   return (
     <Link
       href={`?chatId=${id}`}
-      className={`flex items-start overflow-hidden relative gap-2 p-2 border-b border-soft-border hover:bg-Main-black cursor-pointer duration-300 ${
+      className={`flex items-start overflow-hidden relative min-h-14 w-full gap-2 p-2 border-b border-soft-border hover:bg-Main-black cursor-pointer duration-300 ${
         isActive ? "bg-Second-black" : ""
       }`}>
       {unreadMessages > 0 && (

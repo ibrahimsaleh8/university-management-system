@@ -85,32 +85,34 @@ export default function ShowChats({ token }: { token: string }) {
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="flex flex-col gap-1">
-          <Skeleton className="w-full h-14 rounded-none" />
-          <Skeleton className="w-full h-14 rounded-none" />
-          <Skeleton className="w-full h-14 rounded-none" />
-        </div>
-      ) : chats && chats.length > 0 ? (
-        chats.map((chat) => (
-          <PersonMessageCard
-            id={chat.id}
-            image={
-              chat.user.image ?? "https://i.ibb.co/kV27Z5B3/user-profile.jpg"
-            }
-            sender={chat.messages[0].sender}
-            lastMessage={chat.messages[0].message}
-            unreadMessages={chat.unreadMessages}
-            isMsgRead={chat.messages[0].isRead}
-            name={`${chat.user.first_name} ${chat.user.last_name}`}
-            key={chat.id}
-          />
-        ))
-      ) : (
-        <div className="w-full flex items-center justify-center text-sm text-low-white">
-          No chat Found
-        </div>
-      )}
+      <div className="flex flex-col gap-1 max-h-96 overflow-y-auto">
+        {isLoading ? (
+          <div className="flex flex-col gap-1">
+            <Skeleton className="w-full h-14 rounded-none" />
+            <Skeleton className="w-full h-14 rounded-none" />
+            <Skeleton className="w-full h-14 rounded-none" />
+          </div>
+        ) : chats && chats.length > 0 ? (
+          chats.map((chat) => (
+            <PersonMessageCard
+              id={chat.id}
+              image={
+                chat.user.image ?? "https://i.ibb.co/kV27Z5B3/user-profile.jpg"
+              }
+              sender={chat.messages[0].sender}
+              lastMessage={chat.messages[0].message}
+              unreadMessages={chat.unreadMessages}
+              isMsgRead={chat.messages[0].isRead}
+              name={`${chat.user.first_name} ${chat.user.last_name}`}
+              key={chat.id}
+            />
+          ))
+        ) : (
+          <div className="w-full flex items-center justify-center text-sm text-low-white">
+            No chat Found
+          </div>
+        )}
+      </div>
     </div>
   );
 }

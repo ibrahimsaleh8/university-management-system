@@ -241,3 +241,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   rotate: 360deg;
   transition: 500ms;
 }
+.gradient-black-btn {
+  background: #1f1e1e;
+  background: linear-gradient(180deg, #494949 -87%, #151515 30%);
+}

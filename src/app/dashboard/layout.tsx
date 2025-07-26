@@ -19,13 +19,13 @@ export default async function DashboardLayout({
         <div className="flex gap-2 w-full">
           <DashboardSideBar role={user?.role as string} />
 
-          <main className="flex flex-col gap-2 w-full overflow-x-hidden sm:pr-3 pt-1">
+          <main className="flex flex-col gap-2 w-full overflow-x-hidden sm:pr-3 pt-0.5 sm:pt-1">
             <DashboardHeader />
             <div
               style={{
                 minHeight: "calc(100vh - 80px)",
               }}
-              className="p-3 w-full rounded-t-lg relative bg-low-black border border-soft-border">
+              className="p-3 w-full sm:rounded-t-lg relative bg-low-black sm:border border-soft-border">
               {children}
             </div>
           </main>
