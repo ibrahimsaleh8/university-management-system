@@ -1,4 +1,6 @@
 "use client";
+import GlobalToast from "@/components/Global/GlobalToast";
+import SmallLoader from "@/components/Global/SmallLoader";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -9,17 +11,67 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { ErrorResponseType } from "@/lib/globalTypes";
+import { MainDomain } from "@/variables/MainDomain";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { X } from "lucide-react";
 import { useRef } from "react";
 type Props = {
   yearLabel: string;
+  token: string;
   level_number: number;
+  currentPage: number;
 };
-export default function MoveingToNextGrade({ yearLabel, level_number }: Props) {
+
+async function moveStudentsToNextGrade(
+  level_number: number,
+  token: string
+): Promise<{ message: string }> {
+  const res = await axios.patch(
+    `${MainDomain}/api/update/move-students-next-grade`,
+    { gradeLevelNumber: level_number },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+}
+
+export default function MoveingToNextGrade({
+  yearLabel,
+  level_number,
+  token,
+  currentPage,
+}: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: (params: { level_number: number; token: string }) =>
+      moveStudentsToNextGrade(params.level_number, params.token),
+    onSuccess: (res) => {
+      queryClient.refetchQueries({
+        queryKey: ["get_all_student", currentPage],
+      });
+      queryClient.refetchQueries({ queryKey: ["students_number"] });
+      GlobalToast({
+        icon: "success",
+        title: res.message,
+      });
+    },
+    onError: (err: ErrorResponseType) => {
+      GlobalToast({
+        icon: "error",
+        title: err.response.data.message,
+      });
+    },
+  });
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="bg-white text-xs cursor-pointer border w-full border-white hover:bg-Second-black hover:text-white rounded-sm text-black p-1.5 duration-300">
+      <AlertDialogTrigger className="bg-main-text text-black text-xs cursor-pointer border w-full border-main-text hover:bg-Second-black hover:text-main-text rounded-sm p-1.5 duration-300">
         {level_number != 0 ? (
           <>Move {yearLabel} Students to Next Grade</>
         ) : (
@@ -28,11 +80,23 @@ export default function MoveingToNextGrade({ yearLabel, level_number }: Props) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            You will move studnets in {yearLabel} to Next Grade Year
           </AlertDialogDescription>
+
+          <Button
+            onClick={() => {
+              mutate({
+                level_number,
+                token,
+              });
+            }}
+            disabled={isPending}
+            className="w-36 ml-auto mt-4"
+            variant={"mainWithShadow"}>
+            {isPending ? <SmallLoader /> : "Move Students"}
+          </Button>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel

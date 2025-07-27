@@ -71,7 +71,7 @@ export default function ShowStudentsTable({ token }: { token: string }) {
       ) : (
         years &&
         years.length > 0 && (
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between">
             <RadioGroup
               defaultValue="all"
               onValueChange={(e) => setFilterGrade(e)}
@@ -88,17 +88,22 @@ export default function ShowStudentsTable({ token }: { token: string }) {
             </RadioGroup>
 
             <OperationsDropdown
+              verticalIcon={true}
               components={[
                 ...years
                   .filter((_y, i) => i != years.length - 1)
                   .map((year) => (
                     <MoveingToNextGrade
+                      currentPage={currentPage}
+                      token={token}
                       level_number={year.level_number}
                       yearLabel={year.year_label}
                       key={year.id}
                     />
                   )),
                 <MoveingToNextGrade
+                  currentPage={currentPage}
+                  token={token}
                   level_number={0}
                   yearLabel={years[years.length - 1].year_label}
                   key={years.length + 1}

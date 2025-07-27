@@ -4,18 +4,26 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
+import { EllipsisVertical, MoreHorizontal } from "lucide-react";
 import { ReactNode } from "react";
 type Props = {
   components: ReactNode[];
+  verticalIcon?: boolean;
 };
-export default function OperationsDropdown({ components }: Props) {
+export default function OperationsDropdown({
+  components,
+  verticalIcon,
+}: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         className="cursor-pointer hover:bg-soft-border w-7 h-7 p-1 duration-300 rounded-md hover:text-main-text"
         asChild>
-        <MoreHorizontal className="w-5 h-5" />
+        {verticalIcon ? (
+          <EllipsisVertical className="w-5 h-5" />
+        ) : (
+          <MoreHorizontal className="w-5 h-5" />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
