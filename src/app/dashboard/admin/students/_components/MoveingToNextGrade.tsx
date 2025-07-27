@@ -49,6 +49,7 @@ export default function MoveingToNextGrade({
 }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: (params: { level_number: number; token: string }) =>
       moveStudentsToNextGrade(params.level_number, params.token),
@@ -61,6 +62,7 @@ export default function MoveingToNextGrade({
         icon: "success",
         title: res.message,
       });
+      closeRef.current?.click();
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({
@@ -72,7 +74,7 @@ export default function MoveingToNextGrade({
   return (
     <AlertDialog>
       <AlertDialogTrigger className="bg-main-text text-black text-xs cursor-pointer border w-full border-main-text hover:bg-Second-black hover:text-main-text rounded-sm p-1.5 duration-300">
-        {level_number != 0 ? (
+        {level_number != 4 ? (
           <>Move {yearLabel} Students to Next Grade</>
         ) : (
           <>Move {yearLabel} Students to Graduate</>

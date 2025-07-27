@@ -12,6 +12,7 @@ export async function PATCH(req: NextRequest) {
     const { gradeLevelNumber } = (await req.json()) as {
       gradeLevelNumber: number;
     };
+    console.log("gradeLevelNumber", gradeLevelNumber);
     if (!gradeLevelNumber) {
       return NextResponse.json(
         { message: "Level number is missing" },

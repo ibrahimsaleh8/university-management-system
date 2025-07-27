@@ -8,13 +8,6 @@ export async function GET(request: NextRequest) {
     const pageNumber = (await request.nextUrl.searchParams.get("page")) || "1";
 
     const students = await prisma.student.findMany({
-      where: {
-        academicYear: {
-          level_number: {
-            not: 0,
-          },
-        },
-      },
       select: {
         id: true,
         student_id: true,

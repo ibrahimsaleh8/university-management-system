@@ -6,11 +6,6 @@ import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { GetAllYears } from "@/lib/GetAllYears";
 
-export type FilterGradeType =
-  | "all"
-  | "first-grade"
-  | "second-grade"
-  | "third-grade";
 async function getAllStudents(
   pageNumber: number
 ): Promise<StudentResDataType[]> {
@@ -70,7 +65,7 @@ export const useShowStudentsTable = () => {
 
     return filterGrade !== "all"
       ? allStudents.filter((std) => std.academicYear.year_label === filterGrade)
-      : allStudents;
+      : allStudents.filter((std) => std.academicYear.year_label != "Graduated");
   }, [SearchedData, allStudents, filterGrade, searched]);
 
   const Pages = useMemo(() => {

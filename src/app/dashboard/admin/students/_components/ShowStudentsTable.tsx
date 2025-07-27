@@ -45,7 +45,6 @@ export default function ShowStudentsTable({ token }: { token: string }) {
     loadingYears,
     years,
   } = useShowStudentsTable();
-
   return (
     <div className="flex flex-col gap-3">
       {/* Search & add */}
@@ -78,20 +77,26 @@ export default function ShowStudentsTable({ token }: { token: string }) {
               className="flex items-center gap-3 flex-wrap w-full">
               <GradeFilterationCard label="All" value="all" />
 
-              {years.map((year) => (
-                <GradeFilterationCard
-                  key={year.id}
-                  label={year.year_label}
-                  value={year.year_label}
-                />
-              ))}
+              {years
+                .filter((y) => y.level_number != 0)
+                .map((year) => (
+                  <GradeFilterationCard
+                    key={year.id}
+                    label={year.year_label}
+                    value={year.year_label}
+                  />
+                ))}
+              <GradeFilterationCard
+                label={years.filter((y) => y.level_number == 0)[0].year_label}
+                value={years.filter((y) => y.level_number == 0)[0].year_label}
+              />
             </RadioGroup>
 
             <OperationsDropdown
               verticalIcon={true}
               components={[
                 ...years
-                  .filter((_y, i) => i != years.length - 1)
+                  .filter((y) => y.level_number != 0)
                   .map((year) => (
                     <MoveingToNextGrade
                       currentPage={currentPage}
@@ -101,13 +106,6 @@ export default function ShowStudentsTable({ token }: { token: string }) {
                       key={year.id}
                     />
                   )),
-                <MoveingToNextGrade
-                  currentPage={currentPage}
-                  token={token}
-                  level_number={0}
-                  yearLabel={years[years.length - 1].year_label}
-                  key={years.length + 1}
-                />,
               ]}
             />
           </div>
