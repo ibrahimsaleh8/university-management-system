@@ -7,8 +7,14 @@ type Props = {
   setImage: Dispatch<SetStateAction<File | null>>;
   image: File | null;
   title: string;
+  imageurl?: string;
 };
-export default function UploadImage({ image, setImage, title }: Props) {
+export default function UploadImage({
+  image,
+  setImage,
+  title,
+  imageurl,
+}: Props) {
   return (
     <div className="sm:w-96 w-full flex items-center gap-3">
       <label
@@ -30,8 +36,22 @@ export default function UploadImage({ image, setImage, title }: Props) {
         id="image-upload"
         className="hidden"
       />
-
-      {image ? (
+      {imageurl && !image ? (
+        <MotionEffect
+          fade
+          blur="10px"
+          transition={{
+            duration: 0.5,
+            ease: "easeInOut",
+          }}
+          inView>
+          <img
+            className="w-12 h-12 mt-5 object-center object-cover rounded-md"
+            alt="Student Image"
+            src={imageurl}
+          />
+        </MotionEffect>
+      ) : image ? (
         <MotionEffect
           fade
           blur="10px"

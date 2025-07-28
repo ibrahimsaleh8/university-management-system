@@ -1,42 +1,49 @@
-"use client";
+import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
+import InputForm from "@/app/dashboard/_components/forms/InputForm";
+import UploadImage from "@/app/dashboard/_components/forms/UploadImage";
+import SmallLoader from "@/components/Global/SmallLoader";
+import { Button } from "@/components/ui/button";
 import {
   Select,
+  SelectTrigger,
   SelectContent,
   SelectItem,
-  SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEditTeacher } from "@/hooks/useEditTeacher";
+import { formatDeadline } from "@/lib/FormatDeadline";
 import { GenderType } from "@/lib/globalTypes";
-import { Button } from "@/components/ui/button";
+import { EditTeacherDataType } from "@/validation/EditTeacherSchema";
 import { Dispatch, SetStateAction } from "react";
-import { useAddTeacher } from "@/hooks/useAddTeacher";
-import { Eye, EyeOff } from "lucide-react";
-import SmallLoader from "@/components/Global/SmallLoader";
-import InputForm from "@/app/dashboard/_components/forms/InputForm";
-import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
-import UploadImage from "@/app/dashboard/_components/forms/UploadImage";
+
 type Props = {
-  setClose: Dispatch<SetStateAction<boolean>>;
   token: string;
+  teacherData: EditTeacherDataType & { image: string };
+  setIsClose: Dispatch<SetStateAction<boolean>>;
 };
-export default function FormAddTeacher({ setClose, token }: Props) {
+export default function FormEditTeacher({
+  teacherData,
+  token,
+  setIsClose,
+}: Props) {
   const {
-    HandleForm,
     errors,
+    getValues,
     handleSubmit,
     register,
-    setValue,
-    showPass,
-    setShowPass,
-    isPending,
-    image,
     setImage,
+    setValue,
+    submitEditTeacher,
     uploadingImage,
-  } = useAddTeacher({ setClose, token });
+    image,
+    isPending,
+  } = useEditTeacher({ teacherData, token, setIsClose });
   return (
     <>
       {/* Form Adding */}
-      <form onSubmit={handleSubmit(HandleForm)} className="flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit(submitEditTeacher)}
+        className="flex flex-col gap-4">
         {/* Teacher id */}
         <div className="flex gap-2 flex-col sm:flex-row">
           <InputForm
@@ -48,8 +55,10 @@ export default function FormAddTeacher({ setClose, token }: Props) {
             inputMode="numeric"
             pattern="\d{14}"
             maxLength={14}
+            disabled={true}
           />
           <UploadImage
+            imageurl={teacherData.image}
             title="Upload Teacher image"
             setImage={setImage}
             image={image}
@@ -92,7 +101,9 @@ export default function FormAddTeacher({ setClose, token }: Props) {
             <label htmlFor="gender" className="text-sm">
               Gender:
             </label>
-            <Select onValueChange={(e: GenderType) => setValue("gender", e)}>
+            <Select
+              defaultValue={getValues("gender")}
+              onValueChange={(e: GenderType) => setValue("gender", e)}>
               <SelectTrigger
                 id="gender"
                 className="w-28 bg-Second-black border-soft-border cursor-pointer">
@@ -107,39 +118,31 @@ export default function FormAddTeacher({ setClose, token }: Props) {
         </div>
         <ErrorMessage error1={errors.email} error2={errors.gender} />
 
-        {/* Password & Date of birth */}
+        {/* Date of birth */}
         <div className="flex sm:justify-between w-full gap-4 sm:items-center sm:flex-row flex-col items-start">
-          <div className="relative w-full">
-            <InputForm
-              isError={errors.password != undefined}
-              label="Password"
-              placeholder="Password"
-              register={register("password")}
-              type={showPass ? "text" : "password"}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPass((pre) => !pre)}
-              className="absolute right-2 top-[69%] -translate-y-1/2 bg-Second-black">
-              {showPass ? (
-                <EyeOff className="cursor-pointer" />
-              ) : (
-                <Eye className="cursor-pointer" />
-              )}
-            </button>
-          </div>
-
           {/* Date of birth */}
           <InputForm
+            defaultValue={formatDeadline(teacherData.date_of_birth)}
             label="Date of birth"
             placeholder="Date of birth"
             register={register("date_of_birth")}
             type="date"
-            classes="sm:w-fit w-full"
+            classes="w-full"
             isError={errors.date_of_birth != undefined}
           />
+
+          {/* Hire Date */}
+          <InputForm
+            label="Hire Date"
+            defaultValue={formatDeadline(teacherData.hire_date)}
+            placeholder="Hire Date"
+            register={register("hire_date")}
+            type="date"
+            classes="w-full"
+            isError={errors.hire_date != undefined}
+          />
         </div>
-        <ErrorMessage error1={errors.password} error2={errors.date_of_birth} />
+        <ErrorMessage error1={errors.date_of_birth} />
 
         {/* Address & Hire date */}
         <div className="flex sm:justify-between w-full gap-4 sm:items-center sm:flex-row flex-col items-start">
@@ -149,16 +152,6 @@ export default function FormAddTeacher({ setClose, token }: Props) {
             register={register("address")}
             type="text"
             isError={errors.address != undefined}
-          />
-
-          {/* Hire Date */}
-          <InputForm
-            label="Hire Date"
-            placeholder="Hire Date"
-            register={register("hire_date")}
-            type="date"
-            classes="sm:w-fit w-full"
-            isError={errors.hire_date != undefined}
           />
         </div>
         <ErrorMessage error1={errors.address} error2={errors.hire_date} />
@@ -183,21 +176,20 @@ export default function FormAddTeacher({ setClose, token }: Props) {
         <ErrorMessage error1={errors.qualification} error2={errors.phone} />
 
         <Button
+          disabled={uploadingImage || isPending}
           variant={"mainWithShadow"}
-          disabled={isPending || uploadingImage}
           type="submit">
-          {isPending ? (
-            <div className="flex items-center gap-1">
-              Loading....
+          {uploadingImage ? (
+            <>
+              Uploading... <SmallLoader />
+            </>
+          ) : isPending ? (
+            <>
+              Updateing...
               <SmallLoader />
-            </div>
-          ) : uploadingImage ? (
-            <div className="flex items-center gap-1">
-              Uploading....
-              <SmallLoader />
-            </div>
+            </>
           ) : (
-            "Add new teacher"
+            "Update"
           )}
         </Button>
       </form>

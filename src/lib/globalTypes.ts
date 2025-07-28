@@ -1,3 +1,5 @@
+import { EditTeacherDataType } from "@/validation/EditTeacherSchema";
+
 export type RoleType = "admin" | "teacher" | "student";
 export type GenderType = "MALE" | "FEMALE";
 export type ErrorResponseType = {
@@ -9,3 +11,25 @@ export type ErrorResponseType = {
 };
 export type ExamStatusType = "SCHEDULED" | "ONGOING" | "ENDED" | "CANCELLED";
 export type ExamQuestionType = "CHOOSE" | "TRUE_FALSE" | "WRITE";
+export type TeacherDataResponse = {
+  image: string;
+
+  courses: {
+    id: string;
+    name: string;
+    department: string;
+    semester: {
+      name: string;
+      isActive: boolean;
+    };
+  }[];
+  schedules: {
+    id: string;
+    day: string;
+    time: string;
+    title: string;
+    hall: string;
+    academicYear: string;
+    teacher: string;
+  }[];
+} & EditTeacherDataType;

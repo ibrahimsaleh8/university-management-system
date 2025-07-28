@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
 import { ChevronsRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import TablePagination from "./TablePagination";
@@ -19,10 +18,12 @@ import { NumberOfTeachers } from "@/variables/Pagination";
 import AddingModel from "../../../_components/forms/AddingModel";
 import SearchInTeacherTable from "./SearchInTeacherTable";
 import { GetTeachers } from "@/lib/GetTeachers";
+import Link from "next/link";
 
 type Props = {
   token: string;
 };
+
 export type TeachersDataType = {
   id: number;
   first_name: string;
@@ -111,9 +112,11 @@ export default function TableShowTeachers({ token }: Props) {
                   <TableCell>{teacher.email}</TableCell>
                   <TableCell>{teacher.qualification}</TableCell>
                   <TableCell>
-                    <Button className="bg-white hover:bg-white text-black">
-                      <ChevronsRight />
-                    </Button>
+                    <Link
+                      href={`/dashboard/admin/teachers/${teacher.teacher_id}`}
+                      className="bg-white flex items-center justify-center rounded-md w-10 h-8 hover:bg-white text-black">
+                      <ChevronsRight className="w-5 h-5" />
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))
