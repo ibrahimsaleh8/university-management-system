@@ -22,6 +22,7 @@ import SectionHead from "./SectionHead";
 import CalendarTable from "@/app/dashboard/_components/Calender/CalenderTable";
 import OperationsDropdown from "@/app/dashboard/_components/OperationsDropdown";
 import TeacherOperations from "./TeacherOperations";
+import TeacherDetailsSkeleton from "./TeacherDetailsSkeleton";
 
 type Props = {
   teacher_id: string;
@@ -43,7 +44,7 @@ export default function ShowTeacherData({ teacher_id, token }: Props) {
   return (
     <div className="flex flex-col gap-3 sm:p-2">
       {isLoading ? (
-        <>Loading</>
+        <TeacherDetailsSkeleton />
       ) : (
         data && (
           <>
@@ -80,11 +81,17 @@ export default function ShowTeacherData({ teacher_id, token }: Props) {
                       type="edit"
                       key={0}
                     />,
-                    <TeacherOperations token={token} type="delete" key={1} />,
+                    <TeacherOperations
+                      teacher_id={data.teacher_id}
+                      token={token}
+                      type="delete"
+                      key={1}
+                    />,
                   ]}
                 />
               </div>
             </div>
+
             {/* Main Data */}
             <SectionHead title="Main Data" />
             <div className="flex items-start md:gap-[1%] gap-3 p-4 flex-wrap">
@@ -141,14 +148,20 @@ export default function ShowTeacherData({ teacher_id, token }: Props) {
                 gridTemplateColumns: "repeat(auto-fit,minmax(280px , 1fr))",
               }}
               className="grid gap-4 p-4">
-              {data.courses.map((course) => (
-                <TeacherCourseCard
-                  courseName={course.name}
-                  department={course.department}
-                  semester={course.semester.name}
-                  key={course.id}
-                />
-              ))}
+              {data.courses.length > 0 ? (
+                data.courses.map((course) => (
+                  <TeacherCourseCard
+                    courseName={course.name}
+                    department={course.department}
+                    semester={course.semester.name}
+                    key={course.id}
+                  />
+                ))
+              ) : (
+                <div className="flex items-center justify-center p-4 text-low-white">
+                  No Courses Found..
+                </div>
+              )}
             </div>
             <SectionHead title="Schedual" />
             <CalendarTable canDelete={false} events={data.schedules} />

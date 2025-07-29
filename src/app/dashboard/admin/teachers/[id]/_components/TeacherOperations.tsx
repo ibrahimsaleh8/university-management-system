@@ -12,12 +12,19 @@ import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import FormEditTeacher from "./FormEditTeacher";
 import { EditTeacherDataType } from "@/validation/EditTeacherSchema";
+import DeleteTeacher from "./DeleteTeacher";
 type Props = {
   type: "edit" | "delete";
   teacherData?: EditTeacherDataType & { image: string };
   token: string;
+  teacher_id?: string;
 };
-export default function TeacherOperations({ type, teacherData, token }: Props) {
+export default function TeacherOperations({
+  type,
+  teacherData,
+  token,
+  teacher_id,
+}: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [isClose, setIsClose] = useState(false);
   useEffect(() => {
@@ -54,6 +61,13 @@ export default function TeacherOperations({ type, teacherData, token }: Props) {
             setIsClose={setIsClose}
             token={token}
             teacherData={teacherData}
+          />
+        )}
+        {type == "delete" && teacher_id && (
+          <DeleteTeacher
+            setIsClose={setIsClose}
+            teacher_id={teacher_id}
+            token={token}
           />
         )}
         <AlertDialogFooter>
