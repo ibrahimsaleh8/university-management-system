@@ -33,3 +33,37 @@ export type TeacherDataResponse = {
     teacher: string;
   }[];
 } & EditTeacherDataType;
+
+export type StudentResponse = {
+  student_id: string;
+  first_name: string;
+  last_name: string;
+  address: string;
+  gender: string;
+  date_of_birth: string;
+  email: string;
+  phone: string;
+  image: string;
+  courses: {
+    id: string;
+    name: string;
+    code: string;
+    status: string;
+    finalGrade: number;
+    enrollmentDate: string;
+  }[];
+  academicYear: string;
+  department: {
+    name: string;
+    code: string;
+  };
+  classes: {
+    name: string;
+    classGrade: number;
+    teacher: {
+      first_name: string;
+      last_name: string;
+      image: string;
+    };
+  }[];
+};

@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import SearchInStudents from "./SearchInStudents";
-import { Button } from "@/components/ui/button";
 import { ChevronsRight } from "lucide-react";
 import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import TablePagination from "../../teachers/_components/TablePagination";
@@ -19,6 +18,7 @@ import GradeFilterationCard from "./GradeFilterationCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import OperationsDropdown from "@/app/dashboard/_components/OperationsDropdown";
 import MoveingToNextGrade from "./MoveingToNextGrade";
+import Link from "next/link";
 
 export type StudentResDataType = {
   id: number;
@@ -140,17 +140,19 @@ export default function ShowStudentsTable({ token }: { token: string }) {
                   <TableCell>{std.email}</TableCell>
                   <TableCell>{std.academicYear.year_label}</TableCell>
                   <TableCell>
-                    <Button className="bg-white hover:bg-white text-black">
+                    <Link
+                      href={`/dashboard/admin/students/${std.student_id}`}
+                      className="bg-white hover:bg-white text-black flex items-center justify-center w-fit px-3 py-1 rounded-md">
                       <ChevronsRight />
-                    </Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
             </>
           ) : (
             <TableRow>
-              <TableCell className="text-center" colSpan={6}>
-                No Result Found
+              <TableCell className="text-center text-low-white" colSpan={6}>
+                No Result Found...
               </TableCell>
             </TableRow>
           )}

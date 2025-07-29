@@ -5,7 +5,7 @@ type Props = {
   content: string;
   icon: ReactNode;
 };
-export default function TeacherParagraphInfo({ content, head, icon }: Props) {
+export default function DetailsParagraphInfo({ content, head, icon }: Props) {
   return (
     <p className="pb-3 border-b border-soft-border flex items-center gap-1 line-clamp-1">
       {icon}
