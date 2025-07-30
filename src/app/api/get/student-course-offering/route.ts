@@ -17,8 +17,30 @@ export async function GET(req: NextRequest) {
         email: authVerify.user.data?.email,
       },
       select: {
+        id: true,
         academicYearId: true,
         departmentId: true,
+        courses: {
+          select: {
+            courseOffering: {
+              select: {
+                course: {
+                  select: {
+                    credit_hours: true,
+                  },
+                },
+              },
+            },
+          },
+          where: {
+            courseOffering: {
+              semester: {
+                isActive: true,
+              },
+            },
+            status: "ACTIVE",
+          },
+        },
       },
     });
     if (!student || !student.academicYearId) {
@@ -27,13 +49,12 @@ export async function GET(req: NextRequest) {
         { status: 404 }
       );
     }
-    console.log("Student Department Id => " + student.departmentId);
-    console.log("Student Yeaer Id => " + student.academicYearId);
     const courseOffering = await prisma.courseOffering.findMany({
       where: {
         academicYearId: student.academicYearId,
         semester: {
           isActive: true,
+          canEnroll: true,
         },
         course: {
           departmentId: student.departmentId,
@@ -54,6 +75,8 @@ export async function GET(req: NextRequest) {
         semester: {
           select: {
             name: true,
+            registerBegin: true,
+            registerDeadline: true,
           },
         },
         course: {
@@ -67,6 +90,11 @@ export async function GET(req: NextRequest) {
                 code: true,
               },
             },
+          },
+        },
+        students: {
+          where: {
+            studentId: student.id,
           },
         },
         _count: {
@@ -83,15 +111,22 @@ export async function GET(req: NextRequest) {
       requiredCourses: course.requiredCourses.map((re) => ({
         name: re.requiredCourse.name,
       })),
-      semester: course.semester.name,
+      semester: course.semester,
       course_name: course.course.name,
       course_code: course.course.code,
       course_isElective: course.course.isElective,
       course_hours: course.course.credit_hours,
       course_department: course.course.department?.code,
       registerd: course._count.students,
+      isEnrolled: course.students.length > 0,
     }));
-    return NextResponse.json(coursesRes, { status: 200 });
+    const studentTotalHours = student.courses
+      .map((c) => c.courseOffering.course.credit_hours)
+      .reduce((f, s) => f + s, 0);
+    return NextResponse.json(
+      { courses: coursesRes, totalRegisterdHours: studentTotalHours },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error => " + error },

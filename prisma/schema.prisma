@@ -96,6 +96,7 @@ model Semester {
   isActive         Boolean          @default(false)
   registerDeadline DateTime
   registerBegin    DateTime
+  canEnroll        Boolean          @default(true)
   courses          CourseOffering[]
 }
 

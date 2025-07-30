@@ -9,14 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MainDomain } from "@/variables/MainDomain";
+import { TotalCreditHoursCanRegister } from "@/variables/TotalCreditHoursCanRegister";
+import { EnrollmentStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import PrintBtn from "./PrintBtn";
 type Props = {
   token: string;
 };
 export type StudentCourseResponse = {
   id: string;
-  status: string;
+  status: EnrollmentStatus;
   finalGrade: number;
   enrollmentDate: string;
   courseName: string;
@@ -56,17 +59,25 @@ export default function ShowStudentCourses({ token }: Props) {
   return (
     <div className="flex flex-col gap-3 ">
       {isPending ? (
-        <TabelLoadingSkeleton coloumnNumber={8} rowNumber={4} />
+        <TabelLoadingSkeleton coloumnNumber={7} rowNumber={4} />
       ) : (
         data && (
           <div className="flex flex-col gap-2">
-            <p className="font-medium text-sm">
-              You Registered{" "}
-              <span className="text-main-text font-bold">
-                {data.map((c) => c.courseHours).reduce((f, s) => f + s, 0)}
-              </span>{" "}
-              of <span className="text-main-text font-bold">16</span> Hours
-            </p>
+            {/* Header */}
+            <div className="flex items-center gap-3 justify-between flex-wrap">
+              <p className="font-medium text-sm">
+                You Registered{" "}
+                <span className="text-main-text font-bold">
+                  {data.map((c) => c.courseHours).reduce((f, s) => f + s, 0)}
+                </span>{" "}
+                of{" "}
+                <span className="text-main-text font-bold">
+                  {TotalCreditHoursCanRegister}
+                </span>{" "}
+                Hours
+              </p>
+              <PrintBtn />
+            </div>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -75,6 +86,7 @@ export default function ShowStudentCourses({ token }: Props) {
                   <TableHead>Department</TableHead>
                   <TableHead>Hours</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Academic Year</TableHead>
                   <TableHead>Grade</TableHead>
                 </TableRow>
               </TableHeader>
@@ -87,17 +99,38 @@ export default function ShowStudentCourses({ token }: Props) {
                         <p>
                           {course.courseName} -[{course.courseCode}]{" "}
                           {course.courseIsElective && (
-                            <span className="text-amber-500">(Elective)</span>
+                            <span className="text-low-white font-medium">
+                              (Elective)
+                            </span>
                           )}
                         </p>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="capitalize">
                         {course.courseDepartment.name} -{" "}
-                        {course.courseDepartment.code}
+                        <span className="uppercase">
+                          {course.courseDepartment.code}
+                        </span>
                       </TableCell>
                       <TableCell>{course.courseHours}</TableCell>
-                      <TableCell>{course.status}</TableCell>
-                      <TableCell>{course.finalGrade}</TableCell>
+                      <TableCell>
+                        {course.status == "ACTIVE" ? (
+                          <p className="px-4 text-xs py-1.5 bg-blue-600 text-white w-fit rounded-md">
+                            Active
+                          </p>
+                        ) : course.status == "COMPLETED" ? (
+                          <p className="px-4 text-xs py-1.5 bg-main-text text-black w-fit rounded-md">
+                            Completed
+                          </p>
+                        ) : (
+                          <p className="px-4  text-xs py-1.5 bg-amber-400 text-black w-fit rounded-md">
+                            Withdrawen
+                          </p>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-xs capitalize">
+                        {course.academicYear}
+                      </TableCell>
+                      <TableCell>{course.finalGrade ?? 0}</TableCell>
                     </TableRow>
                   ))
                 ) : (
