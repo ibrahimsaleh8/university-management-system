@@ -60,7 +60,7 @@ export default function RemoveRegisterCourse({ id, token }: Props) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className="h-8" variant={"destructive"}>
-          <Trash2 className="!w-5 !h-5" />
+          <Trash2 /> Remove
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
