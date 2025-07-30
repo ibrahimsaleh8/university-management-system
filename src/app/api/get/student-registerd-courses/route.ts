@@ -49,6 +49,7 @@ export async function GET(req: NextRequest) {
                       },
                     },
                     isElective: true,
+                    credit_hours: true,
                   },
                 },
               },
@@ -80,6 +81,7 @@ export async function GET(req: NextRequest) {
       courseDepartment: course.courseOffering.course.department,
       courseCode: course.courseOffering.course.code,
       courseIsElective: course.courseOffering.course.isElective,
+      courseHours: course.courseOffering.course.credit_hours,
       semester: course.courseOffering.semester.name,
       academicYear: course.courseOffering.academicYear.year_label,
     }));
