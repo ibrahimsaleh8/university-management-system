@@ -90,6 +90,7 @@ export async function GET(req: NextRequest) {
               announcements: true,
             },
           },
+          wide_image: true,
         },
       });
       if (classe) {
@@ -101,6 +102,7 @@ export async function GET(req: NextRequest) {
       id: cls.id,
       name: cls.name,
       teacher: cls.teacher,
+      wideImage: cls.wide_image,
       course: {
         name: cls.course.course.name,
         department: cls.course.course.department,

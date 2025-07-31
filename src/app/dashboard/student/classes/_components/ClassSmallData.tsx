@@ -7,7 +7,7 @@ type Props = {
 };
 export default function ClassSmallData({ icon, text, number }: Props) {
   return (
-    <p className="text-sm flex items-center gap-1 capitalize">
+    <p className="text-xs flex items-center gap-1 capitalize">
       {icon}
       {text}
       {number != undefined && <>: {number}</>}

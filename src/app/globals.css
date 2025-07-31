@@ -157,6 +157,13 @@
   border-right: 3px solid #ff00;
   animation: loader 0.7s infinite linear;
 }
+.loader-white {
+  border-radius: 50%;
+  border-top: 3px solid white;
+  border-left: 3px solid white;
+  border-right: 3px solid rgba(255, 255, 255, 0);
+  animation: loader 0.7s infinite linear;
+}
 
 @keyframes loader {
   to {

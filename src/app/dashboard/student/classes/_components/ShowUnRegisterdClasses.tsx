@@ -1,19 +1,19 @@
 "use client";
 
 import axios from "axios";
-import UnRegisterdClassCard from "./UnRegisterdClassCard";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import { GenderType } from "@/lib/globalTypes";
-import UnregisterdClassesSkeleton from "./UnregisterdClassesSkeleton";
+import StudentClassCard from "./StudentClassCard";
 
 type Props = {
   token: string;
 };
 
-export type UnregisterdClassesResponse = {
-  id: string;
+export type StudentClassesResponseType = {
+  id: number;
   name: string;
+  wideImage: string;
   teacher: {
     first_name: string;
     last_name: string;
@@ -36,7 +36,7 @@ export type UnregisterdClassesResponse = {
 
 async function getUnregisterdClasses(
   token: string
-): Promise<UnregisterdClassesResponse[]> {
+): Promise<StudentClassesResponseType[]> {
   const res = await axios.get(
     `${MainDomain}/api/get/student-unregisterd-classes`,
     {
@@ -55,7 +55,7 @@ export default function ShowUnRegisterdClasses({ token }: Props) {
   if (isError && error) throw new Error(error.message);
 
   return isLoading ? (
-    <UnregisterdClassesSkeleton />
+    <div className="text-low-white">Loading unregisterd courses ...</div>
   ) : (
     data && data.length > 0 && (
       <div className="flex flex-col gap-3 ">
@@ -65,7 +65,12 @@ export default function ShowUnRegisterdClasses({ token }: Props) {
           <p className="font-medium">Unregistered Classes for joined Courses</p>
         </div>
         {data.map((classData) => (
-          <UnRegisterdClassCard key={classData.id} classData={classData} />
+          <StudentClassCard
+            type="join"
+            key={classData.id}
+            token={token}
+            classData={classData}
+          />
         ))}
       </div>
     )

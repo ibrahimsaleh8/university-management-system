@@ -175,6 +175,7 @@ model Department {
 model Class {
   id               Int            @id @default(autoincrement())
   name             String         @unique
+  wide_image       String         @default("https://res.cloudinary.com/dnriyuqpv/image/upload/v1753974406/students/amrnsz0x3ult9r0kpdxf.webp")
   department       Department     @relation(fields: [departmentId], references: [id])
   departmentId     Int
   course           CourseOffering @relation(fields: [courseOfferingId], references: [id])
