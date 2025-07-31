@@ -185,6 +185,7 @@ model Class {
   courseOfferingId String
   teacherId        Int
   students         studentClass[]
+  created_at       DateTime       @default(now())
 
   @@index([id, name])
 }

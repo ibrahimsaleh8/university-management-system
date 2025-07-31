@@ -58,6 +58,7 @@ export default function ShowStudentCourses({ token }: Props) {
   });
   const tableRef = useRef<HTMLDivElement>(null);
   const { first_name, last_name } = useAppSelector((state) => state.user.user);
+
   const printTable = () => {
     if (!tableRef.current) return;
 
@@ -192,7 +193,9 @@ export default function ShowStudentCourses({ token }: Props) {
                         <TableCell className="text-xs capitalize">
                           {course.academicYear}
                         </TableCell>
-                        <TableCell>{course.finalGrade ?? 0}</TableCell>
+                        <TableCell className="p-4">
+                          {course.finalGrade ?? 0}
+                        </TableCell>
                       </TableRow>
                     ))
                   ) : (
