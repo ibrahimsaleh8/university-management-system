@@ -88,6 +88,7 @@ export async function GET(req: NextRequest) {
             department: {
               select: {
                 code: true,
+                name: true,
               },
             },
           },
@@ -102,6 +103,16 @@ export async function GET(req: NextRequest) {
             students: true,
           },
         },
+        teacher: {
+          select: {
+            first_name: true,
+            last_name: true,
+            email: true,
+            gender: true,
+            image: true,
+          },
+        },
+        hall: true,
       },
     });
 
@@ -116,9 +127,11 @@ export async function GET(req: NextRequest) {
       course_code: course.course.code,
       course_isElective: course.course.isElective,
       course_hours: course.course.credit_hours,
-      course_department: course.course.department?.code,
+      course_department: course.course.department,
       registerd: course._count.students,
       isEnrolled: course.students.length > 0,
+      hall: course.hall,
+      teacher: course.teacher,
     }));
     const studentTotalHours = student.courses
       .map((c) => c.courseOffering.course.credit_hours)

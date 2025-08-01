@@ -21,8 +21,6 @@ export async function GET(req: NextRequest) {
           select: {
             id: true,
             status: true,
-            finalGrade: true,
-            enrollmentDate: true,
             courseOffering: {
               select: {
                 academicYear: {
@@ -52,6 +50,22 @@ export async function GET(req: NextRequest) {
                     credit_hours: true,
                   },
                 },
+                hall: true,
+                courseSchedule: {
+                  select: {
+                    dayOfWeek: true,
+                    startTime: true,
+                  },
+                },
+                teacher: {
+                  select: {
+                    first_name: true,
+                    last_name: true,
+                    gender: true,
+                    image: true,
+                    email: true,
+                  },
+                },
               },
             },
           },
@@ -75,15 +89,15 @@ export async function GET(req: NextRequest) {
     const coursesRes = filterdCourses.map((course) => ({
       id: course.id,
       status: course.status,
-      finalGrade: course.finalGrade,
-      enrollmentDate: course.enrollmentDate,
       courseName: course.courseOffering.course.name,
       courseDepartment: course.courseOffering.course.department,
       courseCode: course.courseOffering.course.code,
       courseIsElective: course.courseOffering.course.isElective,
       courseHours: course.courseOffering.course.credit_hours,
       semester: course.courseOffering.semester.name,
-      academicYear: course.courseOffering.academicYear.year_label,
+      hall: course.courseOffering.hall,
+      courseSchedual: course.courseOffering.courseSchedule[0],
+      teacher: course.courseOffering.teacher,
     }));
     return NextResponse.json(coursesRes, { status: 200 });
   } catch (error) {

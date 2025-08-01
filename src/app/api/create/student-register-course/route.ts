@@ -26,6 +26,18 @@ export async function POST(req: NextRequest) {
       where: {
         email: authVerify.user.data?.email,
       },
+      select: {
+        id: true,
+        courses: {
+          select: {
+            courseOffering: {
+              select: {
+                courseId: true,
+              },
+            },
+          },
+        },
+      },
     });
     if (!student) {
       return NextResponse.json(
@@ -48,6 +60,7 @@ export async function POST(req: NextRequest) {
             name: true,
           },
         },
+        requiredCourses: true,
       },
     });
     if (!course) {
@@ -81,6 +94,24 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Check Required Courses For this Course
+    const missingRequiredCourse = course.requiredCourses.find((required) => {
+      return !student.courses.some(
+        (c) => c.courseOffering.courseId === required.courseId
+      );
+    });
+
+    if (missingRequiredCourse) {
+      return NextResponse.json(
+        {
+          message:
+            "You can't register for this course. You must pass the required course(s) first.",
+        },
+        { status: 400 }
+      );
+    }
+
     await prisma.studentEnrollment.create({
       data: {
         studentId: student.id,
