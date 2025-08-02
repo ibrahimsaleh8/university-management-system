@@ -64,7 +64,7 @@ export default function ShowStudentCourses({ token }: Props) {
           <p className="text-xl font-bold">
             Registered Classes ({data.length})
           </p>
-          <p className="bg-[#1C2409] text-main-text w-fit px-3 py-0.5 rounded-full text-sm">
+          <p className="bg-glass-main-text text-main-text w-fit px-3 py-0.5 rounded-full text-sm">
             {data.map((c) => c.courseHours).reduce((f, s) => f + s, 0)} Hours
           </p>
         </div>

@@ -8,6 +8,8 @@ import SmallClassInfo from "./SmallClassInfo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MdOutlineAssignment } from "react-icons/md";
 import { PiStudent } from "react-icons/pi";
+import SkeletonLoadingMainData from "./SkeletonLoadingMainData";
+import ShowStudentAnnouncments from "./ShowStudentAnnouncments";
 type Props = {
   token: string;
   name: string;
@@ -60,7 +62,7 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
   });
   if (error && isError) throw new Error(error.message);
   return isLoading ? (
-    <>Loading</>
+    <SkeletonLoadingMainData />
   ) : (
     data && (
       <div className="flex flex-col gap-2">
@@ -105,7 +107,7 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
 
         {/* Tabs */}
         <Tabs
-          defaultValue="account"
+          defaultValue="announcments"
           className="w-full flex items-center justify-center">
           <TabsList className="bg-Second-black flex-wrap w-fit h-fit">
             <TabsTrigger
@@ -127,8 +129,9 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
               Students ({data.count.students})
             </TabsTrigger>
           </TabsList>
-          <TabsContent className=" w-full h-full" value="announcments">
-            Make changes to your account here.
+
+          <TabsContent className="w-full h-full" value="announcments">
+            <ShowStudentAnnouncments name={name} token={token} />
           </TabsContent>
           <TabsContent value="assignments">
             Change your password here.

@@ -56,11 +56,27 @@ export async function GET(
             code: true,
           },
         },
+        students: {
+          select: {
+            studentId: true,
+          },
+        },
       },
     });
     if (!studentClass) {
       return NextResponse.json({ message: "Class Not Found" }, { status: 404 });
     }
+    if (
+      studentClass.students.findIndex(
+        (std) => std.studentId == authVerify.user.data?.id
+      ) == -1
+    ) {
+      return NextResponse.json(
+        { message: "You are not member of this class" },
+        { status: 400 }
+      );
+    }
+
     const resData = {
       id: studentClass.id,
       name: studentClass.name,
