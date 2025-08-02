@@ -32,19 +32,6 @@ export async function GET(
             image: true,
           },
         },
-        announcements: {
-          select: {
-            id: true,
-            content: true,
-            title: true,
-            created_at: true,
-            _count: {
-              select: {
-                announcementReplies: true,
-              },
-            },
-          },
-        },
         course: {
           select: {
             course: {
@@ -78,13 +65,6 @@ export async function GET(
       id: studentClass.id,
       name: studentClass.name,
       teacher: studentClass.teacher,
-      announcements: studentClass.announcements.map((ann) => ({
-        id: ann.id,
-        content: ann.content,
-        title: ann.title,
-        created_at: ann.created_at,
-        replies: ann._count.announcementReplies,
-      })),
       course: studentClass.course.course,
       department: studentClass.department,
       count: {
