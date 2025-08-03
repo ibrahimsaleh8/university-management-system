@@ -20,6 +20,7 @@ import { useMemo, useRef } from "react";
 import AnnouncmentReplyCard from "@/app/dashboard/_components/AnnouncmentReplyCard";
 import CreateAnnouncmentReply from "./CreateAnnouncmentReply";
 import { ReplyDataType } from "@/app/dashboard/teacher/classes/_components/ShowAnnouncementReplies";
+import DeleteReplyBtn from "@/app/dashboard/teacher/classes/_components/DeleteReplyBtn";
 
 type Props = {
   repliesNumber: number;
@@ -70,7 +71,7 @@ export default function StudentAnnouncmentReplies({
           <CreateAnnouncmentReply token={token} announcmentId={announcmentId} />
 
           {/* Replies */}
-          <ScrollArea className="p-2 rounded-sm h-96">
+          <ScrollArea className="p-2 rounded-sm max-h-96">
             {isLoading ? (
               <div className="w-full h-80 flex items-center justify-center text-low-white">
                 <p className="pt-6 flex items-center gap-1">
@@ -82,7 +83,16 @@ export default function StudentAnnouncmentReplies({
               (data.length > 0 ? (
                 data.map((reply) => (
                   <div key={reply.id} className="mb-2">
-                    <AnnouncmentReplyCard {...reply} />
+                    <AnnouncmentReplyCard
+                      deleteReplyBtn={
+                        <DeleteReplyBtn
+                          announcmentId={announcmentId}
+                          replyId={reply.id}
+                          token={token}
+                        />
+                      }
+                      {...reply}
+                    />
                   </div>
                 ))
               ) : (

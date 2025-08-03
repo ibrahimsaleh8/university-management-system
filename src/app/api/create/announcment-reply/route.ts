@@ -1,4 +1,4 @@
-import { VerifyUserFromToken } from "@/lib/VerifyUserFromToken";
+import { authorizeUser } from "@/lib/AuthGuard/AuthorizationGuadr";
 import {
   announcementReplyDataType,
   announcementReplySchema,
@@ -8,21 +8,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const authHeader = req.headers.get("Authorization") as string;
-    if (!authHeader) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-    const token = authHeader.startsWith("Bearer ")
-      ? authHeader.split(" ")[1]
-      : null;
-
-    if (!token) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-    const verifyUser = VerifyUserFromToken(token);
-    if (!verifyUser) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
+    // Start Authorization Guard
+    const { isAuthorized, response, user } = await authorizeUser(req);
+    if (!isAuthorized || !user) return response;
+    // End Authorization Guard
 
     const rplyData = (await req.json()) as announcementReplyDataType;
 
@@ -59,7 +48,7 @@ export async function POST(req: NextRequest) {
     }
 
     const isExistInClassRoom = announcement.class.students.some(
-      (std) => std.studentId == verifyUser.userId
+      (std) => std.studentId == user.userId
     );
     if (!isExistInClassRoom) {
       return NextResponse.json(
@@ -71,7 +60,7 @@ export async function POST(req: NextRequest) {
       data: {
         content: rplyData.content,
         announcementId: rplyData.announcementId,
-        studentId: verifyUser.userId,
+        studentId: user.userId,
       },
     });
     return NextResponse.json(
