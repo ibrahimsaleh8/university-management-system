@@ -36,7 +36,7 @@ export default function ShowStudentAnnouncments({ name, token }: Props) {
     queryKey: ["student_class_announcments", name],
     queryFn: () => getAnnouncments(name, token),
   });
-  console.log(announcments);
+
   return isLoading ? (
     <div className="flex flex-col gap-3 items-center">
       <Skeleton className="sm:w-[45rem] w-full h-72" />

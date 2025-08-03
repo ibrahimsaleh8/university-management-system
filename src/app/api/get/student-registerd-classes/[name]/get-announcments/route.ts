@@ -47,6 +47,10 @@ export async function GET(
           },
         },
       },
+
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     const dataRes = announcments.map((ann) => ({

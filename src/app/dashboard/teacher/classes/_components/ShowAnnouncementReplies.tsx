@@ -27,6 +27,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export type ReplyDataType = {
   id: string;
   student: {
+    stdId: number;
     name: string;
     image: string;
   };

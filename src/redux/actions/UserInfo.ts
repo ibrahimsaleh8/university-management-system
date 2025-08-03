@@ -5,6 +5,7 @@ export type SharedUserInfo = {
   first_name: string;
   last_name: string;
   role: string;
+  image: string;
 };
 type userInfoInitialStateType = {
   user: SharedUserInfo;
@@ -17,6 +18,7 @@ const initialState: userInfoInitialStateType = {
     first_name: "",
     last_name: "",
     role: "",
+    image: "",
   },
   isLoggedin: false,
 };
@@ -41,6 +43,7 @@ export const userSlice = createSlice({
         first_name: "",
         last_name: "",
         role: "",
+        image: "",
       };
     },
   },
