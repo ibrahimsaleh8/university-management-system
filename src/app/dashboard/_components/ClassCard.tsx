@@ -46,7 +46,7 @@ export default function ClassCard({
 
         <Link
           href={`/dashboard/teacher/classes/${name}`}
-          className="px-5 hover:pr-3 duration-300 w-full md:w-[15rem] lg:w-fit  text-sm py-1 flex items-center gap-2 ml-auto border border-main-text text-black bg-main-text font-medium rounded-sm">
+          className="px-5 hover:pr-3 duration-300 w-full md:w-[16rem] lg:w-40 text-sm py-1 flex items-center gap-2 ml-auto border border-main-text text-black bg-main-text font-medium rounded-sm">
           Go to Class
           <ChevronsRight className="ml-auto" />
         </Link>
