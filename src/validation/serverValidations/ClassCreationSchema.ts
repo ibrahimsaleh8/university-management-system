@@ -7,9 +7,7 @@ export const classCreationSchema = z.object({
     })
     .min(3, { message: "Name should be more than 3" })
     .max(20, { message: "Name should be less than 20" }),
-  departmentId: z.number({
-    required_error: "Department  is required",
-  }),
+
   teacherId: z.number({
     required_error: "Teacher is required",
   }),

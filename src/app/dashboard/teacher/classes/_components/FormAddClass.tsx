@@ -1,6 +1,5 @@
 "use client";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
-import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
 import {
   classCreationDataType,
   classCreationSchema,
@@ -67,15 +66,6 @@ export default function FormAddClass({ token, setClose }: Props) {
     }
   }, [setValue, teacherId]);
 
-  // Api Calls
-  const {
-    error: errorDep,
-    departments,
-    isError: isErrorDep,
-    isLoading,
-  } = GetDepartmentsQuery();
-  if (errorDep && isErrorDep) throw new Error(errorDep.name);
-
   // Get Courses
   const {
     data: courses,
@@ -129,31 +119,32 @@ export default function FormAddClass({ token, setClose }: Props) {
           register={register("name")}
           type="text"
         />
-        {/* Departments */}
-        {isLoading && !departments ? (
+
+        {/* Courses */}
+        {loadingCourses && !courses ? (
           <>
             <Skeleton className="w-full h-10 rounded-md" />
           </>
         ) : (
-          departments && (
+          courses && (
             <div className="flex flex-col gap-1 w-full">
-              <label className="text-sm text-left" htmlFor="department">
-                Department:
+              <label className="text-sm text-left" htmlFor="course">
+                Course:
               </label>
-              <Select onValueChange={(e) => setValue("departmentId", +e)}>
-                <SelectTrigger id="department" className="w-full">
-                  <SelectValue placeholder="Department" />
+              <Select onValueChange={(e) => setValue("courseOfferingId", e)}>
+                <SelectTrigger id="course" className="w-full">
+                  <SelectValue placeholder="Course" />
                 </SelectTrigger>
                 <SelectContent>
-                  {departments.length > 0 ? (
-                    departments.map((dep) => (
-                      <SelectItem key={dep.id} value={`${dep.id}`}>
-                        {dep.name}
+                  {courses.length > 0 ? (
+                    courses.map((cours) => (
+                      <SelectItem key={cours.id} value={cours.id}>
+                        {cours.course}
                       </SelectItem>
                     ))
                   ) : (
                     <SelectItem value="none" disabled>
-                      No Departments Found
+                      No Courses Found
                     </SelectItem>
                   )}
                 </SelectContent>
@@ -162,41 +153,7 @@ export default function FormAddClass({ token, setClose }: Props) {
           )
         )}
       </div>
-      <ErrorMessage error1={errors.name} error2={errors.departmentId} />
-
-      {/* Courses */}
-      {loadingCourses && !courses ? (
-        <>
-          <Skeleton className="w-full h-10 rounded-md" />
-        </>
-      ) : (
-        courses && (
-          <div className="flex flex-col gap-1 w-full">
-            <label className="text-sm text-left" htmlFor="course">
-              Course:
-            </label>
-            <Select onValueChange={(e) => setValue("courseOfferingId", e)}>
-              <SelectTrigger id="course" className="w-full">
-                <SelectValue placeholder="Course" />
-              </SelectTrigger>
-              <SelectContent>
-                {courses.length > 0 ? (
-                  courses.map((cours) => (
-                    <SelectItem key={cours.id} value={cours.id}>
-                      {cours.course}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <SelectItem value="none" disabled>
-                    No Courses Found
-                  </SelectItem>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-        )
-      )}
-      <ErrorMessage error1={errors.courseOfferingId} />
+      <ErrorMessage error1={errors.name} error2={errors.courseOfferingId} />
 
       <Button disabled={isPending} variant={"mainWithShadow"} type="submit">
         {isPending ? (

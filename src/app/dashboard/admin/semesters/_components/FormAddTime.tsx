@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GetAllCoursesOffering } from "@/lib/GetAllCoursesOffering";
-import { GetTeachers } from "@/lib/GetTeachers";
+import { GetCoursesTimes } from "@/lib/GetCoursesTimes";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import {
   courseTimeDataType,
@@ -76,15 +76,6 @@ export default function FormAddTime({ setClose, token }: Props) {
     console.log(data);
   };
 
-  //   ******* Get Teacher API *******
-  const {
-    error: errorTeacher,
-    isError: isErrorTeacher,
-    isLoading: teacherLoading,
-    teachers,
-  } = GetTeachers(0);
-  if (errorTeacher && isErrorTeacher) throw new Error(errorTeacher.message);
-
   //   ******* Get Courses Offering API *******
   const {
     coursesOffers,
@@ -96,6 +87,14 @@ export default function FormAddTime({ setClose, token }: Props) {
   if (isErrorCourseOffering && courseOfferingError)
     throw new Error(courseOfferingError.message);
 
+  // Get Times Already Added
+  const {
+    error: timesError,
+    isError: timesIsError,
+    times,
+  } = GetCoursesTimes(-1);
+  if (timesIsError && timesError) throw new Error(timesError.message);
+  console.log("times", times);
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       {/* Days And Times */}
@@ -146,42 +145,12 @@ export default function FormAddTime({ setClose, token }: Props) {
       <ErrorMessage error1={errors.dayOfWeek} error2={errors.startTime} />
       {/* Teachers And Courses */}
       <div className="flex items-center gap-2 flex-col sm:flex-row">
-        {/* Teachers */}
-        {teacherLoading && !teachers ? (
-          <Skeleton className="w-full rounded-md h-10" />
-        ) : (
-          teachers && (
-            <div className="w-full flex flex-col gap-1">
-              <label className="text-sm" htmlFor="teacher">
-                Teacher:
-              </label>
-
-              <Select onValueChange={(e) => setValue("teacherId", +e)}>
-                <SelectTrigger id="teacher" className="w-full">
-                  <SelectValue placeholder="Teachers" />
-                </SelectTrigger>
-                <SelectContent>
-                  {teachers.length > 0 ? (
-                    teachers.map((teacher) => (
-                      <SelectItem
-                        key={teacher.id}
-                        value={`${teacher.id}`}>{`${teacher.first_name} ${teacher.last_name}`}</SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem disabled value="none">
-                      No Teachers Found
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-          )
-        )}
         {/* Courses */}
         {loadingCourseOffering && !coursesOffers ? (
           <Skeleton className="w-full rounded-md h-10" />
         ) : (
-          coursesOffers && (
+          coursesOffers &&
+          times && (
             <div className="w-full flex flex-col gap-1">
               <label className="text-sm" htmlFor="courses">
                 Courses:
@@ -192,15 +161,22 @@ export default function FormAddTime({ setClose, token }: Props) {
                   <SelectValue placeholder="Courses" />
                 </SelectTrigger>
                 <SelectContent>
-                  {coursesOffers.length > 0 ? (
-                    coursesOffers.map((course) => (
-                      <SelectItem
-                        className="capitalize"
-                        key={course.id}
-                        value={course.id}>
-                        {course.course.name}
-                      </SelectItem>
-                    ))
+                  {coursesOffers.length > 0 &&
+                  coursesOffers.filter(
+                    (cf) => !times.some((t) => t.title == cf.course.name)
+                  ).length > 0 ? (
+                    coursesOffers
+                      .filter(
+                        (cf) => !times.some((t) => t.title == cf.course.name)
+                      )
+                      .map((course) => (
+                        <SelectItem
+                          className="capitalize"
+                          key={course.id}
+                          value={course.id}>
+                          {course.course.name}
+                        </SelectItem>
+                      ))
                   ) : (
                     <SelectItem disabled value="none">
                       No Courses Found
@@ -212,10 +188,7 @@ export default function FormAddTime({ setClose, token }: Props) {
           )
         )}
       </div>
-      <ErrorMessage
-        error1={errors.teacherId}
-        error2={errors.courseOfferingId}
-      />
+      <ErrorMessage error2={errors.courseOfferingId} />
       <Button disabled={isPending} variant={"mainWithShadow"} className="mt-2">
         {isPending ? (
           <>

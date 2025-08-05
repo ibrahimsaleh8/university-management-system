@@ -31,6 +31,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SmallLoader from "@/components/Global/SmallLoader";
 import GlobalToast from "@/components/Global/GlobalToast";
 import { ErrorResponseType } from "@/lib/globalTypes";
+import { GetAllCoursesOffering } from "@/lib/GetAllCoursesOffering";
 
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
@@ -130,6 +131,11 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
   } = GetAllYears();
   if (isErrorYears && errorYears) throw new Error(errorYears.message);
 
+  // Course Offering Already Exist
+  const { coursesOffers, error, isError } = GetAllCoursesOffering();
+
+  if (isError && error) throw new Error(error.message);
+
   return (
     <form
       className="flex flex-col gap-3"
@@ -147,7 +153,8 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
         {loadingCourses && !courses ? (
           <Skeleton className="h-10 rounded-md w-full" />
         ) : (
-          courses && (
+          courses &&
+          coursesOffers && (
             <div className="flex flex-col gap-1 w-full text-left">
               <label htmlFor="courses" className="text-sm">
                 Courses:
@@ -157,12 +164,21 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                   <SelectValue placeholder="Courses" />
                 </SelectTrigger>
                 <SelectContent>
-                  {courses.length > 0 ? (
-                    courses.map((course) => (
-                      <SelectItem
-                        key={course.id}
-                        value={`${course.id}`}>{`${course.name}`}</SelectItem>
-                    ))
+                  {courses.length > 0 &&
+                  courses.filter(
+                    (c) =>
+                      !coursesOffers.some((cf) => cf.course.name === c.name)
+                  ).length > 0 ? (
+                    courses
+                      .filter(
+                        (c) =>
+                          !coursesOffers.some((cf) => cf.course.name === c.name)
+                      )
+                      .map((course) => (
+                        <SelectItem
+                          key={course.id}
+                          value={`${course.id}`}>{`${course.name}`}</SelectItem>
+                      ))
                   ) : (
                     <SelectItem disabled value="none">
                       No Courses Found
@@ -257,11 +273,13 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                 </SelectTrigger>
                 <SelectContent>
                   {years.length > 0 ? (
-                    years.map((year) => (
-                      <SelectItem
-                        key={year.id}
-                        value={`${year.id}`}>{`${year.year_label}`}</SelectItem>
-                    ))
+                    years
+                      .filter((y) => y.level_number != 0)
+                      .map((year) => (
+                        <SelectItem
+                          key={year.id}
+                          value={`${year.id}`}>{`${year.year_label}`}</SelectItem>
+                      ))
                   ) : (
                     <SelectItem disabled value="none">
                       No Academic Years Found

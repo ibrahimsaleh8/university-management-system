@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
             CourseSchedule: { select: { dayOfWeek: true, startTime: true } },
           },
         },
+        teacherId: true,
       },
     });
 
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
         dayOfWeek: courseTimeData.dayOfWeek,
         startTime: courseTimeData.startTime,
         courseOfferingId: courseTimeData.courseOfferingId,
-        teacherId: courseTimeData.teacherId,
+        teacherId: courseOffering.teacherId,
         academicYearId: academicYearIdValue,
       },
     });

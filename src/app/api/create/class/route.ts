@@ -39,17 +39,23 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
-    const isDepartmentExist = await prisma.department.findFirst({
+    const isCourseExist = await prisma.courseOffering.findUnique({
       where: {
-        id: classData.departmentId,
+        id: classData.courseOfferingId,
+      },
+      select: {
+        id: true,
+        course: {
+          select: {
+            departmentId: true,
+          },
+        },
       },
     });
-
-    if (!isDepartmentExist) {
+    if (!isCourseExist || !isCourseExist.course.departmentId) {
       return NextResponse.json(
-        { message: "Department not found" },
-        { status: 400 }
+        { message: "Course not found" },
+        { status: 404 }
       );
     }
 
@@ -57,7 +63,7 @@ export async function POST(req: NextRequest) {
     await prisma.class.create({
       data: {
         name: classData.name,
-        departmentId: classData.departmentId,
+        departmentId: isCourseExist.course.departmentId,
         teacherId: classData.teacherId,
         courseOfferingId: classData.courseOfferingId,
       },

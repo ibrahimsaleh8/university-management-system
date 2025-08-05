@@ -15,9 +15,6 @@ export const courseTimeSchema = z.object({
   courseOfferingId: z.string({
     required_error: "Course is required",
   }),
-  teacherId: z.number({
-    required_error: "Teacher is required",
-  }),
 });
 
 export type courseTimeDataType = z.infer<typeof courseTimeSchema>;

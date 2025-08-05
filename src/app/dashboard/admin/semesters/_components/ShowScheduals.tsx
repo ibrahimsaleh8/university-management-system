@@ -1,7 +1,5 @@
 "use client";
-import CalendarTable, {
-  EventDataType,
-} from "@/app/dashboard/_components/Calender/CalenderTable";
+import CalendarTable from "@/app/dashboard/_components/Calender/CalenderTable";
 import AddingModel from "@/app/dashboard/_components/forms/AddingModel";
 import GlobalToast from "@/components/Global/GlobalToast";
 import {
@@ -13,18 +11,12 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GetAllYears } from "@/lib/GetAllYears";
+import { GetCoursesTimes } from "@/lib/GetCoursesTimes";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-
-async function getSchedualsTime(year: number): Promise<EventDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/course-time?academicYear=${year}`
-  );
-  return res.data;
-}
 
 async function deleteSchedualTime(id: string, token: string) {
   await axios.delete(`${MainDomain}/api/delete/course-time/${id}`, {
@@ -70,15 +62,7 @@ export default function ShowScheduals({ token }: { token: string }) {
 
   //  ****** Get Schedual Times Api ******
 
-  const {
-    data: times,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["get_schedual_times", gradeNumber],
-    queryFn: () => getSchedualsTime(gradeNumber),
-  });
+  const { error, isError, isLoading, times } = GetCoursesTimes(gradeNumber);
   if (isError && error) throw new Error(error.message);
 
   return (
@@ -101,14 +85,16 @@ export default function ShowScheduals({ token }: { token: string }) {
                 </SelectTrigger>
                 <SelectContent>
                   {years.length > 0 ? (
-                    years.map((year) => (
-                      <SelectItem
-                        className="capitalize"
-                        key={year.id}
-                        value={`${year.level_number}`}>
-                        {year.year_label}
-                      </SelectItem>
-                    ))
+                    years
+                      .filter((y) => y.level_number != 0)
+                      .map((year) => (
+                        <SelectItem
+                          className="capitalize"
+                          key={year.id}
+                          value={`${year.level_number}`}>
+                          {year.year_label}
+                        </SelectItem>
+                      ))
                   ) : (
                     <SelectItem className="capitalize" disabled value="none">
                       no years found
