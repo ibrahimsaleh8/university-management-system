@@ -56,23 +56,25 @@ export default function ShowUnRegisterdClasses({ token }: Props) {
 
   return isLoading ? (
     <div className="text-low-white">Loading unregisterd courses ...</div>
-  ) : (
-    data && data.length > 0 && (
-      <div className="flex flex-col gap-3 ">
-        {/* Header */}
+  ) : data && data.length > 0 ? (
+    <div className="flex flex-col gap-3 ">
+      {/* Header */}
 
-        <div>
-          <p className="font-medium">Unregistered Classes for joined Courses</p>
-        </div>
-        {data.map((classData) => (
-          <StudentClassCard
-            type="join"
-            key={classData.id}
-            token={token}
-            classData={classData}
-          />
-        ))}
+      <div>
+        <p className="font-medium">Unregistered Classes for joined Courses</p>
       </div>
-    )
+      {data.map((classData) => (
+        <StudentClassCard
+          type="join"
+          key={classData.id}
+          token={token}
+          classData={classData}
+        />
+      ))}
+    </div>
+  ) : (
+    <div className="w-full h-32 bg-Second-black rounded-2xl flex items-center justify-center text-low-white">
+      No Unregistered Classes Found...{" "}
+    </div>
   );
 }

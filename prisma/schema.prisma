@@ -300,15 +300,21 @@ model Assignment {
 }
 
 model AssignmentSubmission {
-  id           String     @id @default(cuid())
+  id           String                     @id @default(cuid())
   external_url String
-  submited_at  DateTime   @default(now())
+  submited_at  DateTime                   @default(now())
   grade        Float?
   feedback     String?
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignment   Assignment                 @relation(fields: [assignmentId], references: [id])
   assignmentId String
-  student      Student    @relation(fields: [studentId], references: [id])
+  student      Student                    @relation(fields: [studentId], references: [id])
   studentId    Int
+  status       AssignmentSubmissionStatus @default(SUBMITTED)
+}
+
+enum AssignmentSubmissionStatus {
+  SUBMITTED
+  COMPLETED
 }
 
 // End Assignment Schema

@@ -10,6 +10,7 @@ import { MdOutlineAssignment } from "react-icons/md";
 import { PiStudent } from "react-icons/pi";
 import SkeletonLoadingMainData from "./SkeletonLoadingMainData";
 import ShowStudentAnnouncments from "./ShowStudentAnnouncments";
+import ShowStudentAssignments from "./ShowStudentAssignments";
 type Props = {
   token: string;
   name: string;
@@ -133,8 +134,8 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
           <TabsContent className="w-full h-full" value="announcments">
             <ShowStudentAnnouncments name={name} token={token} />
           </TabsContent>
-          <TabsContent value="assignments">
-            Change your password here.
+          <TabsContent className="w-full h-full" value="assignments">
+            <ShowStudentAssignments name={name} token={token} />
           </TabsContent>
         </Tabs>
       </div>

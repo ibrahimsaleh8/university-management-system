@@ -40,7 +40,6 @@ export default function ClassAssignments({ classId, token, className }: Props) {
     queryKey: ["class_assignments", className],
     queryFn: () => getAllAssignements(className),
   });
-  console.log(assignments);
   if (isError && error) throw new Error(error.message);
   return (
     <div className="flex flex-col gap-3">

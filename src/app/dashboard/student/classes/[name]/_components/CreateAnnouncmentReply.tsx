@@ -1,8 +1,8 @@
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
+import TextAreaWithEmoji from "@/app/dashboard/_components/messages/TextAreaWithEmoji";
 import GlobalToast from "@/components/Global/GlobalToast";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import { useAppSelector } from "@/redux/hooks";
 import {
@@ -13,6 +13,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
@@ -35,11 +36,11 @@ export default function CreateAnnouncmentReply({
   token,
 }: Props) {
   const queryClient = useQueryClient();
+  const [text, setText] = useState("");
   const { image, first_name, last_name, email } = useAppSelector(
     (state) => state.user.user
   );
   const {
-    register,
     handleSubmit,
     setValue,
     formState: { errors },
@@ -50,6 +51,7 @@ export default function CreateAnnouncmentReply({
       announcementId: announcmentId,
     },
   });
+
   const { isPending, mutate } = useMutation({
     mutationFn: (data: {
       replyData: announcementReplyDataType;
@@ -63,7 +65,7 @@ export default function CreateAnnouncmentReply({
         icon: "success",
         title: "Reply has been created success",
       });
-      setValue("content", "");
+      setText("");
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({
@@ -72,9 +74,11 @@ export default function CreateAnnouncmentReply({
       });
     },
   });
+  useEffect(() => {
+    setValue("content", text);
+  }, [setValue, text]);
 
   const submitNewReply: SubmitHandler<announcementReplyDataType> = (data) => {
-    console.log(data);
     mutate({
       replyData: data,
       token,
@@ -101,10 +105,12 @@ export default function CreateAnnouncmentReply({
         </div>
 
         {/* Input */}
-        <Textarea
-          {...register("content")}
-          className="resize-none w-full max-h-48"
-          placeholder="Comment"
+        <TextAreaWithEmoji
+          setFinalText={setText}
+          text={text}
+          fullWidth={true}
+          bgColor="bg-Second-black"
+          maxHeight="h-28"
         />
       </div>
       <ErrorMessage error1={errors.content} error2={errors.announcementId} />

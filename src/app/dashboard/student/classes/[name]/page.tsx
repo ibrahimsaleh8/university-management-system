@@ -1,6 +1,7 @@
 import React from "react";
 import ShowStudentClassInfo from "./_components/ShowStudentClassInfo";
 import { cookies } from "next/headers";
+import BackButton from "@/app/dashboard/_components/forms/BackButton";
 
 export default async function StudentClassByNamePage({
   params,
@@ -11,7 +12,8 @@ export default async function StudentClassByNamePage({
   const { name } = await await params;
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
+      <BackButton withText={false} />
       <ShowStudentClassInfo name={name} token={token} />
     </div>
   );
