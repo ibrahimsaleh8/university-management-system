@@ -48,7 +48,26 @@ export async function GET(
         },
       },
     });
-    return NextResponse.json(assignments, { status: 200 });
+    const assignmentRes = assignments.map((assig) => ({
+      id: assig.id,
+      title: assig.title,
+      description: assig.description,
+      deadline: assig.deadline,
+      external_url: assig.external_url,
+      created_at: assig.created_at,
+      isSubmited: assig.assignmentSubmission.length > 0,
+      isFinished: new Date() > assig.deadline,
+      submissionDetails:
+        assig.assignmentSubmission.length > 0
+          ? {
+              id: assig.assignmentSubmission[0].id,
+              status: assig.assignmentSubmission[0].status,
+              grade: assig.assignmentSubmission[0].grade,
+              submited_at: assig.assignmentSubmission[0].submited_at,
+            }
+          : null,
+    }));
+    return NextResponse.json(assignmentRes, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error => " + error },
