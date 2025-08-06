@@ -1,11 +1,9 @@
 import { MainDomain } from "@/variables/MainDomain";
 import axios from "axios";
-import ExamStatusPadge from "./ExamStatusPadge";
-import { timeConverter } from "@/lib/TimeConverter";
-import { ClockArrowDown, ClockArrowUp, Star, Timer } from "lucide-react";
-import ExamSmallParagraph from "./ExamSmallParagraph";
-import { Button } from "@/components/ui/button";
-import { FaLongArrowAltRight } from "react-icons/fa";
+import StudentExamCard from "./StudentExamCard";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ExamStatusType } from "@/lib/globalTypes";
 
 type Props = {
   name: string;
@@ -19,7 +17,7 @@ export type StudentExamResponse = {
   endDate: Date;
   totalMark: number;
   startDate: Date;
-  status: string;
+  status: ExamStatusType;
   questions: number;
 };
 
@@ -37,48 +35,39 @@ async function getExams(
   );
   return res.data;
 }
-export default function ShowStudentsExam({}: Props) {
-  return (
-    <div className="flex gap-3">
-      <div className="sm:w-96 w-full black-box-shadow max-w-full p-3 border border-soft-border bg-card-bg rounded-2xl flex flex-col gap-2">
-        {/* Top */}
-        <div className="flex items-center gap-2 justify-between flex-wrap">
-          <ExamStatusPadge status="SCHEDULED" />
-          <p className="font-bold">91/100</p>
-        </div>
-
-        {/* Title */}
-        <p className="text-main-text font-bold text-lg">First Exam</p>
-
-        {/* Small Info */}
-        <div className="flex flex-col gap-2">
-          <ExamSmallParagraph
-            icon={<ClockArrowUp className="w-4 h-4" />}
-            title={"Starting on : " + timeConverter("2025-07-29T15:27:30.933Z")}
-          />
-          <ExamSmallParagraph
-            icon={<ClockArrowDown className="w-4 h-4" />}
-            title={"Ending on : " + timeConverter("2025-07-29T15:27:30.933Z")}
-          />
-          <ExamSmallParagraph
-            icon={<Timer className="w-4 h-4" />}
-            title={`Duration : ${10} Minutes`}
-          />
-          <ExamSmallParagraph
-            icon={<Star className="w-4 h-4" />}
-            title={`Total Marks : ${10} Degrees`}
-          />
-        </div>
-
-        {/* Bottom */}
-        <div className="mt-auto bg-[#181C22] p-4">
-          <Button className="w-full" variant={"mainWithShadow"}>
-            Join Exam
-            <FaLongArrowAltRight className="w-4 h-4" />
-
-          </Button>
-        </div>
-      </div>
+export default function ShowStudentsExam({ name, token }: Props) {
+  const { error, isError, isLoading, data } = useQuery({
+    queryKey: ["student_class_exams", name],
+    queryFn: () => getExams(name, token),
+  });
+  if (error && isError) throw new Error(error.message);
+  console.log(data);
+  return isLoading ? (
+    <div
+      style={{
+        gridTemplateColumns: "repeat(auto-fit,minmax(330px , 1fr))",
+      }}
+      className="grid gap-4">
+      <Skeleton className="w-full rounded-2xl h-56" />
+      <Skeleton className="w-full rounded-2xl h-56" />
+      <Skeleton className="w-full rounded-2xl h-56" />
+      <Skeleton className="w-full rounded-2xl h-56" />
     </div>
+  ) : (
+    data && (
+      <div
+        style={{
+          gridTemplateColumns: "repeat(auto-fit,minmax(330px , 1fr))",
+        }}
+        className="grid gap-4">
+        {data.length > 0 ? (
+          data.map((exam) => <StudentExamCard examData={exam} key={exam.id} />)
+        ) : (
+          <div className="w-full h-32 rounded-2xl bg-Second-black flex items-center justify-center text-low-white">
+            No Exams Found ...
+          </div>
+        )}
+      </div>
+    )
   );
 }
