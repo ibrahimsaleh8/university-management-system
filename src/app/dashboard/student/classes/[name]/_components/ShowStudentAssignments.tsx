@@ -4,6 +4,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import StudentAssignment from "./StudentAssignment";
+import { Skeleton } from "@/components/ui/skeleton";
 export type assignmentSubmission = {
   id: string;
   submited_at: string;
@@ -49,7 +50,9 @@ export default function ShowStudentAssignments({ name, token }: Props) {
   console.log(data);
 
   return isLoading ? (
-    <>Loading</>
+    <div className="flex flex-col gap-3 items-center">
+      <Skeleton className="sm:w-[45rem] w-full max-w-full h-96" />
+    </div>
   ) : data && data.length > 0 ? (
     <div className="flex flex-col gap-3 items-center">
       {data.map((assignment) => (

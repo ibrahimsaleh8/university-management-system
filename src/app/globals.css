@@ -51,6 +51,11 @@
   --color-soft-border: #232323;
   --color-low-black: #0f0f0f;
   --color-glass-main-text: #1c2409;
+  --color-glass-red: #351818;
+  --color-glass-yellow: #353517;
+  --color-glass-orange: #483511;
+  --color-glass-blue: #0f2046;
+  --color-glass-green: #1d2f1d;
 }
 
 :root {

@@ -11,6 +11,7 @@ import { PiStudent } from "react-icons/pi";
 import SkeletonLoadingMainData from "./SkeletonLoadingMainData";
 import ShowStudentAnnouncments from "./ShowStudentAnnouncments";
 import ShowStudentAssignments from "./ShowStudentAssignments";
+import ShowStudentsExam from "./ShowStudentsExam";
 type Props = {
   token: string;
   name: string;
@@ -136,6 +137,9 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
           </TabsContent>
           <TabsContent className="w-full h-full" value="assignments">
             <ShowStudentAssignments name={name} token={token} />
+          </TabsContent>
+          <TabsContent className="w-full h-full" value="exams">
+            <ShowStudentsExam name={name} token={token} />
           </TabsContent>
         </Tabs>
       </div>

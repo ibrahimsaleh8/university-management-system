@@ -43,9 +43,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
     const classData = await prisma.class.findUnique({
-      where: { name: examData.examMainData.className },
+      where: { name: examData.examMainData.className.split("%20").join(" ") },
       select: {
         courseOfferingId: true,
         id: true,

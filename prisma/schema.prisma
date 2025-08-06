@@ -240,6 +240,7 @@ enum ExamStatus {
   ONGOING
   ENDED
   CANCELLED
+  GRADED
 }
 
 model StudentExam {
@@ -303,7 +304,7 @@ model AssignmentSubmission {
   id           String                     @id @default(cuid())
   external_url String
   submited_at  DateTime                   @default(now())
-  grade        Float?
+  grade        Float                      @default(0)
   feedback     String?
   assignment   Assignment                 @relation(fields: [assignmentId], references: [id])
   assignmentId String

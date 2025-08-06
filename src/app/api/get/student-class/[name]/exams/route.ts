@@ -1,4 +1,5 @@
 import { StudentAuthGuard } from "@/lib/AuthGuard/StudentAuthGard";
+import { ExamStatusCalc } from "@/lib/ExamStatusCalc";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -29,10 +30,10 @@ export async function GET(
         },
       },
     });
+
     if (!studentClass) {
       return NextResponse.json({ message: "Class not found" }, { status: 404 });
     }
-
     if (studentClass.students.length == 0) {
       return NextResponse.json(
         { message: "Student Doesn't Exist in class" },
@@ -40,53 +41,40 @@ export async function GET(
       );
     }
 
-    const assignments = await prisma.assignment.findMany({
+    const exams = await prisma.exam.findMany({
       where: {
         classId: studentClass.id,
       },
       select: {
         id: true,
-        created_at: true,
-        deadline: true,
-        description: true,
         title: true,
-        external_url: true,
-        assignmentSubmission: {
-          where: {
-            studentId: authVerify.user.data.id,
-          },
+        duration: true,
+        created_at: true,
+        endDate: true,
+        totalMark: true,
+        startDate: true,
+        status: true,
+        _count: {
           select: {
-            id: true,
-            submited_at: true,
-            grade: true,
-            status: true,
+            questions: true,
           },
         },
       },
-      orderBy: {
-        created_at: "desc",
-      },
     });
-    const assignmentRes = assignments.map((assig) => ({
-      id: assig.id,
-      title: assig.title,
-      description: assig.description,
-      deadline: assig.deadline,
-      external_url: assig.external_url,
-      created_at: assig.created_at,
-      isSubmited: assig.assignmentSubmission.length > 0,
-      isFinished: new Date() > assig.deadline,
-      submissionDetails:
-        assig.assignmentSubmission.length > 0
-          ? {
-              id: assig.assignmentSubmission[0].id,
-              status: assig.assignmentSubmission[0].status,
-              grade: assig.assignmentSubmission[0].grade,
-              submited_at: assig.assignmentSubmission[0].submited_at,
-            }
-          : null,
+
+    const resExams = exams.map((ex) => ({
+      id: ex.id,
+      title: ex.title,
+      duration: ex.duration,
+      created_at: ex.created_at,
+      endDate: ex.endDate,
+      totalMark: ex.totalMark,
+      startDate: ex.startDate,
+      status: ExamStatusCalc(ex.startDate, ex.endDate, ex.status),
+      questions: ex._count.questions,
     }));
-    return NextResponse.json(assignmentRes, { status: 200 });
+
+    return NextResponse.json(resExams, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error => " + error },

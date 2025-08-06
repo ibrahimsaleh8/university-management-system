@@ -12,7 +12,12 @@ export type ErrorResponseType = {
 };
 export type EnrollmentStatus = "ACTIVE" | "WITHDRAWN" | "COMPLETED";
 
-export type ExamStatusType = "SCHEDULED" | "ONGOING" | "ENDED" | "CANCELLED";
+export type ExamStatusType =
+  | "SCHEDULED"
+  | "ONGOING"
+  | "ENDED"
+  | "CANCELLED"
+  | "GRADED";
 export type ExamQuestionType = "CHOOSE" | "TRUE_FALSE" | "WRITE";
 export type TeacherDataResponse = {
   image: string;

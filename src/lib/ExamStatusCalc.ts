@@ -9,7 +9,7 @@ export const ExamStatusCalc = (
   const start = new Date(startTime).getTime();
   const end = new Date(endTime).getTime();
 
-  if (status === "CANCELLED") return "CANCELLED";
+  if (status === "CANCELLED" || status == "GRADED") return status;
 
   if (now < start) {
     return "SCHEDULED";
