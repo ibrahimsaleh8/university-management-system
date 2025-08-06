@@ -1,11 +1,19 @@
-import { AlarmClock, SquareArrowOutUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AlarmClock, SquareArrowOutUpRight, TriangleAlert } from "lucide-react";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { StudentAssignmentResponse } from "./ShowStudentAssignments";
+import SubmitAssignmentSubmisson from "./SubmitAssignmentSubmisson";
+import AssignmentStatusPadge from "./AssignmentStatusPadge";
+import { timeConverter } from "@/lib/TimeConverter";
 type Props = {
   assignmentData: StudentAssignmentResponse;
+  token: string;
+  className: string;
 };
-export default function StudentAssignment({ assignmentData }: Props) {
+export default function StudentAssignment({
+  assignmentData,
+  token,
+  className,
+}: Props) {
   return (
     <div className="sm:w-[45rem] w-full black-box-shadow max-w-full p-4 border border-soft-border bg-card-bg rounded-2xl flex flex-col gap-3">
       {/* Header */}
@@ -32,12 +40,35 @@ export default function StudentAssignment({ assignmentData }: Props) {
           <AlarmClock className="w-4 h-4" />
           Deadline: {GetDateFromTime(assignmentData.deadline)}
         </p>
-        {assignmentData.isSubmited ? (
-          <></>
+        {assignmentData.isSubmited && assignmentData.submissionDetails ? (
+          <div className="flex items-center gap-1 flex-col">
+            <div className="flex items-center gap-2">
+              <AssignmentStatusPadge
+                status={assignmentData.submissionDetails.status}
+              />
+              <p className="capitalize text-sm p-2 rounded-sm bg-glass-main-text text-main-text">
+                Grade: {assignmentData.submissionDetails.grade ?? 0}
+              </p>
+            </div>
+            <p className="text-xs">
+              Submited At:
+              {timeConverter(assignmentData.submissionDetails.submited_at)}
+            </p>
+          </div>
         ) : (
           !assignmentData.isFinished && (
-            <Button variant={"mainWithShadow"}>Submit</Button>
+            <SubmitAssignmentSubmisson
+              className={className}
+              assignmentId={assignmentData.id}
+              token={token}
+            />
           )
+        )}
+        {assignmentData.isFinished && !assignmentData.isSubmited && (
+          <p className="text-sm text-red-500 flex items-center gap-1">
+            <TriangleAlert className="w-4 h-4" />
+            You missed the deadline and did not submit the assignment.
+          </p>
         )}
       </div>
     </div>

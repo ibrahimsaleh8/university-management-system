@@ -19,7 +19,7 @@ export type StudentAssignmentResponse = {
   isSubmited: boolean;
   isFinished: boolean;
   external_url?: string;
-  assignmentSubmission: assignmentSubmission | null;
+  submissionDetails: assignmentSubmission | null;
 };
 
 type Props = {
@@ -53,7 +53,12 @@ export default function ShowStudentAssignments({ name, token }: Props) {
   ) : data && data.length > 0 ? (
     <div className="flex flex-col gap-3 items-center">
       {data.map((assignment) => (
-        <StudentAssignment key={assignment.id} assignmentData={assignment} />
+        <StudentAssignment
+          className={name}
+          key={assignment.id}
+          token={token}
+          assignmentData={assignment}
+        />
       ))}
     </div>
   ) : (

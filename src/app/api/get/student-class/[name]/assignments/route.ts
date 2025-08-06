@@ -47,6 +47,9 @@ export async function GET(
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
     const assignmentRes = assignments.map((assig) => ({
       id: assig.id,
