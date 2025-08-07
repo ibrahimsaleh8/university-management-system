@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { StudentExamResponse } from "./ShowStudentsExam";
 import CountDownTime from "./CountDownTime";
+import ViewExamResult from "./ViewExamResult";
 type Props = {
   examData: StudentExamResponse;
+  token: string;
 };
-export default function StudentExamCard({ examData }: Props) {
+export default function StudentExamCard({ examData, token }: Props) {
   return (
     <div className="w-full max-w-[27rem] black-box-shadow !overflow-hidden border border-soft-border bg-card-bg rounded-2xl flex flex-col gap-2">
       <div className="flex flex-col gap-4 p-3">
@@ -71,9 +73,7 @@ export default function StudentExamCard({ examData }: Props) {
         )}
 
         {examData.status == "GRADED" && (
-          <Button className="text-main-text bg-transparent border border-main-text w-full hover:bg-main-text hover:text-black duration-300">
-            View Results
-          </Button>
+          <ViewExamResult examId={examData.id} token={token} />
         )}
       </div>
     </div>
