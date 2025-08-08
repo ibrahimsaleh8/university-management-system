@@ -3,10 +3,7 @@ import { ExamStatusCalc } from "@/lib/ExamStatusCalc";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ name: string; id: string }> }
-) {
+export async function POST(req: NextRequest) {
   try {
     // Start Check Student Authorize
     const authVerify = await StudentAuthGuard(req);
@@ -15,11 +12,20 @@ export async function GET(
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     // End Check Student Authorize
+    const { className, examId } = (await req.json()) as {
+      className: string;
+      examId: string;
+    };
+    if (!className || !examId) {
+      return NextResponse.json(
+        { message: "className and examId are required" },
+        { status: 400 }
+      );
+    }
 
-    const { name, id: examId } = await context.params;
     const studentClass = await prisma.class.findUnique({
       where: {
-        name,
+        name: className,
       },
       select: {
         id: true,
@@ -34,9 +40,10 @@ export async function GET(
     if (!studentClass) {
       return NextResponse.json({ message: "Class not found" }, { status: 404 });
     }
+
     if (studentClass.students.length == 0) {
       return NextResponse.json(
-        { message: "Student Doesn't Exist in class" },
+        { message: "Student doesn't exist in class" },
         { status: 400 }
       );
     }
@@ -46,53 +53,52 @@ export async function GET(
         id: examId,
       },
       select: {
-        title: true,
-        duration: true,
-        endDate: true,
-        totalMark: true,
-        startDate: true,
         status: true,
-        _count: {
-          select: {
-            questions: true,
-          },
-        },
-        classId: true,
+        endDate: true,
+        startDate: true,
         students: {
           where: {
             studentId: authVerify.user.data.id,
           },
-          select: {
-            enrolled_at: true,
-          },
         },
       },
     });
-
     if (!exam) {
-      return NextResponse.json({ message: "Exam Not Found" }, { status: 404 });
-    }
-
-    if (exam.classId != studentClass.id) {
       return NextResponse.json(
-        { message: `This Exam Not In ${name} Class` },
+        { message: "Exam Not Found" },
+        {
+          status: 404,
+        }
+      );
+    }
+    const examStatus = ExamStatusCalc(
+      exam.startDate,
+      exam.endDate,
+      exam.status
+    );
+    if (examStatus != "ONGOING") {
+      return NextResponse.json(
+        { message: "You can't enroll to exam" },
         { status: 400 }
       );
     }
+    if (exam.students.length > 0) {
+      return NextResponse.json(
+        { message: "You are already in the exam" },
+        { status: 400 }
+      );
+    }
+    await prisma.studentExam.create({
+      data: {
+        examId,
+        studentId: authVerify.user.data.id,
+      },
+    });
 
-    const examRes = {
-      title: exam.title,
-      duration: exam.duration,
-      endDate: exam.endDate,
-      totalMark: exam.totalMark,
-      questionsNumber: exam._count.questions,
-      status: ExamStatusCalc(exam.startDate, exam.endDate, exam.status),
-      isEnrolled: exam.students.length > 0,
-      enrollDate:
-        exam.students.length > 0 ? exam.students[0].enrolled_at : null,
-    };
-
-    return NextResponse.json(examRes, { status: 200 });
+    return NextResponse.json(
+      { message: "You are enrolled to exam success" },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error => " + error },

@@ -250,6 +250,7 @@ model StudentExam {
   studentId   Int
   score       Float?
   completedAt DateTime?
+  enrolled_at DateTime  @default(now())
 
   @@id([examId, studentId])
 }

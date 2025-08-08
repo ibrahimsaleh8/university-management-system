@@ -13,7 +13,7 @@ export type typeExamQuestionDataType = {
   mark: number;
   chooses?: string[];
   type: ExamQuestionType;
-  rightAnswer: string;
+  rightAnswer?: string;
 };
 export type ExamResponseType = {
   title: string;

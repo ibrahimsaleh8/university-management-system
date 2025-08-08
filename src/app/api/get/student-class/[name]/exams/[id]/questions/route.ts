@@ -1,11 +1,10 @@
 import { StudentAuthGuard } from "@/lib/AuthGuard/StudentAuthGard";
-import { ExamStatusCalc } from "@/lib/ExamStatusCalc";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ name: string }> }
+  context: { params: Promise<{ name: string; id: string }> }
 ) {
   try {
     // Start Check Student Authorize
@@ -16,7 +15,7 @@ export async function GET(
     }
     // End Check Student Authorize
 
-    const { name } = await context.params;
+    const { name, id: examId } = await context.params;
     const studentClass = await prisma.class.findUnique({
       where: {
         name,
@@ -41,43 +40,37 @@ export async function GET(
       );
     }
 
-    const exams = await prisma.exam.findMany({
+    const exam = await prisma.exam.findUnique({
       where: {
-        classId: studentClass.id,
+        id: examId,
       },
       select: {
-        id: true,
-        title: true,
-        duration: true,
-        created_at: true,
-        endDate: true,
-        totalMark: true,
-        startDate: true,
-        status: true,
-        _count: {
+        classId: true,
+        questions: {
           select: {
-            questions: true,
+            id: true,
+            question: true,
+            mark: true,
+            type: true,
+            chooses: true,
           },
         },
       },
-      orderBy: {
-        created_at: "desc",
-      },
     });
 
-    const resExams = exams.map((ex) => ({
-      id: ex.id,
-      title: ex.title,
-      duration: ex.duration,
-      created_at: ex.created_at,
-      endDate: ex.endDate,
-      totalMark: ex.totalMark,
-      startDate: ex.startDate,
-      status: ExamStatusCalc(ex.startDate, ex.endDate, ex.status),
-      questions: ex._count.questions,
-    }));
+    if (!exam) {
+      return NextResponse.json({ message: "Exam Not Found" }, { status: 404 });
+    }
 
-    return NextResponse.json(resExams, { status: 200 });
+    if (exam.classId != studentClass.id) {
+      return NextResponse.json(
+        { message: `This Exam Not In ${name} Class` },
+        { status: 400 }
+      );
+    }
+
+    const questions = exam.questions;
+    return NextResponse.json(questions, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error => " + error },

@@ -2,16 +2,17 @@ import ExamStatusPadge from "./ExamStatusPadge";
 import { timeConverter } from "@/lib/TimeConverter";
 import { ClockArrowDown, ClockArrowUp, Star, Timer } from "lucide-react";
 import ExamSmallParagraph from "./ExamSmallParagraph";
-import { Button } from "@/components/ui/button";
-import { FaLongArrowAltRight } from "react-icons/fa";
 import { StudentExamResponse } from "./ShowStudentsExam";
 import CountDownTime from "./CountDownTime";
 import ViewExamResult from "./ViewExamResult";
+import Link from "next/link";
 type Props = {
   examData: StudentExamResponse;
   token: string;
+  className: string;
 };
-export default function StudentExamCard({ examData, token }: Props) {
+
+export default function StudentExamCard({ examData, token, className }: Props) {
   return (
     <div className="w-full max-w-[27rem] black-box-shadow !overflow-hidden border border-soft-border bg-card-bg rounded-2xl flex flex-col gap-2">
       <div className="flex flex-col gap-4 p-3">
@@ -50,10 +51,11 @@ export default function StudentExamCard({ examData, token }: Props) {
       {/* Bottom */}
       <div className="mt-auto bg-[#181C22] font-medium p-4 border-t border-soft-border">
         {examData.status == "ONGOING" && (
-          <Button className="w-full" variant={"mainWithShadow"}>
-            Join Exam
-            <FaLongArrowAltRight className="w-4 h-4" />
-          </Button>
+          <Link
+            className="flex bg-transparent w-full border border-main-text rounded-md p-3 items-center justify-center text-main-text hover:bg-main-text hover:text-black duration-300 "
+            href={`/dashboard/student/classes/${className}/show-exam/${examData.id}`}>
+            Enter to exam
+          </Link>
         )}
 
         {examData.status == "SCHEDULED" && (

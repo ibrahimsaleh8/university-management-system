@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "StudentExam" ADD COLUMN     "enrolled_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

@@ -81,29 +81,32 @@ export default function ExamQuestion({ Qdata, Qnumber }: Props) {
         )}
       </div>
       {/* Right Answer */}
-      <div className="flex items-end gap-1 w-full mt-3">
-        <div className="flex flex-col gap-2 w-full">
-          <label htmlFor={`right-answer-${Qnumber}`} className="text-sm">
-            Right Answer:
-          </label>
-          <Input
-            disabled={true}
-            id={`right-answer-${Qnumber}`}
-            type="text"
-            placeholder="Right Answer"
-            className="w-full bg-[#0e0e0e] h-[46px]"
-            defaultValue={Qdata.rightAnswer}
-          />
+
+      {Qdata.rightAnswer && (
+        <div className="flex items-end gap-1 w-full mt-3">
+          <div className="flex flex-col gap-2 w-full">
+            <label htmlFor={`right-answer-${Qnumber}`} className="text-sm">
+              Right Answer:
+            </label>
+            <Input
+              disabled={true}
+              id={`right-answer-${Qnumber}`}
+              type="text"
+              placeholder="Right Answer"
+              className="w-full bg-[#0e0e0e] h-[46px]"
+              defaultValue={Qdata.rightAnswer}
+            />
+          </div>
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger className="w-fit cursor-pointer mb-3.5">
+                <RiErrorWarningLine className="w-5 h-5 text-blue-500" />
+              </TooltipTrigger>
+              <TooltipContent>Teacher only can see right answer</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
-        <TooltipProvider>
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger className="w-fit cursor-pointer mb-3.5">
-              <RiErrorWarningLine className="w-5 h-5 text-blue-500" />
-            </TooltipTrigger>
-            <TooltipContent>Teacher only can see right answer</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+      )}
     </div>
   );
 }
