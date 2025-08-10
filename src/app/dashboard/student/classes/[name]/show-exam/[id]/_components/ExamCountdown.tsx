@@ -1,15 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { StudentAnswersDataType } from "./ShowQuestions";
+import { SubmitStudentExam } from "@/lib/SubmitStudentExam";
 
 type ExamCountdownProps = {
-  enrollDate: Date; // e.g. "2025-08-10T14:00:00Z"
-  examDurationMinutes: number; // e.g. 90 (1.5 hours)
+  enrollDate: Date;
+  examDurationMinutes: number;
+  token: string;
+  examId: string;
+  studentAnswers: StudentAnswersDataType[];
+  className: string;
 };
 
 export default function ExamCountdown({
   enrollDate,
   examDurationMinutes,
+  className,
+  examId,
+  studentAnswers,
+  token,
 }: ExamCountdownProps) {
   const [timeLeft, setTimeLeft] = useState<string>("");
+  const { mutate } = SubmitStudentExam({ examId, className });
 
   useEffect(() => {
     const start = new Date(enrollDate).getTime();
@@ -40,6 +51,16 @@ export default function ExamCountdown({
 
     return () => clearInterval(timer);
   }, [enrollDate, examDurationMinutes]);
+
+  useEffect(() => {
+    if (timeLeft == "Exam Ended") {
+      mutate({
+        examId,
+        studentAnswers,
+        token,
+      });
+    }
+  }, [examId, mutate, studentAnswers, timeLeft, token]);
 
   return <div className="font-mono text-lg">{timeLeft}</div>;
 }

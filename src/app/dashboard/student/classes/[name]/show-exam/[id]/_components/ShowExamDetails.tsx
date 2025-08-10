@@ -11,7 +11,7 @@ import { ExamStatusType } from "@/lib/globalTypes";
 import ExamStatusPadge from "@/app/dashboard/_components/ExamStatusPadge";
 import JoinExamBtn from "../../../_components/JoinExamBtn";
 import ShowQuestions from "./ShowQuestions";
-import ExamCountdown from "./ExamCountdown";
+import { Skeleton } from "@/components/ui/skeleton";
 type Props = {
   examId: string;
   className: string;
@@ -27,6 +27,8 @@ type ExamDataResponse = {
   status: ExamStatusType;
   isEnrolled: boolean;
   enrollDate: Date | null;
+  isSubmitted: boolean | null;
+  studentScore: number | null;
 };
 
 async function getExamDetails(
@@ -53,10 +55,17 @@ export default function ShowExamDetails({ examId, className, token }: Props) {
 
   if (error && isError) throw new Error(error.message);
 
-  console.log("Main Data", data);
-
   return isLoading ? (
-    <>Loading</>
+    <div className="flex flex-col gap-5  p-2 w-full">
+      <div className="flex items-center flex-col md:flex-row justify-between gap-2 flex-wrap">
+        <Skeleton className="w-44 h-10 rounded-md" />
+        <Skeleton className="w-44 h-10 rounded-md" />
+        <Skeleton className="w-44 h-10 rounded-md" />
+      </div>
+      <div className="md:w-3/4 w-full mx-auto">
+        <Skeleton className="w-full h-32 rounded-2xl" />
+      </div>
+    </div>
   ) : (
     data && (
       <div className="flex flex-col gap-5  p-2 w-full">
@@ -102,6 +111,10 @@ export default function ShowExamDetails({ examId, className, token }: Props) {
                 token={token}
                 examId={examId}
               />
+            ) : data.isSubmitted && data.studentScore ? (
+              <div className="text-lg font-bold text-white flex items-center justify-center">
+                Score: {data.studentScore} / {data.totalMark}
+              </div>
             ) : (
               <div className="flex items-center justify-center">
                 <ExamStatusPadge status={data.status} />
@@ -110,13 +123,18 @@ export default function ShowExamDetails({ examId, className, token }: Props) {
           </div>
         </div>
 
-        {data.isEnrolled && data.enrollDate && (
-          <ExamCountdown enrollDate={data.enrollDate} examDurationMinutes={3} />
-        )}
-
-        {data.isEnrolled && data.status == "ONGOING" && (
-          <ShowQuestions className={className} examId={examId} token={token} />
-        )}
+        {data.isEnrolled &&
+          data.status == "ONGOING" &&
+          data.enrollDate &&
+          !data.isSubmitted && (
+            <ShowQuestions
+              enrollDate={data.enrollDate}
+              examDurationMinutes={data.duration}
+              className={className}
+              examId={examId}
+              token={token}
+            />
+          )}
       </div>
     )
   );

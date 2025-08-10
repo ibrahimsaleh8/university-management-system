@@ -59,6 +59,15 @@ export async function GET(
             questions: true,
           },
         },
+        students: {
+          select: {
+            isSubmitted: true,
+            score: true,
+          },
+          where: {
+            studentId: authVerify.user.data.id,
+          },
+        },
       },
       orderBy: {
         created_at: "desc",
@@ -75,6 +84,8 @@ export async function GET(
       startDate: ex.startDate,
       status: ExamStatusCalc(ex.startDate, ex.endDate, ex.status),
       questions: ex._count.questions,
+      isSubmitted: ex.students.length > 0 ? ex.students[0].isSubmitted : false,
+      studentScore: ex.students.length > 0 ? ex.students[0].score : null,
     }));
 
     return NextResponse.json(resExams, { status: 200 });

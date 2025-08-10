@@ -233,6 +233,7 @@ model Exam {
   created_at       DateTime       @default(now())
   course           CourseOffering @relation(fields: [courseOfferingId], references: [id])
   courseOfferingId String
+  autoMark         Boolean        @default(true)
 }
 
 enum ExamStatus {
@@ -251,18 +252,20 @@ model StudentExam {
   score       Float?
   completedAt DateTime?
   enrolled_at DateTime  @default(now())
+  isSubmitted Boolean   @default(false)
 
   @@id([examId, studentId])
 }
 
 model StudentAnswer {
-  id             Int          @id @default(autoincrement())
-  answer         String
-  question       ExamQuestion @relation(fields: [examQuestionId], references: [id])
-  examQuestionId Int
+  id             Int           @id @default(autoincrement())
+  answer         String?
+  question       ExamQuestion? @relation(fields: [examQuestionId], references: [id])
+  examQuestionId Int?
   score          Float
-  student        Student      @relation(fields: [studentId], references: [id])
+  student        Student       @relation(fields: [studentId], references: [id])
   studentId      Int
+  empty          Boolean       @default(false)
 }
 
 model ExamQuestion {

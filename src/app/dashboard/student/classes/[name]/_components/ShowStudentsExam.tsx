@@ -19,6 +19,8 @@ export type StudentExamResponse = {
   startDate: Date;
   status: ExamStatusType;
   questions: number;
+  isSubmitted: boolean;
+  studentScore: number | null;
 };
 
 async function getExams(
@@ -62,12 +64,7 @@ export default function ShowStudentsExam({ name, token }: Props) {
         className="grid gap-4">
         {data.length > 0 ? (
           data.map((exam) => (
-            <StudentExamCard
-              className={name}
-              token={token}
-              examData={exam}
-              key={exam.id}
-            />
+            <StudentExamCard className={name} examData={exam} key={exam.id} />
           ))
         ) : (
           <div className="w-full h-32 rounded-2xl bg-Second-black flex items-center justify-center text-low-white">

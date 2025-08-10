@@ -4,15 +4,13 @@ import { ClockArrowDown, ClockArrowUp, Star, Timer } from "lucide-react";
 import ExamSmallParagraph from "./ExamSmallParagraph";
 import { StudentExamResponse } from "./ShowStudentsExam";
 import CountDownTime from "./CountDownTime";
-import ViewExamResult from "./ViewExamResult";
 import Link from "next/link";
 type Props = {
   examData: StudentExamResponse;
-  token: string;
   className: string;
 };
 
-export default function StudentExamCard({ examData, token, className }: Props) {
+export default function StudentExamCard({ examData, className }: Props) {
   return (
     <div className="w-full max-w-[27rem] black-box-shadow !overflow-hidden border border-soft-border bg-card-bg rounded-2xl flex flex-col gap-2">
       <div className="flex flex-col gap-4 p-3">
@@ -50,7 +48,7 @@ export default function StudentExamCard({ examData, token, className }: Props) {
 
       {/* Bottom */}
       <div className="mt-auto bg-[#181C22] font-medium p-4 border-t border-soft-border">
-        {examData.status == "ONGOING" && (
+        {examData.status == "ONGOING" && !examData.isSubmitted && (
           <Link
             className="flex bg-transparent w-full border border-main-text rounded-md p-3 items-center justify-center text-main-text hover:bg-main-text hover:text-black duration-300 "
             href={`/dashboard/student/classes/${className}/show-exam/${examData.id}`}>
@@ -58,6 +56,13 @@ export default function StudentExamCard({ examData, token, className }: Props) {
           </Link>
         )}
 
+        {["ONGOING", "GRADED", "ENDED"].includes(examData.status) &&
+          examData.isSubmitted &&
+          examData.studentScore && (
+            <p className="flex w-full items-center justify-center text-main-text">
+              Score: {examData.studentScore} / {examData.totalMark}
+            </p>
+          )}
         {examData.status == "SCHEDULED" && (
           <p className="capitalize text-low-white text-sm flex items-center justify-center p-2 border rounded-md border-low-white">
             Not Started yet
@@ -72,10 +77,6 @@ export default function StudentExamCard({ examData, token, className }: Props) {
           <p className="text-sm flex items-center justify-center text-green-500">
             Awating Grade
           </p>
-        )}
-
-        {examData.status == "GRADED" && (
-          <ViewExamResult examId={examData.id} token={token} />
         )}
       </div>
     </div>
