@@ -20,6 +20,7 @@ export type StudentExamResponse = {
   status: ExamStatusType;
   questions: number;
   isSubmitted: boolean;
+  autoMark: boolean;
   studentScore: number | null;
 };
 

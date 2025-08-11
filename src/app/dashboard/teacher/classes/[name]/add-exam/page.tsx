@@ -1,7 +1,12 @@
 import { cookies } from "next/headers";
 import ShowAddingExam from "./_components/ShowAddingExam";
 
-export default async function AddExamPage() {
+export default async function AddExamPage({
+  params,
+}: {
+  params: Promise<{ name: string }>;
+}) {
   const token = (await cookies()).get("token")?.value as string;
-  return <ShowAddingExam token={token} />;
+  const { name } = await params;
+  return <ShowAddingExam className={name} token={token} />;
 }

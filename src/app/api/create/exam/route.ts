@@ -1,17 +1,9 @@
 import { TeacherAuthGuard } from "@/lib/AuthGuard/TeacherAuthGuard";
-import {
-  examMainDataType,
-  examQuestionDataType,
-  examQuestionSchema,
-  examValidationSchema,
-} from "@/validation/AddExamValidation";
+import { AddExamSchema, ExamDataType } from "@/validation/AddExamValidation";
+
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-export type examAllData = {
-  examMainData: examMainDataType;
-  examQuestionsData: examQuestionDataType[];
-};
+
 export async function POST(req: NextRequest) {
   try {
     // Start Check Teacher Authorize
@@ -21,11 +13,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
     // End Check Teacher Authorize
-    const examData = (await req.json()) as examAllData;
+    const examData = (await req.json()) as ExamDataType;
 
-    const validationMainData = examValidationSchema.safeParse(
-      examData.examMainData
-    );
+    const validationMainData = AddExamSchema.safeParse(examData);
 
     if (!validationMainData.success) {
       return NextResponse.json(
@@ -33,18 +23,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const questionValidation = z
-      .array(examQuestionSchema)
-      .safeParse(examData.examQuestionsData);
 
-    if (!questionValidation.success) {
-      return NextResponse.json(
-        { message: questionValidation.error.errors[0].message },
-        { status: 400 }
-      );
-    }
     const classData = await prisma.class.findUnique({
-      where: { name: examData.examMainData.className.split("%20").join(" ") },
+      where: { name: examData.className.split("%20").join(" ") },
       select: {
         courseOfferingId: true,
         id: true,
@@ -53,20 +34,22 @@ export async function POST(req: NextRequest) {
     if (!classData) {
       return NextResponse.json({ message: "No Class Found" }, { status: 404 });
     }
+
     await prisma.exam.create({
       data: {
-        title: examData.examMainData.title,
-        startDate: examData.examMainData.startDate,
+        title: examData.title,
+        startDate: examData.startDate,
         status: "SCHEDULED",
-        endDate: examData.examMainData.endDate,
-        totalMark: examData.examMainData.totalMark,
+        endDate: examData.endDate,
+        totalMark: examData.totalMark,
         classId: classData.id,
         courseOfferingId: classData.courseOfferingId,
         teacherId: authVerify.user.data.id,
-        duration: examData.examMainData.duration,
+        duration: examData.duration,
         questions: {
-          createMany: { data: examData.examQuestionsData },
+          createMany: { data: examData.questions },
         },
+        autoMark: examData.autoMark,
       },
     });
     return NextResponse.json(

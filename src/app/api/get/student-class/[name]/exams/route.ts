@@ -68,6 +68,7 @@ export async function GET(
             studentId: authVerify.user.data.id,
           },
         },
+        autoMark: true,
       },
       orderBy: {
         created_at: "desc",
@@ -86,6 +87,7 @@ export async function GET(
       questions: ex._count.questions,
       isSubmitted: ex.students.length > 0 ? ex.students[0].isSubmitted : false,
       studentScore: ex.students.length > 0 ? ex.students[0].score : null,
+      autoMark: ex.autoMark,
     }));
 
     return NextResponse.json(resExams, { status: 200 });

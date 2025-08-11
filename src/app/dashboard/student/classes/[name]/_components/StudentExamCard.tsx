@@ -57,12 +57,15 @@ export default function StudentExamCard({ examData, className }: Props) {
         )}
 
         {["ONGOING", "GRADED", "ENDED"].includes(examData.status) &&
-          examData.isSubmitted &&
-          examData.studentScore && (
-            <p className="flex w-full items-center justify-center text-main-text">
-              Score: {examData.studentScore} / {examData.totalMark}
-            </p>
-          )}
+        examData.isSubmitted &&
+        examData.studentScore &&
+        examData.autoMark ? (
+          <p className="flex w-full items-center justify-center text-main-text">
+            Score: {examData.studentScore} / {examData.totalMark}
+          </p>
+        ) : (
+          <></>
+        )}
         {examData.status == "SCHEDULED" && (
           <p className="capitalize text-low-white text-sm flex items-center justify-center p-2 border rounded-md border-low-white">
             Not Started yet
@@ -78,6 +81,13 @@ export default function StudentExamCard({ examData, className }: Props) {
             Awating Grade
           </p>
         )}
+        {examData.status == "ONGOING" &&
+          examData.isSubmitted &&
+          !examData.autoMark && (
+            <p className="text-sm flex items-center justify-center text-main-text">
+              Submitted Awaiting Grade
+            </p>
+          )}
       </div>
     </div>
   );

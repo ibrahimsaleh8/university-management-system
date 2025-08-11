@@ -24,7 +24,7 @@ export default function ExamTextAreaForm({
         {label}:
       </label>
       <Textarea
-        className={`w-full min-h-32 resize-none bg-Second-Card-bg ${
+        className={`w-full h-32 resize-none bg-Second-Card-bg ${
           isError
             ? "border-red-500 focus:border-red-500 focus:ring-red-500"
             : ""

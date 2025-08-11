@@ -2,24 +2,32 @@
 
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import ExamInputForm from "./ExamInputForm";
-import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import { ExamDataType } from "@/validation/AddExamValidation";
+import { Switch } from "@/components/animate-ui/radix/switch";
 
 type Props = {
   register: UseFormRegister<ExamDataType>;
   errors: FieldErrors<ExamDataType>;
   setValue: UseFormSetValue<ExamDataType>;
+  watch: UseFormWatch<ExamDataType>;
 };
 
 export default function FormAddMainDataOfExam({
   errors,
   register,
   setValue,
+  watch,
 }: Props) {
   return (
     <div className="flex flex-col gap-3">
       {/* Title & Duration */}
-      <div className="flex items-center gap-2 flex-col sm:flex-row">
+      <div className="flex items-center sm:gap-6 gap-3 flex-col sm:flex-row">
         <ExamInputForm
           isError={errors.title != undefined}
           label="Exam Title"
@@ -38,7 +46,7 @@ export default function FormAddMainDataOfExam({
       <ErrorMessage error1={errors.title} error2={errors.duration} />
 
       {/* Start Date & End Date */}
-      <div className="flex items-center gap-2 flex-col sm:flex-row">
+      <div className="flex items-center sm:gap-6 gap-3 flex-col sm:flex-row">
         <ExamInputForm
           isError={errors.startDate != undefined}
           label="Start Date"
@@ -55,14 +63,36 @@ export default function FormAddMainDataOfExam({
         />
       </div>
       <ErrorMessage error1={errors.startDate} error2={errors.endDate} />
+      <div className="flex items-end sm:gap-6 gap-3 flex-col sm:flex-row">
+        <div className="sm:w-1/2 w-full">
+          <ExamInputForm
+            isError={errors.totalMark != undefined}
+            label="Exam Total Marks"
+            placeholder="Exam Total Marks"
+            type="number"
+            onChange={(e) => setValue("totalMark", +e.target.value)}
+          />
+        </div>
+        <div className="flex items-center space-x-2 pb-2 sm:w-1/2 w-full text-lg flex-wrap">
+          <label htmlFor="auto-mark">Auto Mark</label>
+          <Switch
+            className="w-16 h-7"
+            defaultChecked
+            onCheckedChange={(e) => setValue("autoMark", e)}
+            id="auto-mark"
+          />
+          {watch("autoMark") ? (
+            <span className="text-xs text-main-text bg-glass-main-text px-2 py-1 rounded-2xl">
+              Active
+            </span>
+          ) : (
+            <span className="text-xs text-red-500 bg-glass-red px-2 py-1 rounded-2xl">
+              Not Active
+            </span>
+          )}
+        </div>
+      </div>
 
-      <ExamInputForm
-        isError={errors.totalMark != undefined}
-        label="Exam Total Marks"
-        placeholder="Exam Total Marks"
-        type="number"
-        onChange={(e) => setValue("totalMark", +e.target.value)}
-      />
       <ErrorMessage error1={errors.totalMark} />
     </div>
   );
