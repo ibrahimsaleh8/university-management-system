@@ -55,10 +55,12 @@ export default function ClassExamCard({
             <AlarmClock className="w-5 h-5 text-low-white" />
             Duration : {duration} Minutes
           </p>
-          <p className="flex items-center gap-1">
+          <Link
+            href={`/dashboard/teacher/classes/${clasName}/show-exam/${id}/submissions`}
+            className="flex items-center gap-1">
             <UserCheck className="w-5 h-5 text-amber-400" />
             Submissions : {students}
-          </p>
+          </Link>
         </div>
 
         <div>

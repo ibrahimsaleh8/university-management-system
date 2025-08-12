@@ -22,7 +22,6 @@ async function getClassExams(className: string): Promise<ClassExamDataType[]> {
   return res.data;
 }
 
-// Query Key =>  class_exams
 export default function ShowClassExams({ className }: { className: string }) {
   const {
     data: exams,

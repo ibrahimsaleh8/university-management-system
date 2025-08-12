@@ -47,16 +47,6 @@ export async function GET(
         startDate: true,
         status: true,
         totalMark: true,
-        questions: {
-          select: {
-            id: true,
-            question: true,
-            mark: true,
-            chooses: true,
-            type: true,
-            rightAnswer: true,
-          },
-        },
       },
     });
 
