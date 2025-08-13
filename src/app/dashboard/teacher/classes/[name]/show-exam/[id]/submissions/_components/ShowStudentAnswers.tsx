@@ -25,6 +25,8 @@ type Props = {
   className: string;
   token: string;
   examId: string;
+  studentMark: number;
+  totalMark: number;
 };
 type MarkAnswersMutation = {
   token: string;
@@ -100,6 +102,8 @@ export default function ShowStudentAnswers({
   className,
   examId,
   token,
+  studentMark,
+  totalMark,
 }: Props) {
   const [opened, setOpened] = useState(false);
   const [examCorrection, setExamCorrection] = useState<ExamCorrection[]>([]);
@@ -146,7 +150,12 @@ export default function ShowStudentAnswers({
         <div className="overflow-y-auto">
           <AlertDialogHeader className="contents space-y-0 text-left">
             <AlertDialogTitle className="px-6 pt-6 text-base flex items-center justify-between flex-wrap">
-              <p>Answers</p>
+              <div>
+                <p>Answers</p>
+                <p className="text-sm">
+                  {studentMark}/{totalMark}
+                </p>
+              </div>
               <div className="bg-Second-black p-1 rounded-2xl w-fit pr-10">
                 <StudentCardWithImage id={id} imageUrl={imageUrl} name={name} />
               </div>

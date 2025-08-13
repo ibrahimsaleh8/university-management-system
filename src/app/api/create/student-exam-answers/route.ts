@@ -42,8 +42,14 @@ export async function POST(req: NextRequest) {
         endDate: true,
         status: true,
         autoMark: true,
+        questions: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
+
     if (!exam) {
       return NextResponse.json({ message: "Exam not found" }, { status: 404 });
     }
@@ -68,40 +74,53 @@ export async function POST(req: NextRequest) {
     }
     let submissionData = [];
     let score = 0;
-    if (exam.autoMark && studentAnswers.length > 0) {
-      const answers = await prisma.examQuestion.findMany({
-        where: {
-          id: {
-            in: studentAnswers.map((ans) => ans.questionId),
-          },
-        },
-        select: {
-          rightAnswer: true,
-          id: true,
-          mark: true,
-        },
-      });
-      const answerMap = new Map(answers.map((a) => [a.id, a]));
-
-      submissionData = studentAnswers.map((ans) => {
-        const correct = answerMap.get(ans.questionId);
-        return {
-          answer: ans.answer,
-          examQuestionId: ans.questionId,
-          score:
-            correct && correct.rightAnswer === ans.answer ? correct.mark : 0,
-          studentId: exam.students[0].studentId,
-        };
-      });
-      score = submissionData.reduce((sum, ans) => sum + ans.score, 0);
-    } else {
-      submissionData = studentAnswers.map((ans) => ({
-        answer: ans.answer,
-        examQuestionId: ans.questionId,
+    if (studentAnswers.length == 0) {
+      submissionData = exam.questions.map((q) => ({
+        empty: true,
         score: 0,
         studentId: exam.students[0].studentId,
+        examQuestionId: q.id,
+        isMarked: exam.autoMark,
       }));
+    } else {
+      if (exam.autoMark) {
+        const answers = await prisma.examQuestion.findMany({
+          where: {
+            id: {
+              in: studentAnswers.map((ans) => ans.questionId),
+            },
+          },
+          select: {
+            rightAnswer: true,
+            id: true,
+            mark: true,
+          },
+        });
+
+        const answerMap = new Map(answers.map((a) => [a.id, a]));
+
+        submissionData = studentAnswers.map((ans) => {
+          const correct = answerMap.get(ans.questionId);
+          return {
+            answer: ans.answer,
+            examQuestionId: ans.questionId,
+            score:
+              correct && correct.rightAnswer === ans.answer ? correct.mark : 0,
+            studentId: exam.students[0].studentId,
+            isMarked: true,
+          };
+        });
+        score = submissionData.reduce((sum, ans) => sum + ans.score, 0);
+      } else {
+        submissionData = studentAnswers.map((ans) => ({
+          answer: ans.answer,
+          examQuestionId: ans.questionId,
+          score: 0,
+          studentId: exam.students[0].studentId,
+        }));
+      }
     }
+
     await prisma.studentExam.update({
       where: {
         examId_studentId: {
@@ -116,17 +135,7 @@ export async function POST(req: NextRequest) {
     });
 
     await prisma.$transaction(async (tx) => {
-      if (submissionData.length > 0) {
-        await tx.studentAnswer.createMany({ data: submissionData });
-      } else {
-        await tx.studentAnswer.create({
-          data: {
-            empty: true,
-            score: 0,
-            studentId: exam.students[0].studentId,
-          },
-        });
-      }
+      await tx.studentAnswer.createMany({ data: submissionData });
     });
 
     return NextResponse.json(

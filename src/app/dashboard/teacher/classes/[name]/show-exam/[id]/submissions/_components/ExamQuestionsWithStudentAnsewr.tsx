@@ -80,7 +80,7 @@ export default function ExamQuestionsWithStudentAnsewr({
       {/* Student Answer */}
       <div className="flex flex-col gap-1">
         <p>Student Answer:</p>
-        {questionData.studentAnswer ? (
+        {!questionData.studentAnswer.empty ? (
           <p
             className={`flex items-center gap-2 py-2 px-3 border rounded-sm ${styleStudentAnswer}`}>
             {isCorrect == true ? (
@@ -92,8 +92,8 @@ export default function ExamQuestionsWithStudentAnsewr({
           </p>
         ) : (
           <p
-            className={`flex items-center gap-2 py-2 px-3 border rounded-sm bg-glass-red border-red-600`}>
-            Empty Answer
+            className={`flex items-center gap-2 text-red-500 py-2 px-3 border rounded-sm bg-glass-red border-red-600`}>
+            Student {"Did't"} Answer to this Question
           </p>
         )}
       </div>

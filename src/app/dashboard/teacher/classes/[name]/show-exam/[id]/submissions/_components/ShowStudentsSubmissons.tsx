@@ -13,6 +13,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import SubmissonStatus from "./SubmissonStatus";
 import ShowStudentAnswers from "./ShowStudentAnswers";
+import SmallLoader from "@/components/Global/SmallLoader";
 type StudentsSubmissonsDataType = {
   student: {
     student_id: string;
@@ -72,7 +73,12 @@ export default function ShowStudentsSubmissons({
       <TableBody>
         {isLoading ? (
           <TableRow>
-            <TableCell colSpan={4}>Loading...</TableCell>
+            <TableCell colSpan={4}>
+              <div className="w-full flex items-center justify-center gap-2">
+                <SmallLoader color="white" />
+                Loading...
+              </div>
+            </TableCell>
           </TableRow>
         ) : data && data.length > 0 ? (
           data.map((submisson) => (
@@ -98,12 +104,20 @@ export default function ShowStudentsSubmissons({
                   className={className}
                   examId={examId}
                   token={token}
+                  studentMark={submisson.score}
+                  totalMark={submisson.exam.totalMark}
                 />
               </TableCell>
             </TableRow>
           ))
         ) : (
-          <></>
+          <TableRow>
+            <TableCell colSpan={4}>
+              <div className="w-full flex items-center justify-center gap-2 text-low-white">
+                No Submissions Founded ....
+              </div>
+            </TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>
