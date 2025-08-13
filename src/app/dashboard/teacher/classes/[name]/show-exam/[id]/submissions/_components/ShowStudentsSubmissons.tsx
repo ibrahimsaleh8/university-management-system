@@ -21,6 +21,9 @@ type StudentsSubmissonsDataType = {
     last_name: string;
   };
   score: number;
+  exam: {
+    totalMark: number;
+  };
   isSubmitted: boolean;
 };
 
@@ -84,7 +87,9 @@ export default function ShowStudentsSubmissons({
               <TableCell>
                 <SubmissonStatus isSubmitted={submisson.isSubmitted} />
               </TableCell>
-              <TableCell>{submisson.score}</TableCell>
+              <TableCell>
+                {submisson.score}/{submisson.exam.totalMark}
+              </TableCell>
               <TableCell>
                 <ShowStudentAnswers
                   id={submisson.student.student_id}

@@ -266,6 +266,7 @@ model StudentAnswer {
   student        Student       @relation(fields: [studentId], references: [id])
   studentId      Int
   empty          Boolean       @default(false)
+  isMarked       Boolean       @default(false)
 }
 
 model ExamQuestion {

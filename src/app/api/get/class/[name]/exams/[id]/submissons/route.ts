@@ -29,6 +29,11 @@ export async function GET(
         },
         score: true,
         isSubmitted: true,
+        exam: {
+          select: {
+            totalMark: true,
+          },
+        },
       },
     });
 

@@ -24,6 +24,7 @@ export default function SubmitExamBtn({
           studentAnswers,
           token,
         });
+        localStorage.removeItem("student_answers");
       }}
       disabled={isPending}
       className="min-w-48"

@@ -59,6 +59,7 @@ export default function ExamCountdown({
         studentAnswers,
         token,
       });
+      localStorage.removeItem("student_answers");
     }
   }, [examId, mutate, studentAnswers, timeLeft, token]);
 
