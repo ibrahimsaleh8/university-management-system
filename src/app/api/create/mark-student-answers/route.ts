@@ -1,4 +1,4 @@
-import { ExamCorrection } from "@/app/dashboard/teacher/classes/[name]/show-exam/[id]/submissions/_components/ShowStudentAnswers";
+import { ExamCorrection } from "@/app/dashboard/teacher/classes/[name]/show-exam/[id]/submissions/_components/useShowStudentAnswers";
 import { TeacherAuthGuard } from "@/lib/AuthGuard/TeacherAuthGuard";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
@@ -70,6 +70,7 @@ export async function POST(req: NextRequest) {
       },
       data: {
         score: studentTotalScore,
+        isMarked: true,
       },
     });
 

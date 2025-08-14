@@ -15,7 +15,7 @@ export default function StudentCardWithImage({ name, id, imageUrl }: Props) {
         height={45}
       />
       {/* Text */}
-      <div className="flex flex-col gap-0.5 text-sm">
+      <div className="flex flex-col gap-0.5 text-xs pt-1 sm:pt-0 sm:text-sm">
         <p className="font-medium">{name}</p>
         <p className="text-xs text-low-white">{id}</p>
       </div>

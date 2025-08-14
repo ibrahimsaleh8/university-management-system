@@ -253,6 +253,7 @@ model StudentExam {
   completedAt DateTime?
   enrolled_at DateTime  @default(now())
   isSubmitted Boolean   @default(false)
+  isMarked    Boolean   @default(false)
 
   @@id([examId, studentId])
 }

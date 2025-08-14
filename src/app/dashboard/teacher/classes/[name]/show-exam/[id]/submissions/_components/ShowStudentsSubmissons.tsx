@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import SubmissonStatus from "./SubmissonStatus";
 import ShowStudentAnswers from "./ShowStudentAnswers";
 import SmallLoader from "@/components/Global/SmallLoader";
+import { Check } from "lucide-react";
 type StudentsSubmissonsDataType = {
   student: {
     student_id: string;
@@ -26,6 +27,7 @@ type StudentsSubmissonsDataType = {
     totalMark: number;
   };
   isSubmitted: boolean;
+  isMarked: boolean;
 };
 
 type Props = {
@@ -91,7 +93,15 @@ export default function ShowStudentsSubmissons({
                 />
               </TableCell>
               <TableCell>
-                <SubmissonStatus isSubmitted={submisson.isSubmitted} />
+                {submisson.isSubmitted && !submisson.isMarked && (
+                  <SubmissonStatus isSubmitted={submisson.isSubmitted} />
+                )}
+                {submisson.isMarked && submisson.isSubmitted && (
+                  <p className="p-1 text-xs flex items-center gap-1 rounded-md w-fit px-2 bg-glass-main-text text-main-text">
+                    <Check className="w-4 h-4" />
+                    Marked
+                  </p>
+                )}
               </TableCell>
               <TableCell>
                 {submisson.score}/{submisson.exam.totalMark}
@@ -106,6 +116,7 @@ export default function ShowStudentsSubmissons({
                   token={token}
                   studentMark={submisson.score}
                   totalMark={submisson.exam.totalMark}
+                  isMarked={submisson.isMarked}
                 />
               </TableCell>
             </TableRow>

@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Check, X } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
+import GlobalToast from "@/components/Global/GlobalToast";
 import {
   ExamCorrection,
   ExamQuestionWithAnswerType,
-} from "./ShowStudentAnswers";
-import GlobalToast from "@/components/Global/GlobalToast";
+} from "./useShowStudentAnswers";
 type Props = {
   questionData: ExamQuestionWithAnswerType;
   index: number;

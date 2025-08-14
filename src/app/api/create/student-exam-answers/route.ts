@@ -131,6 +131,7 @@ export async function POST(req: NextRequest) {
       data: {
         isSubmitted: true,
         score,
+        isMarked: exam.autoMark,
       },
     });
 
