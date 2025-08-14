@@ -1,5 +1,5 @@
 "use client";
-import { ClockAlert, FileCheck, Timer } from "lucide-react";
+import { Check, ClockAlert, FileCheck, Timer } from "lucide-react";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { timeConverter } from "@/lib/TimeConverter";
 import ExamInstructions from "./ExamInstructions";
@@ -28,6 +28,7 @@ type ExamDataResponse = {
   isEnrolled: boolean;
   enrollDate: Date | null;
   isSubmitted: boolean | null;
+  isMarked: boolean | null;
   studentScore: number | null;
 };
 
@@ -115,6 +116,11 @@ export default function ShowExamDetails({ examId, className, token }: Props) {
               <div className="text-lg font-bold text-white flex items-center justify-center">
                 Score: {data.studentScore} / {data.totalMark}
               </div>
+            ) : data.isSubmitted && !data.isMarked ? (
+              <p className="bg-green-600 text-white py-1.5 text-sm px-3 rounded-md mx-auto flex items-center gap-2">
+                <Check className="w-4 h-4" />
+                Submitted Awaiting Grade
+              </p>
             ) : (
               <div className="flex items-center justify-center">
                 <ExamStatusPadge status={data.status} />

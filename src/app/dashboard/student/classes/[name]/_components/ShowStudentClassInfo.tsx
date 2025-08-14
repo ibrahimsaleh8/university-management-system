@@ -12,18 +12,21 @@ import SkeletonLoadingMainData from "./SkeletonLoadingMainData";
 import ShowStudentAnnouncments from "./ShowStudentAnnouncments";
 import ShowStudentAssignments from "./ShowStudentAssignments";
 import ShowStudentsExam from "./ShowStudentsExam";
+import Image from "next/image";
+import { GenderType } from "@/lib/globalTypes";
+import ShowClassStudents from "./ShowClassStudents";
 type Props = {
   token: string;
   name: string;
 };
-// types/api.ts
+
 export type StudentClassDetailResponse = {
   id: string;
   name: string;
   teacher: {
     first_name: string;
     last_name: string;
-    gender: string;
+    gender: GenderType;
     email: string;
     image: string;
   };
@@ -72,14 +75,19 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
         <div className="flex items-center gap-2 md:flex-row flex-col">
           {/* Teacher Data */}
           <div className="flex flex-col justify-center items-center text-center gap-2 border border-soft-border bg-Second-black rounded-2xl md:w-fit overflow-hidden w-full md:min-w-52 py-2 px-3">
-            <img
-              className="w-11 h-11 object-cover  object-center rounded-full"
-              src="https://res.cloudinary.com/dnriyuqpv/image/upload/v1753802858/students/jt2tgm0xwku2umqlv6jb.png"
+            <Image
+              src={data.teacher.image}
               alt="teacher-image"
+              className="object-cover object-center rounded-full"
+              width={44}
+              height={44}
             />
             <div className="flex flex-col gap-0.5 text-low-white text-sm">
-              <p>Mr/ asfdad dasda</p>
-              <p>jonawec@mailinator.com</p>
+              <p>
+                {data.teacher.gender == "MALE" ? "Mr/" : "Mrs/"}
+                {`${data.teacher.first_name} ${data.teacher.last_name}`}
+              </p>
+              <p>{data.teacher.email}</p>
             </div>
           </div>
 
@@ -140,6 +148,9 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
           </TabsContent>
           <TabsContent className="w-full h-full" value="exams">
             <ShowStudentsExam name={name} token={token} />
+          </TabsContent>
+          <TabsContent className="w-full h-full" value="students">
+            <ShowClassStudents name={name} token={token} />
           </TabsContent>
         </Tabs>
       </div>

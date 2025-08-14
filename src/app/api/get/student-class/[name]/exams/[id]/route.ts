@@ -66,6 +66,7 @@ export async function GET(
             enrolled_at: true,
             isSubmitted: true,
             score: true,
+            isMarked: true,
           },
         },
       },
@@ -95,6 +96,7 @@ export async function GET(
       isSubmitted:
         exam.students.length > 0 ? exam.students[0].isSubmitted : null,
       studentScore: exam.students.length > 0 ? exam.students[0].score : null,
+      isMarked: exam.students.length > 0 ? exam.students[0].isMarked : null,
     };
 
     return NextResponse.json(examRes, { status: 200 });

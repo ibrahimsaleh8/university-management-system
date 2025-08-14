@@ -63,6 +63,7 @@ export async function GET(
           select: {
             isSubmitted: true,
             score: true,
+            isMarked: true,
           },
           where: {
             studentId: authVerify.user.data.id,
@@ -86,6 +87,7 @@ export async function GET(
       status: ExamStatusCalc(ex.startDate, ex.endDate, ex.status),
       questions: ex._count.questions,
       isSubmitted: ex.students.length > 0 ? ex.students[0].isSubmitted : false,
+      isMarked: ex.students.length > 0 ? ex.students[0].isMarked : false,
       studentScore: ex.students.length > 0 ? ex.students[0].score : null,
       autoMark: ex.autoMark,
     }));
