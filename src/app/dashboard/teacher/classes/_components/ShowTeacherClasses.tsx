@@ -7,14 +7,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-async function getTeacherClasses(id: number): Promise<ClassTeacherData[]> {
-  const res = await axios.get(`${MainDomain}/api/get/teacher-classes/${id}`);
+async function getTeacherClasses(token: string): Promise<ClassTeacherData[]> {
+  const res = await axios.get(`${MainDomain}/api/get/teacher-classes`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return res.data;
 }
-export default function ShowTeacherClasses({ uid }: { uid: number }) {
+export default function ShowTeacherClasses({ token }: { token: string }) {
   const { data, isError, error, isLoading } = useQuery({
-    queryKey: ["teacher_classes", uid],
-    queryFn: () => getTeacherClasses(uid),
+    queryKey: ["teacher_classes", token],
+    queryFn: () => getTeacherClasses(token),
   });
 
   if (isError && error) throw new Error(error.message);
@@ -29,7 +33,11 @@ export default function ShowTeacherClasses({ uid }: { uid: number }) {
         </>
       ) : (
         data && (
-          <>
+          <div
+            style={{
+              gridTemplateColumns: "repeat(auto-fill,minmax(320px , 1fr))",
+            }}
+            className="grid gap-4">
             {data.length > 0 ? (
               data.map((cls) => <ClassCard {...cls} key={cls.id} />)
             ) : (
@@ -37,7 +45,7 @@ export default function ShowTeacherClasses({ uid }: { uid: number }) {
                 No Classes Found..
               </div>
             )}
-          </>
+          </div>
         )
       )}
     </div>

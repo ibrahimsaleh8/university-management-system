@@ -1,55 +1,62 @@
 "use client";
-import { ChevronsRight } from "lucide-react";
+import { formatDeadline } from "@/lib/FormatDeadline";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { GoGear } from "react-icons/go";
 import { PiStudent } from "react-icons/pi";
-import { TfiAnnouncement } from "react-icons/tfi";
 export type ClassTeacherData = {
   id: number;
   name: string;
   department: string;
   students: number;
-  announcements: number;
+  wide_image: string;
+  created_at: Date;
 };
 export default function ClassCard({
-  announcements,
   department,
   name,
   students,
+  wide_image,
+  created_at,
 }: ClassTeacherData) {
   return (
-    <div className="w-full border rounded-md overflow-hidden border-soft-border flex flex-col gap-2">
-      {/* Name */}
-      <div className="sm:w-1/2 w-3/4 bg-Second-black py-2 px-3 clip-path-div">
-        <p className="font-bold capitalize">{name}</p>
-      </div>
+    <div className="max-w-[26rem] border rounded-md overflow-hidden border-soft-border flex flex-col">
+      <Image
+        className="w-full object-cover object-center"
+        src={wide_image}
+        alt={name}
+        width={400}
+        height={100}
+      />
 
       {/* Info */}
-      <div className="mt-auto flex-col md:flex-row text-sm flex items-center justify-between gap-5 px-3 py-3">
-        <div className="flex items-center gap-5 flex-wrap">
+      <div className="text-sm flex flex-col gap-5 p-3 bg-Second-black border-t border-soft-border">
+        <p className="font-bold capitalize text-lg">{name}</p>
+
+        <div className="flex flex-col items-start gap-3 text-low-white">
           <p className="flex items-center gap-1 capitalize">
-            <GoGear className="w-4 h-4 text-sky-400" />
+            <GoGear className="w-4 h-4" />
             <span className="font-bold">Department: </span>
             {department}
           </p>
           <p className="flex items-center gap-1 capitalize">
-            <PiStudent className="w-4 h-4 text-rose-500" />
+            <PiStudent className="w-4 h-4" />
             <span className="font-bold">Students: </span>
             {students}
           </p>
-          <p className="flex items-center gap-1 capitalize">
-            <TfiAnnouncement className="w-4 h-4 text-main-text" />
-            <span className="font-bold">Announcements: </span>
-            {announcements}
-          </p>
         </div>
-
-        <Link
-          href={`/dashboard/teacher/classes/${name}`}
-          className="px-5 hover:pr-3 duration-300 w-full md:w-[16rem] lg:w-40 text-sm py-1 flex items-center gap-2 ml-auto border border-main-text text-black bg-main-text font-medium rounded-sm">
-          Go to Class
-          <ChevronsRight className="ml-auto" />
-        </Link>
+        <div className="flex items-center gap-3 flex-wrap justify-between">
+          <p className="text-xs text-low-white">
+            Created: {formatDeadline(created_at)}
+          </p>
+          <Link
+            href={`/dashboard/teacher/classes/${name}`}
+            className="px-3 duration-300 w-fit text-sm py-1 flex items-center gap-2 border border-main-text text-black bg-main-text font-medium rounded-sm hover:bg-transparent hover:text-main-text">
+            Go to Class
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );
