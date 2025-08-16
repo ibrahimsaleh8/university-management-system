@@ -13,45 +13,33 @@ export async function GET(
         name,
       },
       select: {
+        id: true,
         course: {
-          select: { id: true, course: { select: { name: true, code: true } } },
-        },
-        exams: {
-          select: {
-            id: true,
-            title: true,
-            startDate: true,
-            endDate: true,
-            status: true,
-          },
-        },
-        _count: {
-          select: {
-            students: true,
-          },
+          select: { course: { select: { name: true, code: true } } },
         },
         name: true,
-        teacher: { select: { first_name: true, last_name: true } },
-        id: true,
+        teacher: {
+          select: {
+            first_name: true,
+            last_name: true,
+            image: true,
+            gender: true,
+            email: true,
+          },
+        },
       },
     });
 
-    if (!teacherClass) {
+    if (!teacherClass || !teacherClass.course) {
       return NextResponse.json(
         { message: "Class Name Not Found" },
         { status: 404 }
       );
     }
     const classData = {
-      course: {
-        id: teacherClass?.course.id,
-        name: teacherClass?.course.course.name,
-      },
-
-      exams: teacherClass.exams,
-      students: teacherClass._count.students,
+      course: teacherClass.course.course,
       name: teacherClass.name,
-      teacher: `${teacherClass.teacher.first_name} ${teacherClass.teacher.last_name}`,
+      teacher: teacherClass.teacher,
       classId: teacherClass.id,
     };
 

@@ -31,8 +31,6 @@ export default function ClassStudentsShow({ className }: Props) {
   if (error && isError) throw new Error(error.message);
   return (
     <div className="flex flex-col gap-3">
-      <p className="font-bold">Class Studnets</p>
-
       {isLoading ? (
         <div className="flex flex-col gap-2">
           <Skeleton className="w-full h-24 rounded-md" />

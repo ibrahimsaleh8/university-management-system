@@ -41,7 +41,6 @@ export default function TeacherClassAnnouncments({
     announcements && (
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center gap-3 flex-wrap">
-          <p className="font-bold">Class Announcement</p>
           <AddingModel
             title="Announcement"
             AddType="Teacher Announcement"

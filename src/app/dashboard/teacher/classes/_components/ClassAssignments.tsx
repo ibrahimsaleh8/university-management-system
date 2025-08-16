@@ -45,7 +45,6 @@ export default function ClassAssignments({ classId, token, className }: Props) {
     <div className="flex flex-col gap-3">
       {/* Add Assignment */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <p className="font-bold">Class Assignments</p>
         <AddAssignment className={className} classId={classId} token={token} />
       </div>
 
