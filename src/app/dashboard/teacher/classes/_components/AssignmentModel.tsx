@@ -8,7 +8,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { X } from "lucide-react";
+import { Pencil, Trash2, X } from "lucide-react";
 import EditAssignmentForm from "./EditAssignmentForm";
 import { updateAssignmentDataType } from "@/validation/EditAssignmentSchema";
 import { useEffect, useRef, useState } from "react";
@@ -44,9 +44,19 @@ export default function AssignmentModel({
   return (
     <AlertDialog onOpenChange={() => setClose(false)}>
       <AlertDialogTrigger
-        className={`cursor-pointer flex items-center gap-1 border  w-full px-4 py-1 rounded-md text-sm  font-medium duration-300 ${classes}`}>
-        {type == "edit" && "Edit Assignment"}
-        {type == "delete" && "Delete"}
+        className={`cursor-pointer flex items-center gap-2 border w-full px-4 py-1 rounded-md text-sm  font-medium duration-300 ${classes}`}>
+        {type == "edit" && (
+          <>
+            <Pencil className="w-4 h-4" />
+            Edit Assignment
+          </>
+        )}
+        {type == "delete" && (
+          <>
+            <Trash2 className="w-4 h-4" />
+            Delete
+          </>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

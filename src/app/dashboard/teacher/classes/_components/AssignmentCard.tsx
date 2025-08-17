@@ -1,6 +1,12 @@
 "use client";
 import { timeConverter } from "@/lib/TimeConverter";
-import { Check, ClipboardList, SquareArrowOutUpRight } from "lucide-react";
+import {
+  CalendarPlus,
+  Check,
+  ClipboardList,
+  SquareArrowOutUpRight,
+  TimerOff,
+} from "lucide-react";
 import AssignmentModel from "./AssignmentModel";
 import { ClassAssignmentsDataType } from "./ClassAssignments";
 import Link from "next/link";
@@ -15,21 +21,41 @@ export default function AssignmentCard({
   token: string;
   className: string;
 }) {
-  const time = timeConverter(data.created_at);
+  const created_at = timeConverter(data.created_at);
+  const deadline = timeConverter(data.deadline);
   return (
     <div className="w-full p-4 black-box-shadow bg-Second-black rounded-md flex flex-col gap-4">
       {/* Header */}
       <div className="w-full flex items-center gap-3 justify-between flex-wrap">
         <div className="flex items-center gap-2">
           <ClipboardList className="w-5 h-5 text-main-text" />
-          <p title="adadasdsad" className="font-bold capitalize line-clamp-1">
+          <p
+            title="adadasdsad"
+            className="font-bold capitalize line-clamp-1 text-xl">
             {data.title}
           </p>
         </div>
-        <p className="text-xs text-low-white">{time}</p>
+        <div className="bg-Second-Card-bg px-4 py-1.5 rounded-md cursor-pointer">
+          <p className="flex items-center gap-1 text-xs">
+            <Check className="w-4 h-4" />
+            Submissions: {data.submissions}
+          </p>
+        </div>
       </div>
+      {/* Times */}
+      <div className="flex items-center gap-4 flex-wrap">
+        <p className="text-xs text-low-white flex items-center gap-1">
+          <CalendarPlus className="w-4 h-4" />
+          Posted: {created_at}
+        </p>
+        <p className="text-xs text-orange-500 flex items-center gap-1 font-medium">
+          <TimerOff className="w-4 h-4" />
+          Deadline: {deadline}
+        </p>
+      </div>
+
       {/* Description */}
-      <div className="text-sm">
+      <div className="text-base capitalize">
         <p>{data.description} </p>
       </div>
       {/* Link */}
@@ -46,12 +72,6 @@ export default function AssignmentCard({
         )}
 
         <div className="ml-auto flex items-center gap-3">
-          <div className="bg-soft-border px-4 py-1.5 rounded-md cursor-pointer">
-            <p className="flex items-center gap-1 text-xs">
-              <Check className="w-4 h-4" />
-              Submissions: {data.submissions}
-            </p>
-          </div>
           <OperationsDropdown
             components={[
               <AssignmentModel

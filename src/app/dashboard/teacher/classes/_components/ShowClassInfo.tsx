@@ -4,7 +4,6 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { BookText, ScrollText } from "lucide-react";
-import { useParams } from "next/navigation";
 import { PiStudent } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ClassSkeleton from "./ClassSkeleton";
@@ -16,6 +15,7 @@ import { MdOutlineAssignment } from "react-icons/md";
 import ShowClassExams from "./ShowClassExams";
 import { GenderType } from "@/lib/globalTypes";
 import Image from "next/image";
+import BackButton from "@/app/dashboard/_components/forms/BackButton";
 
 export type TeacherClassDataType = {
   course: {
@@ -39,10 +39,13 @@ async function getTeacherClassInformation(
   const res = await axios.get(`${MainDomain}/api/get/class/${name}`);
   return res.data;
 }
-export default function ShowClassInfo({ token }: { token: string }) {
-  const params = useParams();
-  const className = params.name as string;
-
+export default function ShowClassInfo({
+  token,
+  className,
+}: {
+  token: string;
+  className: string;
+}) {
   const { data, error, isError, isLoading } = useQuery({
     queryKey: ["teacher_class_info", className],
     queryFn: () => getTeacherClassInformation(className),
@@ -54,9 +57,10 @@ export default function ShowClassInfo({ token }: { token: string }) {
   ) : (
     data && (
       <div className="flex flex-col gap-3 lg:w-[86%] w-full mx-auto">
+        <BackButton withText={false} />
         {/* Header */}
         <div className="flex items-center gap-3 flex-col md:flex-row">
-          <div className="bg-Second-Card-bg p-3 rounded-2xl md:w-fit flex flex-col items-center justify-center gap-2 text-center min-w-40 w-full h-28 border border-soft-border">
+          <div className="bg-Second-black p-3 rounded-2xl md:w-fit flex flex-col items-center justify-center gap-2 text-center min-w-40 w-full h-28 border border-soft-border">
             <Image
               width={50}
               height={50}
@@ -74,7 +78,7 @@ export default function ShowClassInfo({ token }: { token: string }) {
             </div>
           </div>
 
-          <div className="w-full bg-Second-Card-bg flex flex-col items-center gap-3 rounded-2xl justify-center px-3 py-4 h-28 border border-soft-border">
+          <div className="w-full bg-Second-black flex flex-col items-center gap-3 rounded-2xl justify-center px-3 py-4 h-28 border border-soft-border">
             <p className="capitalize font-bold text-main-text text-xl">
               {data.name}
             </p>
@@ -82,7 +86,8 @@ export default function ShowClassInfo({ token }: { token: string }) {
             <div className="flex items-center gap-4 text-sm mt-auto flex-wrap justify-center">
               <p className="flex items-center gap-1">
                 <BookText className="w-4 h-4" />
-                <span className="font-[500]">Course</span>: {data.course.name}
+                <span className="font-[500]">Course</span>: {data.course.name} -{" "}
+                {data.course.code}
               </p>
             </div>
           </div>

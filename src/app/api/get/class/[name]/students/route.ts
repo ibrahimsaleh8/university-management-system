@@ -31,9 +31,9 @@ export async function GET(
                 first_name: true,
                 last_name: true,
                 image: true,
+                email: true,
               },
             },
-            classGrade: true,
           },
         },
       },
@@ -42,8 +42,8 @@ export async function GET(
     const studentsRes = students?.students.map((st) => ({
       id: st.student.id,
       name: `${st.student.first_name} ${st.student.last_name}`,
+      email: st.student.email,
       image: st.student.image,
-      grade: st.classGrade,
     }));
 
     return NextResponse.json(studentsRes, { status: 200 });

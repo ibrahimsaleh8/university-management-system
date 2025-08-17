@@ -7,7 +7,7 @@ export default function StudentClassCard({
   email,
 }: StudentsInClassResponseType) {
   return (
-    <div className="min-w-44 pt-[6.5rem] relative bg-Second-Card-bg p-4 rounded-2xl flex flex-col gap-2 items-center">
+    <div className="min-w-44 pt-[6.5rem] relative bg-Second-Card-bg p-4 rounded-md flex flex-col gap-2 items-center">
       <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 bg-low-black rounded-full flex items-center justify-center p-1 w-[110px] h-[110px]">
         <Image
           src={image}

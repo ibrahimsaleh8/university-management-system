@@ -12,8 +12,9 @@ export default async function DashboardLayout({
 }>) {
   const token = (await (await cookies()).get("token")?.value) as string;
   const user = VerifyUserFromToken(token);
+  // #100E09
   return (
-    <div className="bg-black">
+    <div className="bg-Main-black">
       <NextTopLoader zIndex={1600} color="#b9f821" height={3} easing="ease" />
       <SidebarProvider>
         <div className="flex gap-2 w-full">

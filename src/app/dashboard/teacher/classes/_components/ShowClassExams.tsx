@@ -14,7 +14,7 @@ export type ClassExamDataType = {
   endDate: Date;
   totalMark: number;
   duration: number;
-  students: number;
+  autoMark: boolean;
 };
 
 async function getClassExams(className: string): Promise<ClassExamDataType[]> {
@@ -52,7 +52,7 @@ export default function ShowClassExams({ className }: { className: string }) {
           <Skeleton className="w-full h-36" />
         </div>
       ) : exams && exams.length > 0 ? (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-5">
           {exams.map((exam) => (
             <ClassExamCard {...exam} clasName={className} key={exam.id} />
           ))}

@@ -6,19 +6,19 @@ import { MdCancel } from "react-icons/md";
 export default function ExamStatusPadge({ status }: { status: ExamStatus }) {
   const statusClasses =
     status == "SCHEDULED"
-      ? "text-black bg-amber-400"
+      ? "text-amber-400 bg-glass-orange"
       : status == "CANCELLED"
-      ? "text-white bg-red-500"
+      ? "text-red-500 bg-glass-red"
       : status == "ENDED"
-      ? "text-white bg-green-700"
-      : status == "ONGOING" && "text-black bg-low-white";
+      ? "text-main-text bg-glass-green"
+      : status == "ONGOING" && "text-blue-300 bg-glass-blue";
   return (
     <p
-      className={`px-4 flex items-center gap-1 capitalize py-1 text-sm font-medium rounded-md w-fit ${statusClasses}`}>
-      {status == "SCHEDULED" && <GiSandsOfTime className="w-5 h-5" />}
-      {status == "ENDED" && <FaFlagCheckered className="w-5 h-5" />}
-      {status == "CANCELLED" && <MdCancel className="w-5 h-5" />}
-      {status == "ONGOING" && <FaRunning className="w-5 h-5" />}
+      className={`px-4 flex items-center gap-1.5 capitalize py-1 text-xs font-medium rounded-sm w-fit ${statusClasses}`}>
+      {status == "SCHEDULED" && <GiSandsOfTime className="w-4 h-4" />}
+      {status == "ENDED" && <FaFlagCheckered className="w-4 h-4" />}
+      {status == "CANCELLED" && <MdCancel className="w-4 h-4" />}
+      {status == "ONGOING" && <FaRunning className="w-4 h-4" />}
 
       {status.toLowerCase()}
     </p>

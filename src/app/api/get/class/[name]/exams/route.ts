@@ -34,9 +34,7 @@ export async function GET(
         startDate: true,
         endDate: true,
         totalMark: true,
-        _count: {
-          select: { students: true },
-        },
+        autoMark: true,
       },
       orderBy: { startDate: "desc" },
     });
@@ -54,7 +52,7 @@ export async function GET(
         endDate: ex.endDate,
         totalMark: ex.totalMark,
         duration: ex.duration,
-        students: ex._count.students,
+        autoMark: ex.autoMark,
       };
     });
     return NextResponse.json(examsResponse, { status: 200 });
