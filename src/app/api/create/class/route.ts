@@ -14,7 +14,9 @@ export async function POST(req: NextRequest) {
     // End Check Teacher Authorize
 
     // Start Parameters Validation
-    const classData = (await req.json()) as classCreationDataType;
+    const classData = (await req.json()) as classCreationDataType & {
+      imageUrl: string;
+    };
     const validation = classCreationSchema.safeParse(classData);
     if (!validation.success) {
       return NextResponse.json(
@@ -66,6 +68,7 @@ export async function POST(req: NextRequest) {
         departmentId: isCourseExist.course.departmentId,
         teacherId: classData.teacherId,
         courseOfferingId: classData.courseOfferingId,
+        wide_image: classData.imageUrl,
       },
     });
 

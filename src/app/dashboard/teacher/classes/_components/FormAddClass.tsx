@@ -1,12 +1,6 @@
 "use client";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
-import {
-  classCreationDataType,
-  classCreationSchema,
-} from "@/validation/serverValidations/ClassCreationSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Dispatch, SetStateAction } from "react";
 import {
   Select,
   SelectContent,
@@ -17,95 +11,29 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { MainDomain } from "@/variables/MainDomain";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAppSelector } from "@/redux/hooks";
-import GlobalToast from "@/components/Global/GlobalToast";
-import { ErrorResponseType } from "@/lib/globalTypes";
 import SmallLoader from "@/components/Global/SmallLoader";
+import { Upload } from "lucide-react";
+import Image from "next/image";
+import { useAddClass } from "./Hook/useAddClass";
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
   token: string;
 };
-type teacherCoursesDataType = {
-  id: string;
-  course: string;
-};
-async function getCoursesForTeacher(
-  id: number
-): Promise<teacherCoursesDataType[] | undefined> {
-  if (id == 0) return undefined;
-  const res = await axios.get(`${MainDomain}/api/get/teacher-courses/${id}`);
-  return res.data;
-}
-
-async function createNewClass(data: classCreationDataType, token: string) {
-  await axios.post(`${MainDomain}/api/create/class`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-}
 
 export default function FormAddClass({ token, setClose }: Props) {
-  const queryClinet = useQueryClient();
   const {
-    register,
+    courses,
+    errors,
     handleSubmit,
+    isPending,
+    loadingCourses,
+    register,
+    setClassImage,
+    submitAddClass,
+    uploadingImage,
     setValue,
-    formState: { errors },
-  } = useForm<classCreationDataType>({
-    resolver: zodResolver(classCreationSchema),
-    mode: "all",
-  });
-  const teacherId = useAppSelector((state) => state.user.user.id);
-  useEffect(() => {
-    if (teacherId != 0) {
-      setValue("teacherId", teacherId);
-    }
-  }, [setValue, teacherId]);
-
-  // Get Courses
-  const {
-    data: courses,
-    isError: isErrorCourses,
-    error: errorCourses,
-    isLoading: loadingCourses,
-  } = useQuery({
-    queryKey: ["teacher_courses_class", teacherId],
-    queryFn: () => getCoursesForTeacher(teacherId),
-  });
-  if (isErrorCourses && errorCourses) throw new Error(errorCourses.message);
-
-  // Create Class
-
-  const { isPending, mutate } = useMutation({
-    mutationKey: ["create_course"],
-    mutationFn: (d: { data: classCreationDataType; token: string }) =>
-      createNewClass(d.data, d.token),
-    onSuccess: () => {
-      setClose(true);
-      GlobalToast({
-        title: "class has been created successfully",
-        icon: "success",
-      });
-      queryClinet.refetchQueries({
-        queryKey: ["teacher_courses_class", teacherId],
-      });
-      queryClinet.refetchQueries({
-        queryKey: ["teacher_classes", teacherId],
-      });
-    },
-    onError: (err: ErrorResponseType) => {
-      GlobalToast({ title: err.response.data.message, icon: "error" });
-    },
-  });
-
-  const submitAddClass: SubmitHandler<classCreationDataType> = (data) => {
-    mutate({ data, token });
-  };
-
+    classImage,
+  } = useAddClass({ token, setClose });
   return (
     <form
       className="flex flex-col gap-3"
@@ -155,10 +83,79 @@ export default function FormAddClass({ token, setClose }: Props) {
       </div>
       <ErrorMessage error1={errors.name} error2={errors.courseOfferingId} />
 
-      <Button disabled={isPending} variant={"mainWithShadow"} type="submit">
+      {/* Image */}
+      <div className="flex flex-col gap-2">
+        <p className="flex items-center gap-2">
+          <span className="w-full h-0.5 bg-soft-border"></span>
+          <span className="text-low-white">image</span>
+          <span className="w-full h-0.5 bg-soft-border"></span>
+        </p>
+
+        {/* Upload Class Image */}
+        <div className="flex flex-col gap-2 items-center p-3 border border-dashed border-soft-border">
+          <div className="bg-Second-Card-bg w-10 h-10 flex items-center justify-center rounded-full">
+            <Upload className="w-5 h-5 text-low-white" />
+          </div>
+          <p>Upload Image</p>
+          <label
+            htmlFor="upload-image"
+            className="bg-blue-600 text-sm px-4 py-1.5 rounded-sm hover:bg-blue-700 duration-300 flex items-center gap-1 cursor-pointer">
+            <Upload className="w-4 h-4" />
+            Select file
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            id="upload-image"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setClassImage(file);
+              }
+            }}
+          />
+        </div>
+
+        {/* Show Uploaded Image */}
+        <div className="w-full h-64 rounded-md overflow-hidden bg-Second-Card-bg relative">
+          {classImage ? (
+            <img
+              className="w-full h-full object-center object-cover rounded-md"
+              alt="Student Image"
+              src={URL.createObjectURL(classImage)}
+            />
+          ) : (
+            <>
+              <Image
+                src={
+                  "https://res.cloudinary.com/dnriyuqpv/image/upload/v1753974406/students/amrnsz0x3ult9r0kpdxf.webp"
+                }
+                alt="Deafult Image"
+                className="!w-full !h-full object-center object-cover"
+                width={1000}
+                height={300}
+              />
+              <span className="absolute left-0 bottom-0 flex items-center justify-center bg-[#3e3e3ebf] text-white w-full h-10 z-50">
+                Default image
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+
+      <Button
+        disabled={isPending || uploadingImage}
+        variant={"mainWithShadow"}
+        type="submit">
         {isPending ? (
           <>
             Adding....
+            <SmallLoader />
+          </>
+        ) : uploadingImage ? (
+          <>
+            Uploading....
             <SmallLoader />
           </>
         ) : (

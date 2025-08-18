@@ -21,9 +21,9 @@ export default function ClassCard({
   created_at,
 }: ClassTeacherData) {
   return (
-    <div className="max-w-[26rem] border rounded-md overflow-hidden border-soft-border flex flex-col">
+    <div className="max-w-[26rem] border rounded-md hover:border-[#b9f82169] duration-300 overflow-hidden border-soft-border flex flex-col">
       <Image
-        className="w-full object-cover object-center"
+        className="w-full h-80 object-cover object-center"
         src={wide_image}
         alt={name}
         width={400}
