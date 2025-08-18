@@ -1,9 +1,9 @@
 import ExamStatusPadge from "@/app/dashboard/_components/ExamStatusPadge";
 import { ExamStatusType } from "@/lib/globalTypes";
 import { timeConverter } from "@/lib/TimeConverter";
-import { Calendar } from "lucide-react";
+import { BookOpenText, CalendarDays } from "lucide-react";
+import Image from "next/image";
 import React from "react";
-import { FaBook } from "react-icons/fa";
 import { SiGoogleclassroom } from "react-icons/si";
 type Props = {
   className: string;
@@ -28,34 +28,36 @@ export default function ExamHeader({
         <ExamStatusPadge status={status} />
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
-            <SiGoogleclassroom className="w-5 h-5 text-low-white" />
+            <SiGoogleclassroom className="w-4 h-4 text-low-white" />
             Class:
           </span>
-          <span className="capitalize">{className}</span>
+          <span className="capitalize font-medium">{className}</span>
         </p>
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
-            <FaBook className="w-5 h-5 text-low-white" />
+            <BookOpenText className="w-4 h-4 text-low-white" />
             Course:
           </span>
-          <span className="capitalize">{course}</span>
+          <span className="capitalize font-medium">{course}</span>
         </p>
       </div>
 
       {/* Right */}
       <div className="flex flex-col gap-4 w-full sm:w-fit">
         <div className="flex items-center gap-2">
-          <img
-            className="w-7 h-7 rounded-sm object-cover object-center"
+          <Image
+            className="rounded-full object-cover object-center"
             src={teacherImage}
             alt="Teacher Image"
+            width={30}
+            height={30}
           />
           <p className="capitalize">{teacherName} </p>
         </div>
 
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
-            <Calendar className="w-5 h-5 text-low-white" />
+            <CalendarDays className="w-4 h-4 text-low-white" />
             Created At:
           </span>
           <span className="text-sm">{timeConverter(create_at)}</span>

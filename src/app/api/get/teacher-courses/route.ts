@@ -19,20 +19,31 @@ export async function GET(req: NextRequest) {
       select: {
         id: true,
         academicYear: { select: { year_label: true } },
-        course: { select: { name: true, credit_hours: true, code: true } },
+        course: {
+          select: {
+            name: true,
+            credit_hours: true,
+            code: true,
+            isElective: true,
+          },
+        },
         hall: true,
         semester: { select: { name: true, isActive: true } },
+        maxCapacity: true,
         _count: { select: { students: true } },
       },
     });
+
     const resCourses = courses.map((c) => ({
       id: c.id,
       courseName: c.course.name,
       courseHours: c.course.credit_hours,
       courseCode: c.course.code,
+      courseIsElective: c.course.isElective,
       hall: c.hall,
       acdemicYear: c.academicYear.year_label,
       semester: c.semester,
+      maxCapacity: c.maxCapacity,
       students: c._count.students,
     }));
     return NextResponse.json(resCourses, { status: 200 });

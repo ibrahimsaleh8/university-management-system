@@ -65,7 +65,7 @@ export default async function ShowExamLayout({
       <div className="flex flex-col relative gap-3 bg-Second-black p-4 overflow-hidden rounded-md exam-head-dash black-box-shadow">
         {/* Title */}
         <div className="flex items-center justify-center">
-          <p className="capitalize sm:text-lg text-base font-medium text-center line-clamp-1">
+          <p className="capitalize sm:text-xl text-base font-bold text-center line-clamp-1">
             {examData.title}
           </p>
         </div>

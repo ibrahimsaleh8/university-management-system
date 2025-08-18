@@ -34,8 +34,8 @@ export default function TeacherClassAnnouncments({
 
   return isLoading && !announcements ? (
     <div className="flex flex-col gap-2">
-      <Skeleton className="w-44 h-10 ml-auto" />
-      <Skeleton className="w-full h-56 " />
+      <Skeleton className="w-44 h-10" />
+      <Skeleton className="w-full h-48 " />
     </div>
   ) : (
     announcements && (

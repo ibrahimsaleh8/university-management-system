@@ -19,7 +19,7 @@ export default function ExamInfo({
       <div className="flex flex-col gap-3 w-full sm:w-fit">
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
-            <ClockArrowUp className="w-5 h-5 text-main-text" />
+            <ClockArrowUp className="w-4 h-4 text-main-text" />
             Starting on:
           </span>
           <span className="capitalize text-sm">
@@ -29,7 +29,7 @@ export default function ExamInfo({
 
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
-            <ClockArrowDown className="w-5 h-5 text-red-500" />
+            <ClockArrowDown className="w-4 h-4 text-red-500" />
             Ending on:
           </span>
           <span className="capitalize text-sm">{timeConverter(ending_on)}</span>
@@ -40,7 +40,7 @@ export default function ExamInfo({
       <div className="flex flex-col gap-3 w-full sm:w-fit">
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
-            <Hourglass className="w-5 h-5 text-blue-600" />
+            <Hourglass className="w-4 h-4 text-blue-600" />
             Duration:
           </span>
           <span className="capitalize text-sm">{duration} Minutes</span>
@@ -48,7 +48,7 @@ export default function ExamInfo({
 
         <p className="flex items-center gap-2">
           <span className="font-bold flex items-center gap-1">
-            <Medal className="w-5 h-5 text-yellow-500" />
+            <Medal className="w-4 h-4 text-yellow-500" />
             Full Mark:
           </span>
           <span className="capitalize text-sm">{full_mark} Degrees</span>

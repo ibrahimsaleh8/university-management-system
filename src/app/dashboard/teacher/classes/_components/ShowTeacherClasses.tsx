@@ -26,11 +26,16 @@ export default function ShowTeacherClasses({ token }: { token: string }) {
   return (
     <div className="pt-3 flex flex-col gap-3">
       {isLoading && !data ? (
-        <>
-          <Skeleton className="w-full h-28 " />
-          <Skeleton className="w-full h-28 " />
-          <Skeleton className="w-full h-28 " />
-        </>
+        <div
+          style={{
+            gridTemplateColumns: "repeat(auto-fill,minmax(320px , 1fr))",
+          }}
+          className="grid gap-4">
+          <Skeleton className="w-full h-96" />
+          <Skeleton className="w-full h-96" />
+          <Skeleton className="w-full h-96" />
+          <Skeleton className="w-full h-96" />
+        </div>
       ) : (
         data && (
           <div

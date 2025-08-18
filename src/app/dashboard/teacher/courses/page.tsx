@@ -1,18 +1,20 @@
 import { MainDomain } from "@/variables/MainDomain";
 import { cookies } from "next/headers";
-import TeacherCourseCard from "./_components/TeacherCourseCard";
+import ShowCourses from "./_components/ShowCourses";
 
 export type TeacherCoursesResponse = {
   id: string;
   courseName: string;
   courseHours: number;
   courseCode: string;
+  courseIsElective: boolean;
   hall: string;
   acdemicYear: string;
   semester: {
     name: string;
     isActive: boolean;
   };
+  maxCapacity: number;
   students: number;
 };
 
@@ -28,26 +30,5 @@ export default async function CoursesTeacherPage() {
 
   console.log(courses);
 
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="font-bold">Your Courses</p>
-
-      {courses.length > 0 ? (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(360px , 1fr))",
-            gap: "10px",
-          }}>
-          {courses.map((course) => (
-            <TeacherCourseCard key={course.id} {...course} />
-          ))}
-        </div>
-      ) : (
-        <div className="w-full bg-Second-black rounded-md h-32 flex items-center justify-center text-low-white">
-          No courses Found..
-        </div>
-      )}
-    </div>
-  );
+  return <ShowCourses courses={courses} />;
 }

@@ -1,8 +1,10 @@
 import { IoIosSchool } from "react-icons/io";
 import { FaSchoolFlag } from "react-icons/fa6";
-import { PiStudentBold } from "react-icons/pi";
-import { BookOpenText, Timer } from "lucide-react";
+import { CalendarDays, Timer } from "lucide-react";
 import { TeacherCoursesResponse } from "../page";
+import CourseSmallData from "./CourseSmallData";
+import { Progress } from "@/components/animate-ui/radix/progress";
+
 type CourseWithoutStudents = Omit<TeacherCoursesResponse, "id">;
 
 export default function TeacherCourseCard({
@@ -11,49 +13,70 @@ export default function TeacherCourseCard({
   courseHours,
   courseName,
   hall,
+  courseIsElective,
   semester,
+  maxCapacity,
   students,
 }: CourseWithoutStudents) {
   return (
-    <div className="bg-Second-black  course-teacher-card overflow-hidden pb-8 rounded-lg p-3 flex flex-col gap-4">
+    <div className="bg-Second-black overflow-hidden pb-8 rounded-lg p-4 pt-5 flex flex-col gap-4 border border-soft-border">
       {/* Header */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="p-2 bg-white rounded-md ">
-          <BookOpenText className="w-5 h-5 text-Main-black" />
+      <div className="flex items-start justify-between gap-3 flex-wrap border-b border-Second-Card-bg pb-5">
+        <div className="flex flex-col gap-2 w-fit line-clamp-2 text-ellipsis  ">
+          <p className="text-main-text text-xl font-bold capitalize">
+            {courseName}
+          </p>
+          <p className="text-sm text-low-white capitalize">{courseCode}</p>
         </div>
-        <p className="flex items-end gap-1">
-          {courseName}
-          <span className="text-xs">({courseCode})</span>
-        </p>
-        <p
-          className={`ml-auto text-sm px-3 py-2 ${
-            semester.isActive
-              ? "bg-green-600 text-white"
-              : "bg-amber-400 text-black"
-          }  rounded-md`}>
-          {semester.name}
-        </p>
+
+        <div>
+          {courseIsElective ? (
+            <p className="bg-glass-blue text-blue-400 px-3 py-1 rounded-md text-xs">
+              Elective
+            </p>
+          ) : (
+            <p className="bg-glass-green text-main-text px-3 py-1 rounded-md text-xs">
+              Core
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Body */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-        <p className="flex items-center gap-1 border-b border-soft-border pb-1">
-          <Timer className="w-5 h-5 text-amber-300" />
-          <span className="font-bold">Hours:</span> <span>{courseHours}</span>
-        </p>
-        <p className="flex items-center gap-1  border-b border-soft-border pb-1">
-          <IoIosSchool className="w-5 h-5 text-sky-400" />
-          <span className="font-bold">Year:</span> <span>{acdemicYear}</span>
-        </p>
-        <p className="flex items-center gap-1  border-b border-soft-border pb-1">
-          <FaSchoolFlag className="w-5 h-5 text-red-500" />
-          <span className="font-bold">Hall:</span> <span>{hall}</span>
-        </p>
-        <p className="flex items-center gap-1  border-b border-soft-border pb-1">
-          <PiStudentBold className="w-5 h-5 text-main-text" />
-          <span className="font-bold">Students:</span>
-          <span>{students}</span>
-        </p>
+      <div className="flex flex-col gap-4 mt-3 border-b border-Second-Card-bg pb-4">
+        <CourseSmallData
+          title="Credit Hours"
+          icon={<Timer className="w-4 h-4" />}
+          value={`${courseHours}`}
+        />
+        <CourseSmallData
+          title="Academic Year"
+          icon={<IoIosSchool className="w-4 h-4" />}
+          value={acdemicYear}
+        />
+        <CourseSmallData
+          title="Lecture Hall"
+          icon={<FaSchoolFlag className="w-4 h-4" />}
+          value={hall}
+        />
+        <CourseSmallData
+          title="Semester"
+          icon={<CalendarDays className="w-4 h-4" />}
+          value={semester.name}
+        />
+      </div>
+
+      {/* Enrollment */}
+      <div className="flex flex-col gap-1">
+        {/* Text */}
+        <div className="text-sm font-medium flex items-center justify-between gap-2 flex-wrap">
+          <p className=" text-low-white">Enrollment</p>
+          <p className="text-main-text">
+            {students} / {maxCapacity}
+          </p>
+        </div>
+
+        <Progress value={Math.round((students / maxCapacity) * 100)} />
       </div>
     </div>
   );
