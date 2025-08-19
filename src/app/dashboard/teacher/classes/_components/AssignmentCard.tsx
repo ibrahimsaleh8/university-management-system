@@ -35,12 +35,14 @@ export default function AssignmentCard({
             {data.title}
           </p>
         </div>
-        <div className="bg-Second-Card-bg px-4 py-1.5 rounded-md cursor-pointer">
+        <Link
+          href={`/dashboard/teacher/classes/${className}/assignment-submissons/${data.id}`}
+          className="bg-amber-400 text-black font-medium px-4 py-1.5 rounded-sm cursor-pointer">
           <p className="flex items-center gap-1 text-xs">
             <Check className="w-4 h-4" />
             Submissions: {data.submissions}
           </p>
-        </div>
+        </Link>
       </div>
       {/* Times */}
       <div className="flex items-center gap-4 flex-wrap">
@@ -58,7 +60,8 @@ export default function AssignmentCard({
       <div className="text-base capitalize">
         <p>{data.description} </p>
       </div>
-      {/* Link */}
+
+      {/* Bottom */}
       <div className="flex items-end gap-3 justify-between flex-wrap">
         {data.external_url && (
           <div className="flex flex-col gap-1 mt-3">

@@ -8,7 +8,6 @@ export default async function ClassTeacherPage({
 }) {
   const token = (await (await cookies()).get("token")?.value) as string;
   const { name } = await params;
-  console.log("CLASS NAME ", name);
   return (
     <div>
       <ShowClassInfo className={name} token={token} />
