@@ -311,7 +311,6 @@ model AssignmentSubmission {
   external_url String
   submited_at  DateTime                   @default(now())
   grade        Float                      @default(0)
-  feedback     String?
   assignment   Assignment                 @relation(fields: [assignmentId], references: [id])
   assignmentId String
   student      Student                    @relation(fields: [studentId], references: [id])
@@ -321,7 +320,7 @@ model AssignmentSubmission {
 
 enum AssignmentSubmissionStatus {
   SUBMITTED
-  COMPLETED
+  GRADED
 }
 
 // End Assignment Schema

@@ -2,7 +2,7 @@ import { EditTeacherDataType } from "@/validation/EditTeacherSchema";
 
 export type RoleType = "admin" | "teacher" | "student";
 export type GenderType = "MALE" | "FEMALE";
-export type AssignmentSubmissionStatus = "SUBMITTED" | "COMPLETED";
+export type AssignmentSubmissionStatus = "SUBMITTED" | "GRADED";
 export type ErrorResponseType = {
   response: {
     data: {

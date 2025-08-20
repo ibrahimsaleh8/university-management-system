@@ -37,7 +37,7 @@ export default function AssignmentCard({
         </div>
         <Link
           href={`/dashboard/teacher/classes/${className}/assignment-submissons/${data.id}`}
-          className="bg-amber-400 text-black font-medium px-4 py-1.5 rounded-sm cursor-pointer">
+          className="bg-amber-400 border border-amber-400 hover:bg-transparent hover:text-amber-400 duration-300 text-black font-medium px-4 py-1.5 rounded-sm cursor-pointer">
           <p className="flex items-center gap-1 text-xs">
             <Check className="w-4 h-4" />
             Submissions: {data.submissions}
