@@ -2,8 +2,8 @@ import { AlarmClock, SquareArrowOutUpRight, TriangleAlert } from "lucide-react";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { StudentAssignmentResponse } from "./ShowStudentAssignments";
 import SubmitAssignmentSubmisson from "./SubmitAssignmentSubmisson";
-import AssignmentStatusPadge from "./AssignmentStatusPadge";
 import { timeConverter } from "@/lib/TimeConverter";
+import AssignmentStatusPadge from "@/app/dashboard/teacher/classes/[name]/assignment-submissons/[id]/_components/AssignmentStatusPadge";
 type Props = {
   assignmentData: StudentAssignmentResponse;
   token: string;
@@ -46,11 +46,17 @@ export default function StudentAssignment({
               <AssignmentStatusPadge
                 status={assignmentData.submissionDetails.status}
               />
-              <p className="capitalize text-sm p-2 rounded-sm bg-glass-main-text text-main-text">
-                Grade: {assignmentData.submissionDetails.grade ?? 0}
-              </p>
+              {assignmentData.submissionDetails.status == "GRADED" ? (
+                <p className="capitalize text-sm px-4 py-1 rounded-sm font-medium bg-glass-green text-main-text">
+                  Grade: {assignmentData.submissionDetails.grade ?? 0} / 100
+                </p>
+              ) : (
+                <p className="capitalize text-xs px-4 py-1.5 rounded-sm font-medium bg-glass-orange text-orange-400">
+                  wating grade
+                </p>
+              )}
             </div>
-            <p className="text-xs">
+            <p className="text-xs text-low-white">
               Submited At:
               {timeConverter(assignmentData.submissionDetails.submited_at)}
             </p>

@@ -37,7 +37,7 @@ export default async function AssignmentSubmissonsById({
   const assignmentMainData: AssignmentResponse = await res.json();
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 sm:px-5 py-3">
       <div className="flex flex-col gap-3">
         <BackButton withText={false} />
         <h1 className="text-2xl font-bold">{assignmentMainData.title}</h1>

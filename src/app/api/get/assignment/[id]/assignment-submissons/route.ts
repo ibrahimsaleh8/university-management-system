@@ -33,6 +33,7 @@ export async function GET(
             submited_at: true,
             student: {
               select: {
+                id: true,
                 first_name: true,
                 last_name: true,
                 student_id: true,
@@ -41,6 +42,7 @@ export async function GET(
             },
           },
         },
+        classId: true,
       },
     });
     if (!assignment) {
@@ -55,8 +57,55 @@ export async function GET(
         { status: 403 }
       );
     }
+    const studentsClass = await prisma.class.findUnique({
+      where: {
+        id: assignment.classId,
+      },
+      select: {
+        students: {
+          select: {
+            student: {
+              select: {
+                id: true,
+                first_name: true,
+                last_name: true,
+                student_id: true,
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!studentsClass) {
+      return NextResponse.json(
+        { message: "Assignment class not found" },
+        { status: 404 }
+      );
+    }
 
-    return NextResponse.json(assignment.assignmentSubmission, { status: 200 });
+    const submissionsResponse = studentsClass.students.map((std) => ({
+      student: std.student,
+      isSubmitted:
+        assignment.assignmentSubmission.findIndex(
+          (sub) => sub.student.id == std.student.id
+        ) != -1,
+      submissionData:
+        assignment.assignmentSubmission.filter(
+          (sub) => sub.student.id == std.student.id
+        ).length > 0
+          ? assignment.assignmentSubmission.filter(
+              (sub) => sub.student.id == std.student.id
+            )[0]
+          : null,
+    }));
+
+    return NextResponse.json(
+      submissionsResponse.sort(
+        (a, b) => Number(b.isSubmitted) - Number(a.isSubmitted)
+      ),
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error => " + error },

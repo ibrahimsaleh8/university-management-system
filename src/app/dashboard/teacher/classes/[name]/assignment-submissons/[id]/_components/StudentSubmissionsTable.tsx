@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Eye, Search } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -17,58 +17,40 @@ import SmallLoader from "@/components/Global/SmallLoader";
 import { AssignmentSubmissionStatus } from "@/lib/globalTypes";
 import AssignmentStatusPadge from "./AssignmentStatusPadge";
 import { timeConverter } from "@/lib/TimeConverter";
-import ShowStudentSubmission from "./ShowStudentSubmission";
+import ShowStudentSubmissionModel from "./ShowStudentSubmissionModel";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+
+type StudentData = {
+  id: number;
+  image: string;
+  first_name: string;
+  last_name: string;
+  student_id: string;
+};
 export type AssignmentSubmissionDataType = {
   id: string;
-  external_url: string | null;
+  external_url: string;
   grade: number;
   status: AssignmentSubmissionStatus;
   submited_at: Date;
-  student: {
-    first_name: string;
-    last_name: string;
-    student_id: string;
-    image: string;
-  };
+  student: StudentData;
 };
 type Props = {
   token: string;
   assignmentId: string;
 };
-export const dummyAssignmentSubmissions: AssignmentSubmissionDataType[] = [
-  {
-    id: "sub_001",
-    external_url: "https://drive.google.com/file/d/abc123/view",
-    grade: 95,
-    status: "GRADED",
-    submited_at: new Date("2025-08-10T14:30:00Z"),
-    student: {
-      first_name: "Omar",
-      last_name: "Hassan",
-      student_id: "STU12345",
-      image: "https://i.ibb.co/kV27Z5B3/user-profile.jpg",
-    },
-  },
-  {
-    id: "sub_002",
-    external_url: null,
-    grade: 12,
-    status: "SUBMITTED",
-    submited_at: new Date("2025-08-12T09:15:00Z"),
-    student: {
-      first_name: "Mona",
-      last_name: "Adel",
-      student_id: "STU67890",
-      image:
-        "https://res.cloudinary.com/dnriyuqpv/image/upload/v1753721451/students/ivtc6zz25u1wnbu4dxij.png",
-    },
-  },
-];
 
 async function AssignmentSubmission(
   token: string,
   assignmentId: string
-): Promise<AssignmentSubmissionDataType[]> {
+): Promise<
+  {
+    student: StudentData;
+    isSubmitted: boolean;
+    submissionData?: AssignmentSubmissionDataType;
+  }[]
+> {
   const res = await axios.get(
     `${MainDomain}/api/get/assignment/${assignmentId}/assignment-submissons`,
     {
@@ -89,8 +71,26 @@ export default function StudentSubmissionsTable({
     queryFn: () => AssignmentSubmission(token, assignmentId),
   });
   if (isError && error) throw new Error(error.message);
+  const [searchTxt, setSearchTxt] = useState("");
+
+  const students = useMemo(() => {
+    if (data) {
+      return searchTxt.trim().length > 0
+        ? data.filter(
+            (std) =>
+              std.student.first_name
+                .toLowerCase()
+                .includes(searchTxt.toLowerCase()) ||
+              std.student.last_name
+                .toLowerCase()
+                .includes(searchTxt.toLowerCase())
+          )
+        : data;
+    }
+  }, [data, searchTxt]);
+
   return (
-    <div className="p-5 flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
       {/* Top */}
       <div className="flex items-center gap-3 justify-between flex-wrap">
         <p className="font-bold text-lg"> Submissions</p>
@@ -98,6 +98,7 @@ export default function StudentSubmissionsTable({
         <div className="bg-Second-Card-bg flex items-center gap-1 rounded-md pl-3">
           <Search className="w-4 h-4 text-low-white" />
           <Input
+            onChange={(e) => setSearchTxt(e.target.value)}
             placeholder="Search Student"
             className="bg-Second-Card-bg focus-visible:border-Second-Card-bg"
           />
@@ -116,18 +117,18 @@ export default function StudentSubmissionsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading && !isLoading ? (
+          {isLoading && !students ? (
             <TableRow>
               <TableCell colSpan={7}>
-                <div className="flex items-center gap-1 text-low-white justify-center p-2">
+                <div className="flex items-center gap-3 text-low-white justify-center p-2">
                   <SmallLoader color="white" />
                   Loading...
                 </div>
               </TableCell>
             </TableRow>
-          ) : data && dummyAssignmentSubmissions.length > 0 ? (
-            dummyAssignmentSubmissions.map((submission) => (
-              <TableRow key={submission.id}>
+          ) : students && students.length > 0 ? (
+            students.map((submission) => (
+              <TableRow key={submission.student.id}>
                 <TableCell>
                   <StudentCardWithImage
                     id={submission.student.student_id}
@@ -136,19 +137,47 @@ export default function StudentSubmissionsTable({
                   />
                 </TableCell>
                 <TableCell>
-                  <p className="text-xs">
-                    {timeConverter(submission.submited_at)}
-                  </p>
+                  {submission.submissionData ? (
+                    <p className="text-xs">
+                      {timeConverter(submission.submissionData.submited_at)}
+                    </p>
+                  ) : (
+                    <p className="text-low-white">__</p>
+                  )}
                 </TableCell>
                 <TableCell>
-                  <AssignmentStatusPadge status={submission.status} />
+                  {submission.submissionData ? (
+                    <AssignmentStatusPadge
+                      status={submission.submissionData.status}
+                    />
+                  ) : (
+                    <p className="font-medium text-xs w-fit rounded-sm px-3 py-1.5 bg-glass-red text-red-500">
+                      Not Submitted
+                    </p>
+                  )}
                 </TableCell>
-                <TableCell>{submission.grade} / 100</TableCell>
                 <TableCell>
-                  <ShowStudentSubmission
-                    submissionData={submission}
-                    token={token}
-                  />
+                  {!submission.isSubmitted ? (
+                    <p className="text-low-white"> _ / 100</p>
+                  ) : (
+                    submission.isSubmitted &&
+                    submission.submissionData && (
+                      <> {submission.submissionData.grade} / 100</>
+                    )
+                  )}
+                </TableCell>
+                <TableCell>
+                  {submission.submissionData ? (
+                    <ShowStudentSubmissionModel
+                      assignmentId={assignmentId}
+                      submissionData={submission.submissionData}
+                      token={token}
+                    />
+                  ) : (
+                    <Button disabled>
+                      <Eye />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))
