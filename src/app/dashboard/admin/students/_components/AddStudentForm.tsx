@@ -219,11 +219,13 @@ export default function AddStudentForm({ token, setClose }: Props) {
                   <SelectValue placeholder="Academic Year" />
                 </SelectTrigger>
                 <SelectContent className="bg-Second-black text-white border-soft-border">
-                  {years.map((year) => (
-                    <SelectItem value={`${year.id}`} key={year.id}>
-                      {year.year_label}
-                    </SelectItem>
-                  ))}
+                  {years
+                    .filter((year) => year.level_number != 0)
+                    .map((year) => (
+                      <SelectItem value={`${year.id}`} key={year.id}>
+                        {year.year_label}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
             </div>

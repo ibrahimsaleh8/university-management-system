@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
           email: true,
           teacher_id: true,
           qualification: true,
+          image: true,
         },
         orderBy: {
           first_name: "asc",
@@ -30,6 +31,7 @@ export async function GET(request: NextRequest) {
           last_name: true,
           email: true,
           teacher_id: true,
+          image: true,
           qualification: true,
         },
         orderBy: {

@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
           first_name: true,
           last_name: true,
           password: true,
+          image: true,
         },
       });
     } else if (role == "admin") {
@@ -34,6 +35,7 @@ export async function POST(request: NextRequest) {
           first_name: true,
           last_name: true,
           password: true,
+          image: true,
         },
       });
     } else {
@@ -47,6 +49,7 @@ export async function POST(request: NextRequest) {
           first_name: true,
           last_name: true,
           password: true,
+          image: true,
         },
       });
     }
@@ -68,6 +71,7 @@ export async function POST(request: NextRequest) {
       first_name: findUser.first_name,
       last_name: findUser.last_name,
       role,
+      image: findUser.image,
     };
     const response = NextResponse.json(responseUserInfo, { status: 200 });
 

@@ -41,73 +41,13 @@ export default function ShowStudentData({ id }: Props) {
   ) : (
     data && (
       <div className="flex flex-col gap-3">
-        {/* Header */}
-        <DetailsHeader
-          Title={
-            <p className="text-xl line-clamp-1 capitalize font-bold text-start">
-              {data.first_name} {data.last_name} Page
-            </p>
-          }
-          image={data.image}
-          operations={
-            <OperationsDropdown verticalIcon={true} components={[<></>]} />
-          }
-        />
-        <SectionHead title="Main Data" />
-        <DetailsMainData
-          leftData={[
-            <DetailsParagraphInfo
-              icon={<User className="w-5 h-5" />}
-              head="Name"
-              content={`${data.first_name} ${data.last_name}`}
-              key={0}
-            />,
-            <DetailsParagraphInfo
-              icon={<Mail className="w-5 h-5" />}
-              head="Email"
-              content={data.email}
-              key={1}
-            />,
-            <DetailsParagraphInfo
-              icon={<VenusAndMars className="w-5 h-5" />}
-              head="Gender"
-              content={data.gender}
-              key={2}
-            />,
-            <DetailsParagraphInfo
-              icon={<MapPin className="w-5 h-5" />}
-              head="Address"
-              content={data.address}
-              key={3}
-            />,
-          ]}
-          rightData={[
-            <DetailsParagraphInfo
-              icon={<Calendar1 className="w-5 h-5" />}
-              head="Date of birth"
-              content={GetDateFromTime(data.date_of_birth)}
-              key={0}
-            />,
-            <DetailsParagraphInfo
-              icon={<GraduationCap className="w-5 h-5" />}
-              head="Year"
-              content={data.academicYear}
-              key={1}
-            />,
-            <DetailsParagraphInfo
-              icon={<Phone className="w-5 h-5" />}
-              head="Phone"
-              content={data.phone}
-              key={2}
-            />,
-            <DetailsParagraphInfo
-              icon={<Settings className="w-5 h-5" />}
-              head="Department"
-              content={`${data.department.name} - ${data.department.code}`}
-              key={3}
-            />,
-          ]}
-        />
+        {/* Top */}
+        <div className="flex gap-5">
+          {/* Left */}
+          <div className="bg-Second-black rounded-2xl w-[30rem] h-96"></div>
+          {/* Right */}
+          <div className="bg-Second-black rounded-2xl w-full h-96"></div>
+        </div>
       </div>
     )
   );

@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
         last_name: true,
         email: true,
         academicYear: { select: { year_label: true } },
+        image: true,
       },
       orderBy: {
         first_name: "asc",

@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
           email: true,
           teacher_id: true,
           qualification: true,
+          image: true,
         },
       });
     } else if (searchMethod == "email") {
@@ -49,6 +50,7 @@ export async function GET(request: NextRequest) {
           first_name: true,
           last_name: true,
           email: true,
+          image: true,
           teacher_id: true,
           qualification: true,
         },
@@ -62,6 +64,7 @@ export async function GET(request: NextRequest) {
           id: true,
           first_name: true,
           last_name: true,
+          image: true,
           email: true,
           teacher_id: true,
           qualification: true,

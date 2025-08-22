@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
           last_name: true,
           email: true,
           academicYear: { select: { year_label: true } },
+          image: true,
         },
       });
     } else if (searchMethod == "email") {
@@ -49,6 +50,7 @@ export async function GET(request: NextRequest) {
           first_name: true,
           last_name: true,
           email: true,
+          image: true,
           academicYear: { select: { year_label: true } },
         },
       });
@@ -61,6 +63,7 @@ export async function GET(request: NextRequest) {
           id: true,
           student_id: true,
           first_name: true,
+          image: true,
           last_name: true,
           email: true,
           academicYear: { select: { year_label: true } },

@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import SearchInStudents from "./SearchInStudents";
-import { ChevronsRight } from "lucide-react";
 import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import TablePagination from "../../teachers/_components/TablePagination";
 import { useShowStudentsTable } from "@/hooks/useShowStudentsTable";
@@ -18,13 +17,15 @@ import GradeFilterationCard from "./GradeFilterationCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import OperationsDropdown from "@/app/dashboard/_components/OperationsDropdown";
 import MoveingToNextGrade from "./MoveingToNextGrade";
-import Link from "next/link";
+import ShowDetailsLink from "@/app/dashboard/_components/ShowDetailsLink";
+import UserCardImageAndName from "@/app/dashboard/_components/UserCardImageAndName";
 
 export type StudentResDataType = {
   id: number;
   student_id: string;
   first_name: string;
   last_name: string;
+  image: string;
   email: string;
   academicYear: {
     year_label: string;
@@ -115,9 +116,8 @@ export default function ShowStudentsTable({ token }: { token: string }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>#</TableHead>
+            <TableHead>Student</TableHead>
             <TableHead>ID</TableHead>
-            <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Year</TableHead>
             <TableHead>Details</TableHead>
@@ -132,26 +132,28 @@ export default function ShowStudentsTable({ token }: { token: string }) {
             </TableRow>
           ) : students && students.length > 0 ? (
             <>
-              {students.map((std, indx) => (
+              {students.map((std) => (
                 <TableRow key={std.id}>
-                  <TableCell>{indx + 1}</TableCell>
+                  <TableCell>
+                    <UserCardImageAndName
+                      image={std.image}
+                      name={`${std.first_name} ${std.last_name}`}
+                    />
+                  </TableCell>
                   <TableCell className="text-sm">{std.student_id}</TableCell>
-                  <TableCell>{`${std.first_name} ${std.last_name}`}</TableCell>
                   <TableCell>{std.email}</TableCell>
                   <TableCell>{std.academicYear.year_label}</TableCell>
                   <TableCell>
-                    <Link
-                      href={`/dashboard/admin/students/${std.student_id}`}
-                      className="bg-white hover:bg-white text-black flex items-center justify-center w-fit px-3 py-1 rounded-md">
-                      <ChevronsRight />
-                    </Link>
+                    <ShowDetailsLink
+                      url={`/dashboard/admin/students/${std.student_id}`}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
             </>
           ) : (
             <TableRow>
-              <TableCell className="text-center text-low-white" colSpan={6}>
+              <TableCell className="text-center text-low-white p-4" colSpan={5}>
                 No Result Found...
               </TableCell>
             </TableRow>

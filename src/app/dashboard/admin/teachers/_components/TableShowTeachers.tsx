@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronsRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import TablePagination from "./TablePagination";
 import TabelSkeleton from "./TabelSkeleton";
@@ -18,7 +17,8 @@ import { NumberOfTeachers } from "@/variables/Pagination";
 import AddingModel from "../../../_components/forms/AddingModel";
 import SearchInTeacherTable from "./SearchInTeacherTable";
 import { GetTeachers } from "@/lib/GetTeachers";
-import Link from "next/link";
+import UserCardImageAndName from "@/app/dashboard/_components/UserCardImageAndName";
+import ShowDetailsLink from "@/app/dashboard/_components/ShowDetailsLink";
 
 type Props = {
   token: string;
@@ -31,6 +31,7 @@ export type TeachersDataType = {
   email: string;
   teacher_id: string;
   qualification: string;
+  image: string;
 };
 
 async function getNumberOfTeachers(): Promise<{ numbers: number }> {
@@ -65,6 +66,7 @@ export default function TableShowTeachers({ token }: Props) {
 
     return res;
   }, [searched, searchedData, teachers]);
+
   const Pages = useMemo(() => {
     return teachersNumber
       ? Math.ceil(teachersNumber.numbers / NumberOfTeachers)
@@ -88,9 +90,8 @@ export default function TableShowTeachers({ token }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>#</TableHead>
+              <TableHead>Teacher</TableHead>
               <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Qualification</TableHead>
               <TableHead>Info</TableHead>
@@ -104,19 +105,21 @@ export default function TableShowTeachers({ token }: Props) {
                 </TableCell>
               </TableRow>
             ) : Data && Data.length > 0 ? (
-              Data.map((teacher, i) => (
+              Data.map((teacher) => (
                 <TableRow key={teacher.id}>
-                  <TableCell>{i + 1}</TableCell>
+                  <TableCell>
+                    <UserCardImageAndName
+                      image={teacher.image}
+                      name={`${teacher.first_name} ${teacher.last_name}`}
+                    />
+                  </TableCell>
                   <TableCell>{teacher.teacher_id}</TableCell>
-                  <TableCell>{`${teacher.first_name} ${teacher.last_name}`}</TableCell>
                   <TableCell>{teacher.email}</TableCell>
                   <TableCell>{teacher.qualification}</TableCell>
                   <TableCell>
-                    <Link
-                      href={`/dashboard/admin/teachers/${teacher.teacher_id}`}
-                      className="bg-white flex items-center justify-center rounded-md w-10 h-8 hover:bg-white text-black">
-                      <ChevronsRight className="w-5 h-5" />
-                    </Link>
+                    <ShowDetailsLink
+                      url={`/dashboard/admin/teachers/${teacher.teacher_id}`}
+                    />
                   </TableCell>
                 </TableRow>
               ))
