@@ -13,6 +13,9 @@ export async function GET() {
         registerDeadline: true,
         isActive: true,
       },
+      orderBy: {
+        isActive: "desc",
+      },
     });
     return NextResponse.json(semesters, { status: 200 });
   } catch (error) {

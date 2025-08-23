@@ -75,7 +75,7 @@ export default function AddingModel({
               style={{
                 maxHeight: "calc(100vh - 200px)",
               }}
-              className="w-full overflow-y-auto">
+              className="w-full overflow-y-auto pb-2">
               {/* Form Add New Teacher */}
               {AddType == "Teacher" && (
                 <FormAddTeacher token={token} setClose={setClose} />

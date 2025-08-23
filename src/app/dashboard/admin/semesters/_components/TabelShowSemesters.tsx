@@ -8,18 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { ChevronsRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { GetAllSemesters } from "@/lib/GetAllSemesters";
 import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
+import ShowDetailsModel from "@/app/dashboard/_components/ShowDetailsModel";
+import UpdateSemester from "./UpdateSemester";
+import { formatDeadline } from "@/lib/FormatDeadline";
 
-function timeConverter(time: string) {
-  const t = new Date(time);
-  return `${t.getDate()}/${t.getMonth() + 1}/${t.getFullYear()}`;
-}
-
-export default function TabelShowSemesters() {
+export default function TabelShowSemesters({ token }: { token: string }) {
   const { error, isError, isLoading, semestersData } = GetAllSemesters();
   if (isError && error) throw new Error(error.message);
 
@@ -46,10 +42,10 @@ export default function TabelShowSemesters() {
               <TableRow key={smes.id}>
                 <TableCell>{indx + 1}</TableCell>
                 <TableCell>{smes.name}</TableCell>
-                <TableCell>{timeConverter(smes.startDate)}</TableCell>
-                <TableCell>{timeConverter(smes.endDate)}</TableCell>
-                <TableCell>{timeConverter(smes.registerBegin)}</TableCell>
-                <TableCell>{timeConverter(smes.registerDeadline)}</TableCell>
+                <TableCell>{formatDeadline(smes.startDate)}</TableCell>
+                <TableCell>{formatDeadline(smes.endDate)}</TableCell>
+                <TableCell>{formatDeadline(smes.registerBegin)}</TableCell>
+                <TableCell>{formatDeadline(smes.registerDeadline)}</TableCell>
                 <TableCell>
                   {smes.isActive ? (
                     <Badge variant={"active"}>Active</Badge>
@@ -58,9 +54,12 @@ export default function TabelShowSemesters() {
                   )}
                 </TableCell>
                 <TableCell>
-                  <Button className="bg-white hover:bg-white text-black">
-                    <ChevronsRight />
-                  </Button>
+                  <ShowDetailsModel
+                    title="Semester Details"
+                    childComponent={
+                      <UpdateSemester semesterData={smes} token={token} />
+                    }
+                  />
                 </TableCell>
               </TableRow>
             ))

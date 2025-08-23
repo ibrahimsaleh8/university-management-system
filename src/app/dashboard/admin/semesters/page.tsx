@@ -12,7 +12,7 @@ export default async function SemestersPage() {
         <p className="font-bold">Semesters</p>
         <AddingModel token={token} AddType="Semester" />
       </div>
-      <TabelShowSemesters />
+      <TabelShowSemesters token={token} />
       <div className="flex flex-col gap-2 pt-4">
         <ShowScheduals token={token} />
       </div>
