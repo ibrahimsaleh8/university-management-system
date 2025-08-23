@@ -8,11 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronsRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { GetAllSemesters } from "@/lib/GetAllSemesters";
+import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
 
 function timeConverter(time: string) {
   const t = new Date(time);
@@ -22,8 +22,11 @@ function timeConverter(time: string) {
 export default function TabelShowSemesters() {
   const { error, isError, isLoading, semestersData } = GetAllSemesters();
   if (isError && error) throw new Error(error.message);
-  return (
-    <div>
+
+  return isLoading && !semestersData ? (
+    <TabelLoadingSkeleton coloumnNumber={8} rowNumber={3} />
+  ) : (
+    semestersData && (
       <Table>
         <TableHeader>
           <TableRow>
@@ -38,13 +41,7 @@ export default function TabelShowSemesters() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading && !semestersData ? (
-            <TableRow>
-              <TableCell colSpan={8}>
-                <TabelSkeleton />
-              </TableCell>
-            </TableRow>
-          ) : semestersData && semestersData.length > 0 ? (
+          {semestersData.length > 0 ? (
             semestersData.map((smes, indx) => (
               <TableRow key={smes.id}>
                 <TableCell>{indx + 1}</TableCell>
@@ -55,13 +52,9 @@ export default function TabelShowSemesters() {
                 <TableCell>{timeConverter(smes.registerDeadline)}</TableCell>
                 <TableCell>
                   {smes.isActive ? (
-                    <>
-                      <Badge variant={"active"}>Active</Badge>
-                    </>
+                    <Badge variant={"active"}>Active</Badge>
                   ) : (
-                    <>
-                      <Badge variant="destructive">Not Active</Badge>
-                    </>
+                    <Badge variant="destructive">Not Active</Badge>
                   )}
                 </TableCell>
                 <TableCell>
@@ -73,13 +66,13 @@ export default function TabelShowSemesters() {
             ))
           ) : (
             <TableRow>
-              <TableCell className="text-center" colSpan={8}>
+              <TableCell className="text-center p-4 text-low-white" colSpan={8}>
                 No Semesters Found
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-    </div>
+    )
   );
 }

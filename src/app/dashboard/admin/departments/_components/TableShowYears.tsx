@@ -9,15 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronsRight } from "lucide-react";
-import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import { GetAllYears } from "@/lib/GetAllYears";
+import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
 
 export default function TableShowYears() {
   const { error, isError, isLoading, years } = GetAllYears();
   if (isError && error) throw new Error(error.message);
 
-  return (
-    <>
+  return isLoading && !years ? (
+    <TabelLoadingSkeleton coloumnNumber={6} rowNumber={5} />
+  ) : (
+    years && (
       <Table>
         <TableHeader>
           <TableRow>
@@ -29,13 +31,7 @@ export default function TableShowYears() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading && !years ? (
-            <TableRow>
-              <TableCell colSpan={5}>
-                <TabelSkeleton count={4} />
-              </TableCell>
-            </TableRow>
-          ) : years && years.length > 0 ? (
+          {years.length > 0 ? (
             years.map((year, indx) => (
               <TableRow key={year.id}>
                 <TableCell>{indx + 1}</TableCell>
@@ -56,6 +52,6 @@ export default function TableShowYears() {
           )}
         </TableBody>
       </Table>
-    </>
+    )
   );
 }

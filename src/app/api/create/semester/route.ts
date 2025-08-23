@@ -24,6 +24,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const semester = await prisma.semester.findFirst({
+      where: {
+        name: semesterData.name,
+      },
+    });
+
+    if (semester) {
+      return NextResponse.json(
+        { message: "Semester name is already exist" },
+        { status: 400 }
+      );
+    }
+
+    if (semesterData.isActive) {
+      const checkAnotherSemester = await prisma.semester.findFirst({
+        where: {
+          isActive: true,
+        },
+        select: {
+          name: true,
+        },
+      });
+
+      if (checkAnotherSemester) {
+        return NextResponse.json(
+          {
+            message: `${checkAnotherSemester.name} is current active please make update it to be not active or new semester not active`,
+          },
+          { status: 400 }
+        );
+      }
+    }
+
     // Create New Semester
     await prisma.semester.create({
       data: {
@@ -32,6 +65,7 @@ export async function POST(req: NextRequest) {
         endDate: semesterData.endDate,
         registerBegin: semesterData.registerBegin,
         registerDeadline: semesterData.registerDeadline,
+        isActive: semesterData.isActive,
       },
     });
 

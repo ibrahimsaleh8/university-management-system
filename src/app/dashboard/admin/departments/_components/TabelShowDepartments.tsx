@@ -9,16 +9,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronsRight } from "lucide-react";
-import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
+import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
 
 export default function TabelShowDepartments() {
   const { departments, error, isError, isLoading } = GetDepartmentsQuery();
 
   if (isError && error) throw new Error(error.message);
 
-  return (
-    <>
+  return isLoading && !departments ? (
+    <TabelLoadingSkeleton coloumnNumber={7} rowNumber={3} />
+  ) : (
+    departments && (
       <Table>
         <TableHeader>
           <TableRow>
@@ -32,13 +34,7 @@ export default function TabelShowDepartments() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading && !departments ? (
-            <TableRow>
-              <TableCell colSpan={7}>
-                <TabelSkeleton count={4} />
-              </TableCell>
-            </TableRow>
-          ) : departments && departments.length > 0 ? (
+          {departments.length > 0 ? (
             departments.map((dep, indx) => (
               <TableRow key={dep.id}>
                 <TableCell>{indx + 1}</TableCell>
@@ -56,11 +52,13 @@ export default function TabelShowDepartments() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={7}>No Departments Found</TableCell>
+              <TableCell className="text-center p-4 text-low-white" colSpan={7}>
+                No Departments Found
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-    </>
+    )
   );
 }
