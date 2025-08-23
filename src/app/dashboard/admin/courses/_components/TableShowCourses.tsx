@@ -7,18 +7,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronsRight } from "lucide-react";
 import { GetAllMainCourses } from "@/lib/GetAllMainCourses";
+import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
 
 export default function TableShowCourses() {
   const { courses, error, isError, isLoading } = GetAllMainCourses();
 
   if (isError && error) throw new Error(error.message);
 
-  return (
-    <>
+  return isLoading && !courses ? (
+    <TabelLoadingSkeleton coloumnNumber={7} rowNumber={3} />
+  ) : (
+    courses && (
       <Table>
         <TableHeader>
           <TableRow>
@@ -32,37 +34,31 @@ export default function TableShowCourses() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <>
-            {isLoading && !courses ? (
-              <TableRow>
-                <TableCell colSpan={7}>
-                  <TabelSkeleton />
+          {courses.length > 0 ? (
+            courses.map((course, indx) => (
+              <TableRow key={course.id}>
+                <TableCell>{indx + 1}</TableCell>
+                <TableCell>{course.name}</TableCell>
+                <TableCell className="uppercase">{course.code}</TableCell>
+                <TableCell>{course.credit_hours}</TableCell>
+                <TableCell>{course.department.name}</TableCell>
+                <TableCell>{course.isElective ? "true" : "false"}</TableCell>
+                <TableCell>
+                  <Button className="bg-white hover:bg-white text-black">
+                    <ChevronsRight />
+                  </Button>
                 </TableCell>
               </TableRow>
-            ) : courses && courses.length > 0 ? (
-              courses.map((course, indx) => (
-                <TableRow key={course.id}>
-                  <TableCell>{indx + 1}</TableCell>
-                  <TableCell>{course.name}</TableCell>
-                  <TableCell className="uppercase">{course.code}</TableCell>
-                  <TableCell>{course.credit_hours}</TableCell>
-                  <TableCell>{course.department.name}</TableCell>
-                  <TableCell>{course.isElective ? "true" : "false"}</TableCell>
-                  <TableCell>
-                    <Button className="bg-white hover:bg-white text-black">
-                      <ChevronsRight />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7}>No Courses Found</TableCell>
-              </TableRow>
-            )}
-          </>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell className="text-center p-4 text-low-white" colSpan={7}>
+                No Courses Found
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
-    </>
+    )
   );
 }

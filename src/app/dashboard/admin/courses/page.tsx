@@ -9,14 +9,14 @@ export default async function CoursesPage() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3 justify-between flex-col sm:flex-row">
-        Main Courses
+        <p className="font-bold">Main Courses</p>
         <AddingModel AddType="Course" token={token} />
       </div>
       <TableShowCourses />
 
       <div className="flex flex-col gap-3 mt-20">
         <div className="flex items-center gap-3 justify-between flex-col sm:flex-row">
-          Courses Offers
+          <p className="font-bold">Courses Offers</p>
           <AddingModel AddType="Course-offering" token={token} />
         </div>
 
