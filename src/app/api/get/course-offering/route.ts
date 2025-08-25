@@ -21,9 +21,25 @@ export async function GET() {
           },
         },
       },
+      orderBy: [
+        {
+          semester: {
+            isActive: "asc",
+          },
+        },
+        {
+          course: {
+            name: "asc",
+          },
+        },
+      ],
     });
+
     return NextResponse.json(offers, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Server Error =>  " + error });
+    return NextResponse.json(
+      { message: "Server Error => " + (error as Error).message },
+      { status: 500 }
+    );
   }
 }

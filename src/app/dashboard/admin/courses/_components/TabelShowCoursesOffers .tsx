@@ -7,15 +7,49 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { ChevronsRight } from "lucide-react";
 import { GetAllCoursesOffering } from "@/lib/GetAllCoursesOffering";
 import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
+import { Badge } from "@/components/ui/badge";
+import DeleteAlert from "@/app/dashboard/_components/DeleteAlert";
+import axios from "axios";
+import { MainDomain } from "@/variables/MainDomain";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import GlobalToast from "@/components/Global/GlobalToast";
+import { ErrorResponseType } from "@/lib/globalTypes";
 
-export default function TabelShowCoursesOffers() {
+async function deleteCourseOffering(token: string, id: string) {
+  await axios.delete(`${MainDomain}/api/delete/course-offering/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export default function TabelShowCoursesOffers({ token }: { token: string }) {
+  const queryClient = useQueryClient();
   const { coursesOffers, error, isError, isLoading } = GetAllCoursesOffering();
-
   if (isError && error) throw new Error(error.message);
+
+  const { mutate, isPending, isSuccess } = useMutation({
+    mutationFn: (data: { token: string; id: string }) =>
+      deleteCourseOffering(data.token, data.id),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["get_all_courses_offering"],
+      });
+      GlobalToast({
+        icon: "success",
+        title: "Course offering has been deleted successfully",
+      });
+    },
+    onError: (err: ErrorResponseType) => {
+      GlobalToast({
+        title: err.response.data.message,
+        icon: "error",
+      });
+    },
+  });
+
   return isLoading && !coursesOffers ? (
     <TabelLoadingSkeleton coloumnNumber={8} rowNumber={3} />
   ) : (
@@ -30,7 +64,7 @@ export default function TabelShowCoursesOffers() {
             <TableHead>Capacity</TableHead>
             <TableHead>Semester</TableHead>
             <TableHead>Students</TableHead>
-            <TableHead>Info</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -42,16 +76,36 @@ export default function TabelShowCoursesOffers() {
                 <TableCell>{course.academicYear.year_label}</TableCell>
                 <TableCell>{course.hall}</TableCell>
                 <TableCell>{course.maxCapacity}</TableCell>
-                <TableCell>
-                  {course.semester.name}{" "}
-                  {course.semester.isActive ? "<Active>" : "Not Active"}
+                <TableCell className="text-sm">
+                  <p className="flex items-center gap-2">
+                    {course.semester.name}
+                    {course.semester.isActive ? (
+                      <Badge variant="success" appearance="light">
+                        Activce
+                      </Badge>
+                    ) : (
+                      <Badge variant="destructive" appearance="light">
+                        Not Activce
+                      </Badge>
+                    )}
+                  </p>
                 </TableCell>
                 <TableCell>{course._count.students}</TableCell>
 
                 <TableCell>
-                  <Button className="bg-white hover:bg-white text-black">
-                    <ChevronsRight />
-                  </Button>
+                  <div className="flex items-center gap-3">
+                    <DeleteAlert
+                      isPending={isPending}
+                      isSuccess={isSuccess}
+                      title="Delete Course offering"
+                      deleteFn={() => {
+                        mutate({
+                          id: course.id,
+                          token,
+                        });
+                      }}
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             ))

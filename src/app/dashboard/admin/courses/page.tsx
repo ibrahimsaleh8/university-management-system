@@ -20,7 +20,7 @@ export default async function CoursesPage() {
           <AddingModel AddType="Course-offering" token={token} />
         </div>
 
-        <TabelShowCoursesOffers />
+        <TabelShowCoursesOffers token={token} />
       </div>
     </div>
   );

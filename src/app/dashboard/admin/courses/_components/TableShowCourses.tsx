@@ -62,7 +62,7 @@ export default function TableShowCourses({ token }: { token: string }) {
             <TableHead>Department</TableHead>
             <TableHead>Credits</TableHead>
             <TableHead>Type</TableHead>
-            <TableHead>Show</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

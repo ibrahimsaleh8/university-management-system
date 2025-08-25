@@ -16,8 +16,8 @@ import { useEffect, useRef } from "react";
 type Props = {
   title: string;
   deleteFn: () => void;
-  isSuccess: boolean;
-  isPending: boolean;
+  isSuccess?: boolean;
+  isPending?: boolean;
 };
 export default function DeleteAlert({
   deleteFn,
