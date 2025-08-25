@@ -97,7 +97,7 @@ export default function TabelShowCoursesOffers({ token }: { token: string }) {
                     <DeleteAlert
                       isPending={isPending}
                       isSuccess={isSuccess}
-                      title="Delete Course offering"
+                      title="Course offering"
                       deleteFn={() => {
                         mutate({
                           id: course.id,

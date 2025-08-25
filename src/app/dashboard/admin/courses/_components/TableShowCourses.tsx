@@ -98,7 +98,7 @@ export default function TableShowCourses({ token }: { token: string }) {
                     <DeleteAlert
                       isSuccess={isSuccess}
                       isPending={isPending}
-                      title="Delete Course"
+                      title="Course"
                       deleteFn={() => {
                         mutate({
                           id: course.id,
