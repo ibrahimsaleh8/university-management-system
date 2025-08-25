@@ -22,9 +22,17 @@ type Props = {
   events: EventDataType[];
   canDelete: boolean;
   deleteFn?: (id: string) => void;
+  isSuccess?: boolean;
+  isPending?: boolean;
 };
 
-export default function CalendarTable({ events, canDelete, deleteFn }: Props) {
+export default function CalendarTable({
+  events,
+  canDelete,
+  deleteFn,
+  isPending,
+  isSuccess,
+}: Props) {
   return (
     <div className="w-full overflow-x-auto">
       <div className="min-w-[600px] border border-soft-border rounded-md overflow-hidden">
@@ -96,9 +104,11 @@ export default function CalendarTable({ events, canDelete, deleteFn }: Props) {
                               {cellEvent.hall}
                             </p>
                           )}
-                          {canDelete && deleteFn && (
+                          {canDelete && deleteFn && isPending && isSuccess && (
                             <div className="flex justify-end">
                               <DeleteAlert
+                                isPending={isPending}
+                                isSuccess={isSuccess}
                                 deleteFn={() => deleteFn(cellEvent.id)}
                                 title="Schedule Time"
                               />

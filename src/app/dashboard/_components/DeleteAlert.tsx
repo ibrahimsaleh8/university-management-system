@@ -1,53 +1,71 @@
 "use client";
+import SmallLoader from "@/components/Global/SmallLoader";
 import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from "@/components/animate-ui/radix/dialog";
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
-import { useRef } from "react";
+import { Trash2, X } from "lucide-react";
+import { useEffect, useRef } from "react";
 type Props = {
   title: string;
   deleteFn: () => void;
+  isSuccess: boolean;
+  isPending: boolean;
 };
-export default function DeleteAlert({ deleteFn, title }: Props) {
+export default function DeleteAlert({
+  deleteFn,
+  title,
+  isSuccess,
+  isPending,
+}: Props) {
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  useEffect(() => {
+    if (isSuccess && closeRef && !isPending) {
+      closeRef.current?.click();
+    }
+  }, [isPending, isSuccess]);
+
   return (
-    <Dialog>
-      <DialogTrigger className="p-2 bg-red-600 rounded-md cursor-pointer">
-        <Trash2 />
-      </DialogTrigger>
-      <DialogContent
-        from="bottom"
-        className="bg-Main-black text-white pb-0 border-soft-border">
-        <DialogHeader>
-          <DialogTitle>Delete {title}</DialogTitle>
-          <DialogDescription>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button className="w-8 h-8" variant={"destructive"}>
+          <Trash2 />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="bg-Main-black text-white pb-0 border-soft-border">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete {title}</AlertDialogTitle>
+          <AlertDialogDescription>
             Are you sure you want to delete this item? This action cannot be
             undone
-          </DialogDescription>
-        </DialogHeader>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
         <div className="flex justify-end">
           <Button
+            disabled={isPending}
             onClick={() => {
               deleteFn();
-              closeRef.current?.click();
             }}
-            className="w-32"
+            className="min-w-32"
             variant={"destructive"}>
-            Delete
+            {isPending ? <SmallLoader color="white" /> : "Delete"}
           </Button>
         </div>
-        <DialogFooter>
-          <DialogClose ref={closeRef} className="hidden"></DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        <AlertDialogFooter>
+          <AlertDialogCancel
+            ref={closeRef}
+            className="bg-red-500 h-7 w-7 rounded-sm !p-2 text-white border-red-500 hover:bg-red-600 hover:text-white duration-300 absolute sm:top-[-10px] sm:right-[-10px]  top-1 right-1">
+            <X />
+          </AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

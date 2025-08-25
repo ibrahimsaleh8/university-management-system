@@ -20,7 +20,7 @@ export default function ShowDetailsModel({ childComponent, title }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-white text-black hover:bg-transparent border hover:text-white">
+        <Button className="bg-white w-8 h-8 text-black hover:bg-transparent border hover:text-white">
           <Eye />
         </Button>
       </AlertDialogTrigger>

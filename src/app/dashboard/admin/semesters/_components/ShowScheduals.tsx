@@ -29,7 +29,7 @@ async function deleteSchedualTime(id: string, token: string) {
 export default function ShowScheduals({ token }: { token: string }) {
   const [gradeNumber, setGradeNumber] = useState(1);
   const queryClient = useQueryClient();
-  const { mutate } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationKey: ["delete_schedual_time"],
     mutationFn: (data: { id: string; token: string }) =>
       deleteSchedualTime(data.id, data.token),
@@ -114,6 +114,8 @@ export default function ShowScheduals({ token }: { token: string }) {
       ) : (
         times && (
           <CalendarTable
+            isSuccess={isSuccess}
+            isPending={isPending}
             deleteFn={(id: string) => HandleDeleteShedualTime(id)}
             canDelete={true}
             events={times}
