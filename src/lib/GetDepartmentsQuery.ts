@@ -2,7 +2,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-type DepartmentResponseType = {
+export type DepartmentResponseType = {
   id: number;
   name: string;
   code: string;

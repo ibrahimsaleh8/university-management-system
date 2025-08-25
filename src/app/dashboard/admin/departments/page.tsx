@@ -11,7 +11,7 @@ export default async function DepartmentPage() {
         <p className="font-bold">Departments</p>
         <AddingModel AddType="Department" token={token} />
       </div>
-      <TabelShowDepartments />
+      <TabelShowDepartments token={token} />
 
       <div className="flex flex-col gap-3 mt-10">
         <div className="flex justify-between items-center gap-3 sm:flex-row flex-col">

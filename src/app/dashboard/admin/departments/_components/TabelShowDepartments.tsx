@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,11 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ChevronsRight } from "lucide-react";
 import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
 import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
+import ShowDetailsModel from "@/app/dashboard/_components/ShowDetailsModel";
+import EditDepartment from "./EditDepartment";
 
-export default function TabelShowDepartments() {
+export default function TabelShowDepartments({ token }: { token: string }) {
   const { departments, error, isError, isLoading } = GetDepartmentsQuery();
 
   if (isError && error) throw new Error(error.message);
@@ -30,7 +30,7 @@ export default function TabelShowDepartments() {
             <TableHead>Teachers</TableHead>
             <TableHead>Students</TableHead>
             <TableHead>Courses</TableHead>
-            <TableHead>Info</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,15 +38,18 @@ export default function TabelShowDepartments() {
             departments.map((dep, indx) => (
               <TableRow key={dep.id}>
                 <TableCell>{indx + 1}</TableCell>
-                <TableCell>{dep.name}</TableCell>
+                <TableCell className="capitalize">{dep.name}</TableCell>
                 <TableCell className="uppercase">{dep.code}</TableCell>
                 <TableCell>{dep._count.teachers}</TableCell>
                 <TableCell>{dep._count.students}</TableCell>
                 <TableCell>{dep._count.courses}</TableCell>
                 <TableCell>
-                  <Button className="bg-white hover:bg-white text-black">
-                    <ChevronsRight />
-                  </Button>
+                  <ShowDetailsModel
+                    title="Department Details"
+                    childComponent={
+                      <EditDepartment departmentData={dep} token={token} />
+                    }
+                  />
                 </TableCell>
               </TableRow>
             ))
