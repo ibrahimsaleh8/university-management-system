@@ -8,7 +8,7 @@ export const addCourseSchema = z.object({
 
   code: z
     .string({ required_error: "Code is required" })
-    .min(4, { message: "Code should be at least 4 characters" }),
+    .min(3, { message: "Code should be at least 3 characters" }),
 
   credit_hours: z
     .number({

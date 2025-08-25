@@ -12,7 +12,7 @@ export default async function CoursesPage() {
         <p className="font-bold">Main Courses</p>
         <AddingModel AddType="Course" token={token} />
       </div>
-      <TableShowCourses />
+      <TableShowCourses token={token} />
 
       <div className="flex flex-col gap-3 mt-20">
         <div className="flex items-center gap-3 justify-between flex-col sm:flex-row">

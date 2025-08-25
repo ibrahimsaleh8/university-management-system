@@ -48,9 +48,13 @@ export default function TabelShowSemesters({ token }: { token: string }) {
                 <TableCell>{formatDeadline(smes.registerDeadline)}</TableCell>
                 <TableCell>
                   {smes.isActive ? (
-                    <Badge variant={"active"}>Active</Badge>
+                    <Badge variant="success" appearance="light">
+                      Active
+                    </Badge>
                   ) : (
-                    <Badge variant="destructive">Not Active</Badge>
+                    <Badge variant="destructive" appearance="light">
+                      Not Active
+                    </Badge>
                   )}
                 </TableCell>
                 <TableCell>

@@ -12,6 +12,9 @@ export async function GET() {
         department: { select: { name: true } },
         isElective: true,
       },
+      orderBy: {
+        name: "asc",
+      },
     });
     return NextResponse.json(courses, { status: 200 });
   } catch (error) {

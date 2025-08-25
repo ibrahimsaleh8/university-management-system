@@ -7,14 +7,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { ChevronsRight } from "lucide-react";
 import { GetAllMainCourses } from "@/lib/GetAllMainCourses";
 import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
+import ShowDetailsModel from "@/app/dashboard/_components/ShowDetailsModel";
+import EditMainCourse from "./EditMainCourse";
+import { Badge } from "@/components/ui/badge";
 
-export default function TableShowCourses() {
+export default function TableShowCourses({ token }: { token: string }) {
   const { courses, error, isError, isLoading } = GetAllMainCourses();
-
   if (isError && error) throw new Error(error.message);
 
   return isLoading && !courses ? (
@@ -24,29 +24,43 @@ export default function TableShowCourses() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Name</TableHead>
             <TableHead>Code</TableHead>
-            <TableHead>Credit Hours</TableHead>
+            <TableHead>Name</TableHead>
             <TableHead>Department</TableHead>
-            <TableHead>Is Elective</TableHead>
-            <TableHead>Info</TableHead>
+            <TableHead>Credits</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Show</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {courses.length > 0 ? (
-            courses.map((course, indx) => (
+            courses.map((course) => (
               <TableRow key={course.id}>
-                <TableCell>{indx + 1}</TableCell>
-                <TableCell>{course.name}</TableCell>
                 <TableCell className="uppercase">{course.code}</TableCell>
+                <TableCell>{course.name}</TableCell>
+                <TableCell className="capitalize">
+                  {course.department.name}
+                </TableCell>
                 <TableCell>{course.credit_hours}</TableCell>
-                <TableCell>{course.department.name}</TableCell>
-                <TableCell>{course.isElective ? "true" : "false"}</TableCell>
                 <TableCell>
-                  <Button className="bg-white hover:bg-white text-black">
-                    <ChevronsRight />
-                  </Button>
+                  {course.isElective ? (
+                    <Badge variant="warning" appearance="light">
+                      Elective
+                    </Badge>
+                  ) : (
+                    <Badge variant="success" appearance="light">
+                      Core
+                    </Badge>
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  <ShowDetailsModel
+                    title="Course Details"
+                    childComponent={
+                      <EditMainCourse courseData={course} token={token} />
+                    }
+                  />
                 </TableCell>
               </TableRow>
             ))
