@@ -386,6 +386,7 @@ model Event {
   title       String
   description String
   time        DateTime
+  location    String
   createdAt   DateTime @default(now())
   isFinished  Boolean  @default(false)
 }

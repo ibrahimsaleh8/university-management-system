@@ -5,44 +5,49 @@ import GlobalToast from "@/components/Global/GlobalToast";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Button } from "@/components/ui/button";
 import { ErrorResponseType } from "@/lib/globalTypes";
-import {
-  UniversityEventDataType,
-  UniversityEventSchema,
-} from "@/validation/AddEventSchema";
+import { LocalDateTimeConverter } from "@/lib/LocalDateTimeConverter";
+import { UniversityEventDataType } from "@/validation/AddEventSchema";
+import { EditEventSchema } from "@/validation/EditEventSchema";
 import { MainDomain } from "@/variables/MainDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-export type UpdateEventDataType = UniversityEventDataType & { id: string };
+export type UpdateEventDataType = {
+  id: string;
+  title: string;
+  location: string;
+  description: string;
+  time: string;
+};
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
   token: string;
   eventData: UpdateEventDataType;
 };
 
-async function updateEventApi(eventData: UpdateEventDataType, token: string) {
-  await axios.put(
-    `${MainDomain}/api/update/event/${eventData.id}`,
-    {
-      title: eventData.title,
-      description: eventData.description,
-      time: eventData.time,
+async function updateEventApi(
+  data: UniversityEventDataType,
+  token: string,
+  id: string
+) {
+  await axios.put(`${MainDomain}/api/update/event/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  });
 }
 export default function EditEvent({ token, setClose, eventData }: Props) {
+  console.log("eventData", eventData);
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
-    mutationKey: ["edit_event"],
-    mutationFn: (data: { eventData: UpdateEventDataType; token: string }) =>
-      updateEventApi(data.eventData, data.token),
+    mutationFn: (updateParams: {
+      data: UniversityEventDataType;
+      token: string;
+      id: string;
+    }) =>
+      updateEventApi(updateParams.data, updateParams.token, updateParams.id),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["get_all_events"] });
       setClose(true);
@@ -65,18 +70,20 @@ export default function EditEvent({ token, setClose, eventData }: Props) {
     formState: { errors },
     getValues,
   } = useForm<UniversityEventDataType>({
-    resolver: zodResolver(UniversityEventSchema),
+    resolver: zodResolver(EditEventSchema),
     mode: "all",
     defaultValues: {
       title: eventData.title,
       description: eventData.description,
-      time: new Date(eventData.time).toISOString().slice(0, 16),
+      location: eventData.location,
     },
   });
+
   const submitNewEvent: SubmitHandler<UniversityEventDataType> = (data) => {
     mutate({
-      eventData: { ...data, id: eventData.id },
       token,
+      data: { ...data, time: new Date(LocalDateTimeConverter(data.time)) },
+      id: eventData.id,
     });
   };
 
@@ -98,11 +105,20 @@ export default function EditEvent({ token, setClose, eventData }: Props) {
           label="Time"
           placeholder="Event Time"
           type="datetime-local"
+          defaultValue={eventData.time.toString().slice(0, 16)}
           register={register("time")}
-          defaultValue={getValues("time")}
         />
       </div>
       <ErrorMessage error1={errors.title} error2={errors.time} />
+      <InputForm
+        isError={errors.location != undefined}
+        label="Location"
+        placeholder="Event Location"
+        type="text"
+        register={register("location")}
+        defaultValue={getValues("location")}
+      />
+      <ErrorMessage error1={errors.location} />
 
       <TextAreaForm
         isError={errors.description != undefined}

@@ -1,8 +1,6 @@
 import { AdminAuthGuard } from "@/lib/AuthGuard/AdminAuthGuard";
-import {
-  UniversityEventDataType,
-  UniversityEventSchema,
-} from "@/validation/AddEventSchema";
+import { UniversityEventDataType } from "@/validation/AddEventSchema";
+import { EditEventSchema } from "@/validation/EditEventSchema";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -23,7 +21,7 @@ export async function PUT(
     }
     const eventData = (await req.json()) as UniversityEventDataType;
 
-    const validation = UniversityEventSchema.safeParse(eventData);
+    const validation = EditEventSchema.safeParse(eventData);
     if (!validation.success) {
       return NextResponse.json(
         { message: validation.error.errors[0].message },
@@ -50,7 +48,8 @@ export async function PUT(
       data: {
         title: eventData.title,
         description: eventData.description,
-        time: new Date(eventData.time),
+        time: eventData.time,
+        location: eventData.location,
       },
     });
 

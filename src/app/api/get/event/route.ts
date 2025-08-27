@@ -10,6 +10,10 @@ export async function GET() {
         description: true,
         time: true,
         isFinished: true,
+        location: true,
+      },
+      orderBy: {
+        time: "asc",
       },
     });
     const now = Date.now();
@@ -23,6 +27,7 @@ export async function GET() {
         description: ev.description,
         time: ev.time,
         isFinished,
+        location: ev.location,
       };
     });
 

@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
       data: {
         title: eventData.title,
         description: eventData.description,
-        time: new Date(eventData.time),
+        time: eventData.time,
+        location: eventData.location,
       },
     });
     return NextResponse.json(

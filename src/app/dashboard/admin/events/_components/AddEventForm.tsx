@@ -89,6 +89,14 @@ export default function AddEventForm({ token, setClose }: Props) {
         />
       </div>
       <ErrorMessage error1={errors.title} error2={errors.time} />
+      <InputForm
+        isError={errors.location != undefined}
+        label="Location"
+        placeholder="Event Location"
+        type="text"
+        register={register("location")}
+      />
+      <ErrorMessage error1={errors.location} />
 
       <TextAreaForm
         isError={errors.description != undefined}

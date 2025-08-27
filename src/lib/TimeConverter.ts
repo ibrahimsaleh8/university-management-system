@@ -1,9 +1,16 @@
 export function timeConverter(time: Date | string) {
-  const days = new Date(time).getDate();
-  const months = new Date(time).getMonth() + 1;
+  const date = new Date(time);
 
-  const timeConverted = `${days < 10 ? "0" + days : days}/${
-    months < 10 ? "0" + months : months
-  }/${new Date(time).getFullYear()} - ${new Date(time).toLocaleTimeString()}`;
-  return timeConverted;
+  const day = date.getDate();
+  const monthName = date.toLocaleString("en-US", {
+    month: "long",
+  });
+  const year = date.getFullYear();
+
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getHours().toString().padStart(2, "0");
+
+  return `${
+    day < 10 ? "0" + day : day
+  } ${monthName} ${year} - ${hours}:${minutes}`;
 }

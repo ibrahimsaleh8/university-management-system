@@ -17,7 +17,7 @@ export default function OperationsDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="cursor-pointer hover:bg-soft-border w-7 h-7 p-1 duration-300 rounded-md hover:text-main-text"
+        className="cursor-pointer hover:bg-soft-border min-w-7 min-h-7 p-1 duration-300 rounded-md hover:text-main-text"
         asChild>
         {verticalIcon ? (
           <EllipsisVertical className="w-5 h-5" />
