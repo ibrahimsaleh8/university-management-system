@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,11 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ChevronsRight } from "lucide-react";
 import { GetAllYears } from "@/lib/GetAllYears";
 import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
+import ShowDetailsModel from "@/app/dashboard/_components/ShowDetailsModel";
+import EditAcademicYear from "./EditAcademicYear";
 
-export default function TableShowYears() {
+export default function TableShowYears({ token }: { token: string }) {
   const { error, isError, isLoading, years } = GetAllYears();
   if (isError && error) throw new Error(error.message);
 
@@ -39,9 +39,14 @@ export default function TableShowYears() {
                 <TableCell>{year.level_number}</TableCell>
                 <TableCell>{year._count.students}</TableCell>
                 <TableCell>
-                  <Button className="bg-white hover:bg-white text-black">
-                    <ChevronsRight />
-                  </Button>
+                  <div>
+                    <ShowDetailsModel
+                      title="Academic Years"
+                      childComponent={
+                        <EditAcademicYear token={token} yearData={year} />
+                      }
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             ))

@@ -32,6 +32,7 @@ async function addNewAcademicYear(
   });
 }
 export default function AcadimicYearForm({ token, setClose }: Props) {
+  const reactQueryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -41,7 +42,6 @@ export default function AcadimicYearForm({ token, setClose }: Props) {
     resolver: zodResolver(academicYearValidation),
     mode: "all",
   });
-  const reactQueryClient = useQueryClient();
 
   // Query Api
   const { isPending, mutate } = useMutation({

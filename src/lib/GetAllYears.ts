@@ -2,7 +2,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-type academicYearsDataType = {
+export type academicYearsDataType = {
   id: number;
   year_label: string;
   level_number: number;

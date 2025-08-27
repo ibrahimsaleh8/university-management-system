@@ -19,7 +19,7 @@ export default async function DepartmentPage() {
           <AddingModel AddType="Academic Year" token={token} />
         </div>
 
-        <TableShowYears />
+        <TableShowYears token={token} />
       </div>
     </div>
   );
