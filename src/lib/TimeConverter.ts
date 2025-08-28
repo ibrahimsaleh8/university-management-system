@@ -8,7 +8,7 @@ export function timeConverter(time: Date | string) {
   const year = date.getFullYear();
 
   const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
 
   return `${
     day < 10 ? "0" + day : day

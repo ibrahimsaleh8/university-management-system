@@ -42,12 +42,14 @@ export default function ShowAllEvents({ token }: { token: string }) {
             {...event}
           />
         ))}
+      {data.filter((event) => event.isFinished).length > 0 && (
+        <div className="flex items-center gap-4 text-sm font-medium text-low-white">
+          <span className="flex bg-Second-Card-bg w-full h-[1px]"></span>
+          <p>Finished</p>
+          <span className="flex bg-Second-Card-bg w-full h-[1px]"></span>
+        </div>
+      )}
 
-      <div className="flex items-center gap-4 text-sm font-medium text-low-white">
-        <span className="flex bg-Second-Card-bg w-full h-[1px]"></span>
-        <p>Finished</p>
-        <span className="flex bg-Second-Card-bg w-full h-[1px]"></span>
-      </div>
       {data
         .filter((event) => event.isFinished)
         .map((event) => (

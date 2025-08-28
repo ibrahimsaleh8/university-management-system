@@ -7,18 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import axios from "axios";
-import { MainDomain } from "@/variables/MainDomain";
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
 import TablePagination from "./TablePagination";
-import TabelSkeleton from "./TabelSkeleton";
-import { NumberOfTeachers } from "@/variables/Pagination";
 import AddingModel from "../../../_components/forms/AddingModel";
 import SearchInTeacherTable from "./SearchInTeacherTable";
-import { GetTeachers } from "@/lib/GetTeachers";
 import UserCardImageAndName from "@/app/dashboard/_components/UserCardImageAndName";
 import ShowDetailsLink from "@/app/dashboard/_components/ShowDetailsLink";
+import { useShowTeachers } from "./Hooks/useShowTeachers";
+import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
 
 type Props = {
   token: string;
@@ -34,45 +29,17 @@ export type TeachersDataType = {
   image: string;
 };
 
-async function getNumberOfTeachers(): Promise<{ numbers: number }> {
-  const res = await axios.get(`${MainDomain}/api/get/teachers-number`);
-  return res.data;
-}
-
 export default function TableShowTeachers({ token }: Props) {
-  const [activePaginateNumber, setActivePaginateNumber] = useState(1);
-  const [searchedData, setSearchedData] = useState<TeachersDataType[] | null>(
-    null
-  );
-
-  const [searched, setSearched] = useState(false);
-
-  const { error, isError, isLoading, teachers } =
-    GetTeachers(activePaginateNumber);
-
-  if (error && isError) throw new Error(error.message);
-
-  const { data: teachersNumber } = useQuery({
-    queryKey: ["get_teacher_numbers"],
-    queryFn: () => getNumberOfTeachers(),
-  });
-
-  const Data = useMemo(() => {
-    let res = teachers;
-
-    if (searchedData && searched) {
-      res = searchedData;
-    }
-
-    return res;
-  }, [searched, searchedData, teachers]);
-
-  const Pages = useMemo(() => {
-    return teachersNumber
-      ? Math.ceil(teachersNumber.numbers / NumberOfTeachers)
-      : 0;
-  }, [teachersNumber]);
-
+  const {
+    setActivePaginateNumber,
+    Pages,
+    Data,
+    isLoading,
+    setSearched,
+    setSearchedData,
+    searched,
+    activePaginateNumber,
+  } = useShowTeachers();
   return (
     <div className="flex flex-col gap-3">
       {/* Search & add */}
@@ -87,51 +54,53 @@ export default function TableShowTeachers({ token }: Props) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Teacher</TableHead>
-              <TableHead>ID</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Qualification</TableHead>
-              <TableHead>Info</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={6}>
-                  <TabelSkeleton />
-                </TableCell>
-              </TableRow>
-            ) : Data && Data.length > 0 ? (
-              Data.map((teacher) => (
-                <TableRow key={teacher.id}>
-                  <TableCell>
-                    <UserCardImageAndName
-                      image={teacher.image}
-                      name={`${teacher.first_name} ${teacher.last_name}`}
-                    />
-                  </TableCell>
-                  <TableCell>{teacher.teacher_id}</TableCell>
-                  <TableCell>{teacher.email}</TableCell>
-                  <TableCell>{teacher.qualification}</TableCell>
-                  <TableCell>
-                    <ShowDetailsLink
-                      url={`/dashboard/admin/teachers/${teacher.teacher_id}`}
-                    />
-                  </TableCell>
+        {isLoading ? (
+          <TabelLoadingSkeleton coloumnNumber={5} rowNumber={3} />
+        ) : (
+          Data && (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Teacher</TableHead>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Qualification</TableHead>
+                  <TableHead>Info</TableHead>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center">
-                  No result found!
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              </TableHeader>
+              <TableBody>
+                {Data.length > 0 ? (
+                  Data.map((teacher) => (
+                    <TableRow key={teacher.id}>
+                      <TableCell>
+                        <UserCardImageAndName
+                          image={teacher.image}
+                          name={`${teacher.first_name} ${teacher.last_name}`}
+                        />
+                      </TableCell>
+                      <TableCell>{teacher.teacher_id}</TableCell>
+                      <TableCell>{teacher.email}</TableCell>
+                      <TableCell>{teacher.qualification}</TableCell>
+                      <TableCell>
+                        <ShowDetailsLink
+                          url={`/dashboard/admin/teachers/${teacher.teacher_id}`}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={5}
+                      className="text-center p-4 text-low-white">
+                      No result found!
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )
+        )}
         {Pages > 1 && !searched && (
           <TablePagination
             setActiveNumber={setActivePaginateNumber}

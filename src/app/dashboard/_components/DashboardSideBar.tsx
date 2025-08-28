@@ -105,7 +105,7 @@ export default function DashboardSideBar({ role }: { role: string }) {
                   <MotionHighlight
                     hover
                     mode="parent"
-                    containerClassName="flex flex-col gap-1 "
+                    containerClassName="flex flex-col gap-2 "
                     className="bg-main-text rounded-md !text-Main-black"
                     boundsOffset={{ top: -1, left: -1 }}>
                     {admin_links.map((item) => (

@@ -21,7 +21,10 @@ export type ExamStatusType =
 export type ExamQuestionType = "CHOOSE" | "TRUE_FALSE" | "WRITE";
 export type TeacherDataResponse = {
   image: string;
-
+  departments: {
+    id: number;
+    name: string;
+  }[];
   courses: {
     id: string;
     name: string;

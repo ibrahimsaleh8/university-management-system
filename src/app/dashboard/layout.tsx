@@ -26,7 +26,7 @@ export default async function DashboardLayout({
               style={{
                 minHeight: "calc(100vh - 80px)",
               }}
-              className="p-3 w-full sm:rounded-t-lg relative bg-low-black sm:border border-soft-border">
+              className="p-3 w-full sm:rounded-t-xl relative bg-low-black sm:border border-soft-border">
               {children}
             </div>
           </main>

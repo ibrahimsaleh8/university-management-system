@@ -61,6 +61,16 @@ export async function GET(
             teacher: { select: { first_name: true, last_name: true } },
           },
         },
+        departments: {
+          select: {
+            department: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
     if (!teacher) {
@@ -97,6 +107,7 @@ export async function GET(
         academicYear: sched.academicYear.year_label,
         teacher: `${sched.teacher.first_name} ${sched.teacher.last_name}`,
       })),
+      departments: teacher.departments.map((d) => d.department),
     };
 
     return NextResponse.json(teacherRes, { status: 200 });
