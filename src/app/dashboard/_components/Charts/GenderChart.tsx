@@ -54,7 +54,9 @@ export function GenderChart() {
   }, []);
 
   return (
-    <Card className="flex flex-col lg:w-[30rem] w-full bg-Second-black text-white rounded-md border-Main-black">
+    <Card className="flex flex-col lg:w-[30rem] relative w-full bg-Second-black text-white rounded-2xl border-Main-black">
+      <div className="absolute right-[-1px] top-0 folder-clip-path w-1/2 h-2 bg-Main-black p-2 rounded-tr-2xl"></div>
+
       <CardHeader className="items-center pb-0">
         <CardTitle>Gender</CardTitle>
         <CardDescription>

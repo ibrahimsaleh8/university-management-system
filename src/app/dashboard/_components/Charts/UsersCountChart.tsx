@@ -47,7 +47,9 @@ const chartConfig = {
 
 export function UsersCountChart() {
   return (
-    <Card className="w-full bg-Second-black text-white border-Main-black rounded-md">
+    <Card className="w-full relative bg-Second-black text-white border-Main-black rounded-2xl">
+      <div className="absolute right-[-1px] top-0 folder-clip-path w-[25%] h-2 bg-Main-black p-2 rounded-tr-2xl"></div>
+
       <CardHeader>
         <CardTitle>Classrooms</CardTitle>
         <CardDescription>Number of students in each class</CardDescription>

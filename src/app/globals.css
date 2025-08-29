@@ -291,3 +291,16 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   background: #1f1e1e;
   background: linear-gradient(180deg, #494949 -87%, #151515 30%);
 }
+
+.folder-clip-path {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 20%,
+    100% 100%,
+    80% 100%,
+    8% 100%,
+    0 0%,
+    0% 20%
+  );
+}
