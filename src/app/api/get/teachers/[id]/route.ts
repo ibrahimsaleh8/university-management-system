@@ -28,18 +28,14 @@ export async function GET(
             semester: {
               select: {
                 name: true,
-                isActive: true,
               },
             },
             course: {
               select: {
                 id: true,
                 name: true,
-                department: {
-                  select: {
-                    name: true,
-                  },
-                },
+                code: true,
+                credit_hours: true,
               },
             },
           },
@@ -95,8 +91,9 @@ export async function GET(
       courses: teacher.courses.map((course) => ({
         id: course.course.name,
         name: course.course.name,
-        department: course.course.department?.name,
         semester: course.semester,
+        credits: course.course.credit_hours,
+        code: course.course.code,
       })),
       schedules: teacher.schedules.map((sched) => ({
         id: sched.id,

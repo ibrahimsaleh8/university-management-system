@@ -8,11 +8,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { X } from "lucide-react";
+import { PencilLine, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import FormEditTeacher from "./FormEditTeacher";
 import { EditTeacherDataType } from "@/validation/EditTeacherSchema";
 import DeleteTeacher from "./DeleteTeacher";
+import { Button } from "@/components/ui/button";
 type Props = {
   type: "edit" | "delete";
   teacherData?: EditTeacherDataType & { image: string };
@@ -33,16 +34,19 @@ export default function TeacherOperations({
     }
   }, [isClose]);
 
-  const classes =
-    type == "edit"
-      ? "border-main-text text-main-text hover:bg-main-text hover:text-black"
-      : "border-red-500 text-red-500 hover:bg-red-500 hover:text-white";
   return (
     <AlertDialog onOpenChange={() => setIsClose(false)}>
-      <AlertDialogTrigger
-        className={`border px-4 py-1.5 rounded-sm cursor-pointer duration-300 w-full ${classes}`}>
-        {type == "edit" && "Edit main Data"}
-        {type == "delete" && "Delete Teacher"}
+      <AlertDialogTrigger asChild>
+        {type == "edit" ? (
+          <Button variant={"mainWithShadow"}>
+            <PencilLine />
+            Edit Profile
+          </Button>
+        ) : (
+          <Button className="mt-1" variant={"destructive"}>
+            <Trash2 />
+          </Button>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

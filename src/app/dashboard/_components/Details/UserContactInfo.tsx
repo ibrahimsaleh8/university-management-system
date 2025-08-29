@@ -5,7 +5,7 @@ type Props = {
   header: string;
   value: string;
 };
-export default function TeacherContactInfo({ header, icon, value }: Props) {
+export default function UserContactInfo({ header, icon, value }: Props) {
   return (
     <div className="flex flex-col gap-1">
       <p className="flex items-center gap-2 text-low-white text-sm capitalize">

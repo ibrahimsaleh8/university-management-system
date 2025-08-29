@@ -1,4 +1,4 @@
-export default function TeacherMainDetailsParagraph({
+export default function UserMainDetailsParagraph({
   header,
   value,
 }: {

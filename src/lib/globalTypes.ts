@@ -28,10 +28,10 @@ export type TeacherDataResponse = {
   courses: {
     id: string;
     name: string;
-    department: string;
+    code: string;
+    credits: number;
     semester: {
       name: string;
-      isActive: boolean;
     };
   }[];
   schedules: {
