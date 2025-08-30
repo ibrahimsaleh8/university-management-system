@@ -50,8 +50,8 @@ export type StudentResponse = {
   first_name: string;
   last_name: string;
   address: string;
-  gender: string;
-  date_of_birth: string;
+  gender: GenderType;
+  date_of_birth: Date;
   email: string;
   phone: string;
   image: string;
@@ -59,12 +59,19 @@ export type StudentResponse = {
     id: string;
     name: string;
     code: string;
-    status: string;
-    finalGrade: number;
-    enrollmentDate: string;
+    credits: number;
+    semester: {
+      name: string;
+    };
+    studentData: {
+      finalGrade: number;
+      status: EnrollmentStatus;
+    };
   }[];
   academicYear: string;
+  academicYearId: number;
   department: {
+    id: number;
     name: string;
     code: string;
   };
@@ -77,4 +84,5 @@ export type StudentResponse = {
       image: string;
     };
   }[];
+  created_at: Date;
 };

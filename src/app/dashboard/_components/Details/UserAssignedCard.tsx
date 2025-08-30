@@ -1,5 +1,6 @@
 import { BookMarked } from "lucide-react";
 import AssignedCoursesCard from "./AssignedCoursesCard";
+import { EnrollmentStatus } from "@/lib/globalTypes";
 type Props = {
   courses: {
     id: string;
@@ -8,6 +9,10 @@ type Props = {
     credits: number;
     semester: {
       name: string;
+    };
+    studentData?: {
+      finalGrade: number;
+      status: EnrollmentStatus;
     };
   }[];
 };
@@ -19,17 +24,23 @@ export default function UserAssignedCard({ courses }: Props) {
         Assigned Courses
       </p>
 
-      <div className="flex flex-col gap-2">
-        {courses.map((course) => (
-          <AssignedCoursesCard
-            key={course.id}
-            code={course.code}
-            hours={course.credits}
-            name={course.name}
-            semester={course.semester.name}
-          />
-        ))}
-      </div>
+      {courses.length > 0 ? (
+        <div className="flex flex-col gap-2">
+          {courses.map((course) => (
+            <AssignedCoursesCard
+              key={course.id}
+              code={course.code}
+              hours={course.credits}
+              name={course.name}
+              semester={course.semester.name}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="w-full text-low-white text-center">
+          No courses assigned yet
+        </div>
+      )}
     </div>
   );
 }

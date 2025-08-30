@@ -26,26 +26,38 @@ export async function GET(
             id: true,
             status: true,
             finalGrade: true,
-            enrollmentDate: true,
             courseOffering: {
               select: {
                 course: {
                   select: {
                     name: true,
                     code: true,
+                    credit_hours: true,
+                    courseOffering: {
+                      select: {
+                        semester: {
+                          select: {
+                            name: true,
+                          },
+                        },
+                      },
+                    },
                   },
                 },
               },
             },
           },
         },
+
         academicYear: {
           select: {
             year_label: true,
+            id: true,
           },
         },
         department: {
           select: {
+            id: true,
             name: true,
             code: true,
           },
@@ -67,6 +79,7 @@ export async function GET(
             },
           },
         },
+        created_at: true,
       },
     });
 
@@ -91,17 +104,22 @@ export async function GET(
         id: course.id,
         name: course.courseOffering.course.name,
         code: course.courseOffering.course.code,
-        status: course.status,
-        finalGrade: course.finalGrade,
-        enrollmentDate: course.enrollmentDate,
+        credits: course.courseOffering.course.credit_hours,
+        semester: course.courseOffering.course.courseOffering[0].semester,
+        studentData: {
+          status: course.status,
+          finalGrade: course.finalGrade,
+        },
       })),
       academicYear: student.academicYear?.year_label,
+      academicYearId: student.academicYear?.id,
       department: student.department,
       classes: student.classes.map((cls) => ({
         name: cls.class.name,
         classGrade: cls.classGrade,
         teacher: cls.class.teacher,
       })),
+      created_at: student.created_at,
     };
 
     return NextResponse.json(studentRes, { status: 200 });

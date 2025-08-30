@@ -8,9 +8,5 @@ export default async function ShowStudentDetails({
 }) {
   const { id } = await params;
   const token = (await (await cookies()).get("token")?.value) as string;
-  return (
-    <div>
-      <ShowStudentData token={token} id={id} />
-    </div>
-  );
+  return <ShowStudentData token={token} id={id} />;
 }

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import CalendarTable from "@/app/dashboard/_components/Calender/CalenderTable";
-import TeacherOperations from "./TeacherOperations";
+import UserOperations from "../../../../_components/Details/UserOperations";
 import TeacherDetailsSkeleton from "./TeacherDetailsSkeleton";
 import { UserCog } from "lucide-react";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
@@ -49,7 +49,7 @@ export default function ShowTeacherData({ teacher_id, token }: Props) {
             } ${data.last_name}`}
             operations={
               <div className="flex items-center gap-2">
-                <TeacherOperations
+                <UserOperations
                   token={token}
                   teacherData={{
                     address: data.address,
@@ -66,7 +66,7 @@ export default function ShowTeacherData({ teacher_id, token }: Props) {
                   }}
                   type="edit"
                 />
-                <TeacherOperations
+                <UserOperations
                   teacher_id={data.teacher_id}
                   token={token}
                   type="delete"

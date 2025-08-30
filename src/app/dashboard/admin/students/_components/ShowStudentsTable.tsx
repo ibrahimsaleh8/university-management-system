@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import SearchInStudents from "./SearchInStudents";
-import TabelSkeleton from "../../teachers/_components/TabelSkeleton";
 import TablePagination from "../../teachers/_components/TablePagination";
 import { useShowStudentsTable } from "@/hooks/useShowStudentsTable";
 import { RadioGroup } from "@/components/animate-ui/radix/radio-group";
@@ -19,6 +18,7 @@ import OperationsDropdown from "@/app/dashboard/_components/OperationsDropdown";
 import MoveingToNextGrade from "./MoveingToNextGrade";
 import ShowDetailsLink from "@/app/dashboard/_components/ShowDetailsLink";
 import UserCardImageAndName from "@/app/dashboard/_components/UserCardImageAndName";
+import TabelLoadingSkeleton from "@/app/dashboard/_components/TabelLoadingSkeleton";
 
 export type StudentResDataType = {
   id: number;
@@ -112,54 +112,54 @@ export default function ShowStudentsTable({ token }: { token: string }) {
           </div>
         )
       )}
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Student</TableHead>
-            <TableHead>ID</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Year</TableHead>
-            <TableHead>Details</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <TableRow>
-              <TableCell colSpan={6}>
-                <TabelSkeleton />
-              </TableCell>
-            </TableRow>
-          ) : students && students.length > 0 ? (
-            <>
-              {students.map((std) => (
-                <TableRow key={std.id}>
-                  <TableCell>
-                    <UserCardImageAndName
-                      image={std.image}
-                      name={`${std.first_name} ${std.last_name}`}
-                    />
-                  </TableCell>
-                  <TableCell className="text-sm">{std.student_id}</TableCell>
-                  <TableCell>{std.email}</TableCell>
-                  <TableCell>{std.academicYear.year_label}</TableCell>
-                  <TableCell>
-                    <ShowDetailsLink
-                      url={`/dashboard/admin/students/${std.student_id}`}
-                    />
+      {isLoading ? (
+        <TabelLoadingSkeleton coloumnNumber={5} rowNumber={3} />
+      ) : (
+        students && (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Student</TableHead>
+                <TableHead>ID</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Year</TableHead>
+                <TableHead>Details</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {students.length > 0 ? (
+                students.map((std) => (
+                  <TableRow key={std.id}>
+                    <TableCell>
+                      <UserCardImageAndName
+                        image={std.image}
+                        name={`${std.first_name} ${std.last_name}`}
+                      />
+                    </TableCell>
+                    <TableCell className="text-sm">{std.student_id}</TableCell>
+                    <TableCell>{std.email}</TableCell>
+                    <TableCell>{std.academicYear.year_label}</TableCell>
+                    <TableCell>
+                      <ShowDetailsLink
+                        url={`/dashboard/admin/students/${std.student_id}`}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    className="text-center text-low-white p-4"
+                    colSpan={5}>
+                    No Result Found...
                   </TableCell>
                 </TableRow>
-              ))}
-            </>
-          ) : (
-            <TableRow>
-              <TableCell className="text-center text-low-white p-4" colSpan={5}>
-                No Result Found...
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+              )}
+            </TableBody>
+          </Table>
+        )
+      )}
+
       {Pages > 1 && (
         <TablePagination
           activeNumber={currentPage}
