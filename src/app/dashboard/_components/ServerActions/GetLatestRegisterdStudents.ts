@@ -2,7 +2,7 @@ import prisma from "@/variables/PrismaVar";
 
 export const GetLatestRegisterdStudents = async () => {
   const students = await prisma.student.findMany({
-    take: 4,
+    take: 5,
     select: {
       id: true,
       first_name: true,
