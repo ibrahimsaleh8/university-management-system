@@ -1,7 +1,6 @@
 "use client";
 
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -16,36 +15,43 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { class: "First", students: 275, fill: "#2662D9" },
-  { class: "Second", students: 200, fill: "#E23670" },
-  { class: "Third", students: 187, fill: "#E88C30" },
-  { class: "Fourth", students: 173, fill: "#2EB789" },
-];
 
 const chartConfig = {
-  students: {
-    label: "students",
-  },
-  First: {
-    label: "First",
-    color: "hsl(var(--chart-1))",
-  },
-  Second: {
-    label: "Second",
-    color: "hsl(var(--chart-2))",
-  },
-  Third: {
-    label: "Third",
-    color: "hsl(var(--chart-3))",
-  },
-  Fourth: {
-    label: "Fourth",
-    color: "hsl(var(--chart-4))",
-  },
+  students: { label: "Students" },
+  First: { label: "First", color: "#2662D9" },
+  Second: { label: "Second", color: "#E23670" },
+  Third: { label: "Third", color: "#E88C30" },
+  Fourth: { label: "Fourth", color: "#2EB789" },
+  Graduated: { label: "Graduated", color: "#9B59B6" },
 } satisfies ChartConfig;
 
-export function UsersCountChart() {
+type Props = {
+  first: number;
+  second: number;
+  third: number;
+  fourth: number;
+  graduated: number;
+};
+
+export function UsersCountChart({
+  first,
+  second,
+  third,
+  fourth,
+  graduated,
+}: Props) {
+  const chartData = [
+    { grade: "First", students: first, fill: chartConfig.First.color },
+    { grade: "Second", students: second, fill: chartConfig.Second.color },
+    { grade: "Third", students: third, fill: chartConfig.Third.color },
+    { grade: "Fourth", students: fourth, fill: chartConfig.Fourth.color },
+    {
+      grade: "Graduated",
+      students: graduated,
+      fill: chartConfig.Graduated.color,
+    },
+  ];
+
   return (
     <Card className="w-full relative bg-Second-black text-white border-Main-black rounded-2xl">
       <div className="absolute right-[-1px] top-0 folder-clip-path w-[25%] h-2 bg-Main-black p-2 rounded-tr-2xl"></div>
@@ -54,17 +60,16 @@ export function UsersCountChart() {
         <CardTitle>Classrooms</CardTitle>
         <CardDescription>Number of students in each class</CardDescription>
       </CardHeader>
+
       <CardContent>
-        <ChartContainer className="h-60 w-full" config={chartConfig}>
+        <ChartContainer className="h-72 w-full" config={chartConfig}>
           <BarChart
             accessibilityLayer
             data={chartData}
             layout="vertical"
-            margin={{
-              left: 0,
-            }}>
+            margin={{ left: 0 }}>
             <YAxis
-              dataKey="class"
+              dataKey="grade"
               type="category"
               tickLine={false}
               tickMargin={10}
@@ -74,31 +79,22 @@ export function UsersCountChart() {
               }
             />
             <XAxis dataKey="students" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
+            <ChartTooltip content={<ChartTooltipContent />} cursor={false} />
             <Bar dataKey="students" layout="vertical" radius={5} />
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <p className="flex gap-2 items-center">
-          <span className="block w-4 h-4 rounded-full bg-[#2662D9]"></span>
-          First grade: 20 Students
-        </p>
-        <p className="flex gap-2 items-center">
-          <span className="block w-4 h-4 rounded-full bg-[#E23670]"></span>
-          Second grade: 20 Students
-        </p>
-        <p className="flex gap-2 items-center">
-          <span className="block w-4 h-4 rounded-full bg-[#E88C30]"></span>
-          Third grade: 20 Students
-        </p>
-        <p className="flex gap-2 items-center">
-          <span className="block w-4 h-4 rounded-full bg-[#2EB789]"></span>
-          Fourth grade: 20 Students
-        </p>
+
+      <CardFooter className="flex items-start gap-4 text-sm flex-wrap">
+        {chartData.map((d) => (
+          <p key={d.grade} className="flex gap-2 items-center">
+            <span
+              className="block w-4 h-4 rounded-full"
+              style={{ background: d.fill }}
+            />
+            {d.grade} students: {d.students}
+          </p>
+        ))}
       </CardFooter>
     </Card>
   );

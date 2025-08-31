@@ -69,7 +69,7 @@ export default function ShowStudentData({ id, token }: Props) {
           />
 
           <UserDetails
-            title="Teacher Details"
+            title="Student Details"
             titleIcon={<UserCog className="w-5 h-5 text-main-text" />}
             department={
               <div className="flex flex-col gap-1">

@@ -90,7 +90,9 @@ export default function TabelShowCoursesOffers({ token }: { token: string }) {
                     )}
                   </p>
                 </TableCell>
-                <TableCell>{course._count.students}</TableCell>
+                <TableCell>
+                  <p className="pl-3">{course._count.students}</p>
+                </TableCell>
 
                 <TableCell>
                   <div className="flex items-center gap-3">
