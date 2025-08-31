@@ -6,13 +6,12 @@ import UserDetails from "@/app/dashboard/_components/Details/UserDetails";
 import UserMainCardWithImage from "@/app/dashboard/_components/Details/UserMainCardWithImage";
 import UserOperations from "@/app/dashboard/_components/Details/UserOperations";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
-import { Button } from "@/components/ui/button";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { StudentResponse } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Trash2, UserCog } from "lucide-react";
+import { UserCog } from "lucide-react";
 
 type Props = {
   id: string;
@@ -60,9 +59,11 @@ export default function ShowStudentData({ id, token }: Props) {
                     image: data.image,
                   }}
                 />
-                <Button className="mt-1" variant={"destructive"}>
-                  <Trash2 />
-                </Button>
+                <UserOperations
+                  token={token}
+                  type="delete"
+                  student_id={data.student_id}
+                />
               </div>
             }
           />

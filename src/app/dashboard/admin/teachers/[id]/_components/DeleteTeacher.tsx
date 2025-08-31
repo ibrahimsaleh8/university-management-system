@@ -35,6 +35,9 @@ export default function DeleteTeacher({
       queryClient.refetchQueries({
         queryKey: ["get_all_teachers"],
       });
+      queryClient.refetchQueries({
+        queryKey: ["get_teacher_numbers"],
+      });
       GlobalToast({
         title: "Teacher Deleted Success",
         icon: "success",

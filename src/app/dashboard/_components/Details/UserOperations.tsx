@@ -16,6 +16,7 @@ import DeleteTeacher from "../../admin/teachers/[id]/_components/DeleteTeacher";
 import { Button } from "@/components/ui/button";
 import EditStudentForm from "../../admin/students/[id]/_components/EditStudentForm";
 import { editStudentDataType } from "@/validation/EditStudentSchema";
+import DeleteStudentBtn from "../../admin/students/[id]/_components/DeleteStudentBtn";
 type Props = {
   type: "edit" | "delete";
   teacherData?: EditTeacherDataType & { image: string };
@@ -30,6 +31,7 @@ export default function UserOperations({
   token,
   teacher_id,
   studentData,
+  student_id,
 }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const [isClose, setIsClose] = useState(false);
@@ -76,6 +78,13 @@ export default function UserOperations({
           <DeleteTeacher
             setIsClose={setIsClose}
             teacher_id={teacher_id}
+            token={token}
+          />
+        )}
+        {type == "delete" && student_id && (
+          <DeleteStudentBtn
+            setIsClose={setIsClose}
+            student_id={student_id}
             token={token}
           />
         )}
