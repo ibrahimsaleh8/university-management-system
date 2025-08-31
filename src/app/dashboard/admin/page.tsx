@@ -1,7 +1,12 @@
 import { GenderChart } from "../_components/Charts/GenderChart";
 import { UsersCountChart } from "../_components/Charts/UsersCountChart";
+import LatestEvents from "../_components/Overview/admin/LatestEvents";
+import RecentRegisterdStudents, {
+  LatestStudentsDataType,
+} from "../_components/Overview/admin/RecentRegisterdStudents";
 import StatisticsMainCards from "../_components/Overview/admin/StatisticsMainCards";
 import { GetDashboardNumbers } from "../_components/ServerActions/GetDashboardNumbers";
+import { GetLatestRegisterdStudents } from "../_components/ServerActions/GetLatestRegisterdStudents";
 
 export default async function AdminDashboard() {
   const {
@@ -17,6 +22,9 @@ export default async function AdminDashboard() {
     secondGrade,
     thirdGrade,
   } = await GetDashboardNumbers();
+
+  const latestStudents: LatestStudentsDataType[] =
+    await GetLatestRegisterdStudents();
   return (
     <div className="flex gap-4 w-full flex-col ">
       {/*  Statistics */}
@@ -39,9 +47,10 @@ export default async function AdminDashboard() {
         />
       </div>
 
-      <div className="w-96 h-80 bg-Second-black rounded-2xl flex flex-col gap-3 p-4">
-        <p className="font-bold">Recent Registered Students</p>
-        <div className="flex flex-col gap-4"></div>
+      {/* Bottom */}
+      <div className="flex gap-2 flex-col lg:flex-row">
+        <RecentRegisterdStudents students={latestStudents} />
+        <LatestEvents />
       </div>
     </div>
   );
