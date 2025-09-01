@@ -4,6 +4,7 @@ import { GetCourseMainData } from "./_components/actions/GetCourseMainData";
 import ErrorMessageCard from "@/app/dashboard/_components/ErrorMessageCard";
 import ShowCourseStudents from "./_components/ShowCourseStudents";
 import { cookies } from "next/headers";
+import BackButton from "@/app/dashboard/_components/forms/BackButton";
 
 export default async function AssignCourseGrades({
   params,
@@ -20,6 +21,7 @@ export default async function AssignCourseGrades({
   ) : (
     course && (
       <div className="flex flex-col gap-3 sm:p-2">
+        <BackButton withText={false} />
         <div className="w-full rounded-2xl p-4 flex items-center flex-col gap-5 pb-8">
           <h1 className="text-2xl font-bold text-white capitalize">
             {course.course.name}{" "}

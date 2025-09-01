@@ -60,8 +60,7 @@ const badgeVariants = cva(
       {
         variant: "primary",
         appearance: "light",
-        className:
-          "text-[var(--color-primary-accent,var(--color-blue-700))] bg-[var(--color-primary-soft,var(--color-blue-50))] dark:bg-[var(--color-primary-soft,var(--color-blue-950))] dark:text-[var(--color-primary-soft,var(--color-blue-600))]",
+        className: "text-blue-500 bg-glass-blue",
       },
       {
         variant: "secondary",

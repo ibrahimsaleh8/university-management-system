@@ -31,16 +31,20 @@ export async function GET(
               },
             },
           },
+          orderBy: [
+            { student: { first_name: "asc" } },
+            { student: { last_name: "asc" } },
+          ],
         },
       },
     });
     if (!course) {
       return NextResponse.json(
-        { message: "Coures not found" },
+        { message: "Course not found" },
         { status: 404 }
       );
     }
-    return NextResponse.json(course);
+    return NextResponse.json(course.students);
   } catch (error) {
     console.error(error);
     return NextResponse.json(

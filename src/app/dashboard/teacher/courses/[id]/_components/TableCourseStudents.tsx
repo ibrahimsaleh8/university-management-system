@@ -1,7 +1,3 @@
-import UserCardWithNameAndEmail from "@/app/dashboard/_components/UserCardWithNameAndEmail";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -10,8 +6,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { GetDateFromTime } from "@/lib/GetDateFromTime";
-export default function TableCourseStudents() {
+import { CourseStudentDataType } from "./ShowCourseStudents";
+import StudentTableRow from "./StudentTableRow";
+
+type Props = {
+  students: CourseStudentDataType[];
+  token: string;
+  courseId: string;
+};
+
+export default function TableCourseStudents({
+  students,
+  token,
+  courseId,
+}: Props) {
+  console.log("Table Students", students);
   return (
     <Table>
       <TableHeader>
@@ -24,33 +33,24 @@ export default function TableCourseStudents() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell>
-            <UserCardWithNameAndEmail
-              email="ebrihm576@gmail.com"
-              image="https://res.cloudinary.com/dnriyuqpv/image/upload/v1756626229/students/fdqmwgjbeehdapoeqrhq.png"
-              name="Noyan Knighter"
+        {students.length > 0 ? (
+          students.map((std) => (
+            <StudentTableRow
+              courseId={courseId}
+              studentData={std}
+              token={token}
+              key={std.id}
             />
-          </TableCell>
-          <TableCell>{GetDateFromTime("2008-05-22T00:00:00.000Z")}</TableCell>
-          <TableCell>
-            <Badge appearance="light" variant={"success"}>
-              Done
-            </Badge>
-          </TableCell>
-          <TableCell>
-            <Input
-              type="number"
-              placeholder="Degree"
-              className="w-28"
-              max={100}
-              min={0}
-            />
-          </TableCell>
-          <TableCell>
-            <Button variant={"mainWithShadow"}>Save</Button>
-          </TableCell>
-        </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={5}
+              className="text-center text-low-white font-medium p-4">
+              No Students Enrolled
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );
