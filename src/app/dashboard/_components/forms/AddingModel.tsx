@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import FormAddTeacher from "../../admin/teachers/_components/FormAddTeacher";
 import AddStudentForm from "../../admin/students/_components/AddStudentForm";
@@ -61,8 +61,8 @@ export default function AddingModel({
   return (
     <>
       <AlertDialog>
-        <AlertDialogTrigger className="bg-transparent font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
-          Add {title ?? AddType}
+        <AlertDialogTrigger className="bg-transparent flex items-center gap-1 font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
+          <Plus className="w-4 h-4" /> Add {title ?? AddType}
         </AlertDialogTrigger>
         <AlertDialogContent className="sm:p-6 p-4">
           <AlertDialogHeader>

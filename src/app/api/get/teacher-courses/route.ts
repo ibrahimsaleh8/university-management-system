@@ -15,6 +15,9 @@ export async function GET(req: NextRequest) {
     const courses = await prisma.courseOffering.findMany({
       where: {
         teacherId: authVerify.user.data.id,
+        semester: {
+          isActive: true,
+        },
       },
       select: {
         id: true,

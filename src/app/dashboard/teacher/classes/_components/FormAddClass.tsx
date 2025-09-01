@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import { Button } from "@/components/ui/button";
 import SmallLoader from "@/components/Global/SmallLoader";
-import { Upload } from "lucide-react";
+import { Info, Upload } from "lucide-react";
 import Image from "next/image";
 import { useAddClass } from "./Hook/useAddClass";
 type Props = {
@@ -50,9 +50,7 @@ export default function FormAddClass({ token, setClose }: Props) {
 
         {/* Courses */}
         {loadingCourses && !courses ? (
-          <>
-            <Skeleton className="w-full h-10 rounded-md" />
-          </>
+          <Skeleton className="w-full h-10 rounded-md" />
         ) : (
           courses && (
             <div className="flex flex-col gap-1 w-full">
@@ -90,7 +88,11 @@ export default function FormAddClass({ token, setClose }: Props) {
           <span className="text-low-white">image</span>
           <span className="w-full h-0.5 bg-soft-border"></span>
         </p>
-
+        <p className="text-sm text-low-white capitalize font-medium flex items-start gap-1">
+          <Info className="w-5 h-5 text-blue-400" />
+          if you want to change the deafult image you can upload your new image
+          or you can skip it and stay with deafult image
+        </p>
         {/* Upload Class Image */}
         <div className="flex flex-col gap-2 items-center p-3 border border-dashed border-soft-border">
           <div className="bg-Second-Card-bg w-10 h-10 flex items-center justify-center rounded-full">

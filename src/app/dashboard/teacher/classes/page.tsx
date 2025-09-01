@@ -5,7 +5,7 @@ import ShowTeacherClasses from "./_components/ShowTeacherClasses";
 export default async function TeacherClassesPage() {
   const token = (await (await cookies()).get("token")?.value) as string;
   return (
-    <div>
+    <div className="flex flex-col gap-3 sm:p-2">
       <div className="flex items-center justify-between flex-col sm:flex-row flex-wrap gap-3">
         <div className="flex flex-col gap-1">
           <p className="text-3xl font-bold text-main-text">My Classrooms</p>

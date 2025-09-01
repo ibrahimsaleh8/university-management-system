@@ -58,6 +58,8 @@
   --color-glass-orange: #483511;
   --color-glass-blue: #0f2046;
   --color-glass-green: #1d2f1d;
+
+  --color-error-red: #210101a1;
 }
 
 :root {

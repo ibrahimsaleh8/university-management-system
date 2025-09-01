@@ -28,7 +28,5 @@ export default async function CoursesTeacherPage() {
 
   const courses: TeacherCoursesResponse[] = await res.json();
 
-  console.log(courses);
-
   return <ShowCourses courses={courses} />;
 }

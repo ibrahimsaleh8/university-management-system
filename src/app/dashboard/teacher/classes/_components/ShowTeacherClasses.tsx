@@ -23,36 +23,30 @@ export default function ShowTeacherClasses({ token }: { token: string }) {
 
   if (isError && error) throw new Error(error.message);
 
-  return (
-    <div className="pt-3 flex flex-col gap-3">
-      {isLoading && !data ? (
-        <div
-          style={{
-            gridTemplateColumns: "repeat(auto-fill,minmax(320px , 1fr))",
-          }}
-          className="grid gap-4">
-          <Skeleton className="w-full h-[30rem]" />
-          <Skeleton className="w-full h-[30rem]" />
-          <Skeleton className="w-full h-[30rem]" />
-          <Skeleton className="w-full h-[30rem]" />
-        </div>
-      ) : (
-        data && (
-          <div
-            style={{
-              gridTemplateColumns: "repeat(auto-fill,minmax(320px , 1fr))",
-            }}
-            className="grid gap-4">
-            {data.length > 0 ? (
-              data.map((cls) => <ClassCard {...cls} key={cls.id} />)
-            ) : (
-              <div className="w-full bg-Second-black rounded-md h-32 flex items-center justify-center text-low-white">
-                No Classes Found..
-              </div>
-            )}
-          </div>
-        )
-      )}
+  return isLoading && !data ? (
+    <div
+      style={{
+        gridTemplateColumns: "repeat(auto-fill,minmax(320px , 1fr))",
+      }}
+      className="grid gap-4">
+      <Skeleton className="w-full h-[30rem]" />
+      <Skeleton className="w-full h-[30rem]" />
+      <Skeleton className="w-full h-[30rem]" />
+      <Skeleton className="w-full h-[30rem]" />
+    </div>
+  ) : data && data.length > 0 ? (
+    <div
+      style={{
+        gridTemplateColumns: "repeat(auto-fill,minmax(320px , 1fr))",
+      }}
+      className="grid gap-4">
+      {data.map((cls) => (
+        <ClassCard {...cls} key={cls.id} />
+      ))}
+    </div>
+  ) : (
+    <div className="w-full bg-Second-black rounded-md h-32 flex items-center justify-center text-low-white">
+      No Classes Found..
     </div>
   );
 }
