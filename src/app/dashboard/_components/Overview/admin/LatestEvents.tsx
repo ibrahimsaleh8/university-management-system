@@ -1,5 +1,5 @@
-import Link from "next/link";
 import LatestEventCard from "./LatestEventCard";
+import { GetLatestEvents } from "../../ServerActions/GetLatestEvents";
 
 export type LatestEventDataType = {
   id: string;
@@ -9,18 +9,12 @@ export type LatestEventDataType = {
   location: string;
 };
 
-export default function LatestEvents({
-  events,
-}: {
-  events: LatestEventDataType[];
-}) {
+export default async function LatestEvents() {
+  const events: LatestEventDataType[] = await GetLatestEvents();
+
   return (
     <div className="w-full pb-5 bg-Second-black rounded-2xl flex flex-col gap-3 p-4 h-full">
-      <Link
-        href={"/dashboard/admin/events"}
-        className="font-bold hover:underline">
-        Latest Events
-      </Link>
+      <p className="font-bold">Latest Events</p>
       <div className="flex flex-col gap-3">
         {events.length > 0 ? (
           events.map((event) => (

@@ -13,7 +13,9 @@ export default function LatestEventCard({
         <CalendarDays className="w-4 h-4" />
         {eventData.title}
       </p>
-      <p className="text-low-white line-clamp-1">{eventData.description}</p>
+      <p className="text-low-white line-clamp-1" title={eventData.description}>
+        {eventData.description}
+      </p>
       <div className="flex items-center justify-between flex-wrap mt-1 gap-2">
         <p className="flex items-center gap-1 bg-Second-Card-bg px-3 py-1 rounded-sm">
           <Timer className="w-4 h-4" />

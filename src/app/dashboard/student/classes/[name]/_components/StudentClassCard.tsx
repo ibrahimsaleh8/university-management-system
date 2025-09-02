@@ -8,11 +8,11 @@ export default function StudentClassCard({
 }: StudentsInClassResponseType) {
   return (
     <div className="min-w-44 pt-[6.5rem] relative bg-Second-Card-bg p-4 rounded-md flex flex-col gap-2 items-center">
-      <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 bg-low-black rounded-full flex items-center justify-center p-1 w-[110px] h-[110px]">
+      <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 bg-low-black rounded-full flex items-center justify-center p-1 w-28 h-28">
         <Image
           src={image}
           alt={`image ${name}`}
-          className="object-cover object-center rounded-full"
+          className="object-cover object-center rounded-full w-24 h-24"
           width={100}
           height={100}
         />
