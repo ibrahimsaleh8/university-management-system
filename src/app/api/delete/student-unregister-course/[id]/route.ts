@@ -1,5 +1,6 @@
 import { StudentAuthGuard } from "@/lib/AuthGuard/StudentAuthGard";
 import prisma from "@/variables/PrismaVar";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
@@ -43,6 +44,8 @@ export async function DELETE(
         id: enrollment.id,
       },
     });
+    revalidateTag("user_grades");
+
     return NextResponse.json(
       { message: "Enrollment Has Been Deleted Success" },
       { status: 200 }

@@ -1,6 +1,7 @@
 import { StudentAuthGuard } from "@/lib/AuthGuard/StudentAuthGard";
 import prisma from "@/variables/PrismaVar";
 import { differenceInHours } from "date-fns";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -118,6 +119,7 @@ export async function POST(req: NextRequest) {
         courseOfferingId: course.id,
       },
     });
+    revalidateTag("user_grades");
     return NextResponse.json({
       message: `Student has been registered to ${course.course.name} course successfully`,
     });

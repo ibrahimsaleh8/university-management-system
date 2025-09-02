@@ -10,6 +10,7 @@ import {
   BookText,
   MessageCircleMore,
   Clock9,
+  ChartPie,
 } from "lucide-react";
 
 import {
@@ -203,6 +204,7 @@ export default function DashboardSideBar({ role }: { role: string }) {
                         <BookOpenText className="w-5 h-5" />
                         <span>Courses</span>
                       </Link>
+
                       <Link
                         onClick={() => setOpenMobile(false)}
                         href={"/dashboard/student/classes"}
@@ -213,6 +215,17 @@ export default function DashboardSideBar({ role }: { role: string }) {
                         }`}>
                         <SiGoogleclassroom className="w-5 h-5" />
                         <span>Classes</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpenMobile(false)}
+                        href={"/dashboard/student/grades"}
+                        className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
+                          pathname.startsWith("/dashboard/student/grades")
+                            ? "bg-main-text text-black"
+                            : ""
+                        }`}>
+                        <ChartPie className="w-5 h-5" />
+                        <span>Courses Grades</span>
                       </Link>
                       <Link
                         onClick={() => setOpenMobile(false)}
