@@ -1,6 +1,8 @@
 import { timeConverter } from "@/lib/TimeConverter";
 import { StudentClassAnnouncmentsDataType } from "./ShowStudentAnnouncments";
 import StudentAnnouncmentReplies from "./StudentAnnouncmentReplies";
+import { TfiAnnouncement } from "react-icons/tfi";
+import AnnouncmentReaction from "./AnnouncmentReaction";
 
 type Props = {
   data: StudentClassAnnouncmentsDataType;
@@ -8,12 +10,15 @@ type Props = {
 };
 export default function StudentClassAnnouncmentCard({ data, token }: Props) {
   return (
-    <div className="max-w-[45rem] border border-soft-border black-box-shadow bg-card-bg rounded-2xl p-4 flex flex-col gap-5">
+    <div className="w-full border border-soft-border black-box-shadow bg-card-bg rounded-2xl p-4 flex flex-col gap-5">
       {/* Header */}
       <div className="flex items-center gap-2 justify-between flex-wrap">
         <p
           title={data.title}
-          className="font-bold text-lg capitalize line-clamp-1">
+          className="font-bold text-lg capitalize line-clamp-1 flex items-center gap-2">
+          <span className="w-8 h-8 bg-glass-green flex items-center justify-center rounded-full">
+            <TfiAnnouncement className="w-4 h-4 text-main-text" />
+          </span>
           {data.title}
         </p>
         <p className="text-xs text-low-white">
@@ -25,7 +30,14 @@ export default function StudentClassAnnouncmentCard({ data, token }: Props) {
         <p className="leading-7">{data.content} </p>
       </div>
       {/* Bottom */}
-      <div className="mt-auto flex justify-end">
+      <div className="mt-auto flex justify-between">
+        <AnnouncmentReaction
+          dislikes={2}
+          likes={4}
+          isDisLiked={false}
+          isLiked={true}
+        />
+
         <StudentAnnouncmentReplies
           announcmentId={data.id}
           repliesNumber={data.replies}

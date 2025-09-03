@@ -28,7 +28,6 @@ export async function GET(
         },
       },
     });
-
     if (!studentClass) {
       return NextResponse.json({ message: "Class Not Found" }, { status: 404 });
     }

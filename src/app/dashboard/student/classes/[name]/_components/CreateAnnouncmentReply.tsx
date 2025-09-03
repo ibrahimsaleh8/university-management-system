@@ -13,6 +13,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -88,11 +89,13 @@ export default function CreateAnnouncmentReply({
   return (
     <form
       onSubmit={handleSubmit(submitNewReply)}
-      className="flex flex-col gap-2 border-b border-soft-border pb-4">
+      className="flex flex-col gap-2 border-t border-soft-border pt-4 pb-3">
       <div className="flex items-start flex-col w-full gap-2 overflow-hidden">
         {/* Left */}
         <div className="flex items-start gap-2">
-          <img
+          <Image
+            width={1000}
+            height={1000}
             src={image}
             alt="User Image"
             className="w-10 h-10 rounded-full object-center object-cover"

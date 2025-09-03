@@ -40,6 +40,8 @@ model Student {
   academicYear          AcademicYear?          @relation(fields: [academicYearId], references: [id])
   academicYearId        Int?
   classes               studentClass[]
+  AnnouncementLikes     AnnouncementLike[]
+  AnnouncementDisLikes  AnnouncementDisLike[]
 
   @@index([first_name, last_name])
   @@index([email])
@@ -329,15 +331,17 @@ enum AssignmentSubmissionStatus {
 // Start Announcement Schema
 
 model Announcement {
-  id                  String              @id @default(cuid())
+  id                  String                @id @default(cuid())
   title               String
   content             String
-  created_at          DateTime            @default(now())
-  teacher             Teacher             @relation(fields: [teacherId], references: [id])
+  created_at          DateTime              @default(now())
+  teacher             Teacher               @relation(fields: [teacherId], references: [id])
   teacherId           Int
-  class               Class               @relation(fields: [classId], references: [id])
+  class               Class                 @relation(fields: [classId], references: [id])
   announcementReplies AnnouncementReply[]
   classId             Int
+  likes               AnnouncementLike[]
+  dislikes            AnnouncementDisLike[]
 }
 
 model AnnouncementReply {
@@ -348,6 +352,24 @@ model AnnouncementReply {
   announcementId String
   student        Student      @relation(fields: [studentId], references: [id])
   studentId      Int
+}
+
+model AnnouncementLike {
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  announcementId String
+  student        Student      @relation(fields: [studentId], references: [id])
+  studentId      Int
+
+  @@id([announcementId, studentId])
+}
+
+model AnnouncementDisLike {
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  announcementId String
+  student        Student      @relation(fields: [studentId], references: [id])
+  studentId      Int
+
+  @@id([announcementId, studentId])
 }
 
 // End Announcement Schema

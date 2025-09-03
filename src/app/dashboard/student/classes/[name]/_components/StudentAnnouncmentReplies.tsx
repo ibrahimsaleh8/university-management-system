@@ -67,9 +67,6 @@ export default function StudentAnnouncmentReplies({
           <AlertDialogDescription></AlertDialogDescription>
         </AlertDialogHeader>
         <div className="sm:!max-w-[37rem] overflow-hidden flex flex-col gap-2">
-          {/* Write New Reply */}
-          <CreateAnnouncmentReply token={token} announcmentId={announcmentId} />
-
           {/* Replies */}
           <ScrollArea className="p-2 rounded-sm max-h-96">
             {isLoading ? (
@@ -102,6 +99,9 @@ export default function StudentAnnouncmentReplies({
               ))
             )}
           </ScrollArea>
+
+          {/* Write New Reply */}
+          <CreateAnnouncmentReply token={token} announcmentId={announcmentId} />
         </div>
 
         <AlertDialogFooter>

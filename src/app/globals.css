@@ -240,6 +240,9 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   body {
     @apply bg-black text-white;
   }
+  .ann-reaction-btn {
+    @apply cursor-pointer duration-300 w-10 h-10 rounded-full flex items-center justify-center;
+  }
 }
 
 .card-black-shadow {

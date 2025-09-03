@@ -44,7 +44,7 @@ export default function ShowStudentAnnouncments({ name, token }: Props) {
     </div>
   ) : (
     announcments && (
-      <div className="flex flex-col gap-3 items-center">
+      <div className="flex flex-col gap-3 items-center lg:w-[80%] md:w-[90%] w-full mx-auto">
         {announcments.length > 0 ? (
           announcments.map((ann) => (
             <StudentClassAnnouncmentCard

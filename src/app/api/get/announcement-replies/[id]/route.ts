@@ -30,6 +30,9 @@ export async function GET(
         content: true,
         created_at: true,
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     const annReplies = replies.map((rep) => ({
