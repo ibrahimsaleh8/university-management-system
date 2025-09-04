@@ -56,9 +56,9 @@ export default function StudentAnnouncmentReplies({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-glass-main-text text-main-text hover:bg-Main-black duration-300">
-          <MessageSquareMore className="w-5 h-5 " />
-          Replies ({allRepliesNumber})
+        <Button className="bg-glass-green text-main-text hover:bg-glass-main-text duration-300 w-16">
+          <MessageSquareMore className="w-7 h-7 " />
+          {allRepliesNumber}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
