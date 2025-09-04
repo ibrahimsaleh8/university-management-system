@@ -1,21 +1,66 @@
 import { SlidingNumber } from "@/components/animate-ui/text/sliding-number";
+import GlobalToast from "@/components/Global/GlobalToast";
+import { ErrorResponseType } from "@/lib/globalTypes";
+import { AnnouncmentReactionDataType } from "@/validation/CreateAnnouncmentReactionSchema";
+import { MainDomain } from "@/variables/MainDomain";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { useState } from "react";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
-//   AiFillDislike,
-//   AiFillLike,
 
 type Props = {
   isLiked: boolean;
   isDisLiked: boolean;
   likes: number;
   dislikes: number;
+  token: string;
+  name: string;
+  announcmentId: string;
 };
+
+async function createAnnReaction(
+  token: string,
+  reactionData: AnnouncmentReactionDataType
+) {
+  await axios.post(
+    `${MainDomain}/api/create/announcment-reaction`,
+    reactionData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
+
 export default function AnnouncmentReaction({
   isLiked,
   isDisLiked,
   likes,
   dislikes,
+  token,
+  announcmentId,
+  name,
 }: Props) {
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: {
+      token: string;
+      reactionData: AnnouncmentReactionDataType;
+    }) => createAnnReaction(data.token, data.reactionData),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["student_class_announcments", name],
+      });
+    },
+    onError: (err: ErrorResponseType) => {
+      GlobalToast({
+        title: err.response.data.message,
+        icon: "error",
+      });
+    },
+  });
+
   const [likeAnn, setLikeAnn] = useState(isLiked);
   const [disLikeAnn, setDisLikeAnn] = useState(isDisLiked);
   const [annLikes, setAnnLikes] = useState(likes);
@@ -41,6 +86,15 @@ export default function AnnouncmentReaction({
         if (disLikeAnn) {
           setAnnDisLikes((pre) => pre - 1);
         }
+
+        mutate({
+          token,
+          reactionData: {
+            announcmentId,
+            operation: "ADD",
+            reaction: "LIKE",
+          },
+        });
       } else {
         setLikeAnn(false);
         setDisLikeAnn(true);
@@ -48,16 +102,40 @@ export default function AnnouncmentReaction({
         if (likeAnn) {
           setAnnLikes((pre) => pre - 1);
         }
+        mutate({
+          token,
+          reactionData: {
+            announcmentId,
+            operation: "ADD",
+            reaction: "DISLIKE",
+          },
+        });
       }
     } else if (operation == "remove") {
       if (reaction == "Like") {
         setLikeAnn(false);
         setDisLikeAnn(false);
         setAnnLikes((pre) => pre - 1);
+        mutate({
+          token,
+          reactionData: {
+            announcmentId,
+            operation: "REMOVE",
+            reaction: "LIKE",
+          },
+        });
       } else {
         setLikeAnn(false);
         setDisLikeAnn(false);
         setAnnDisLikes((pre) => pre - 1);
+        mutate({
+          token,
+          reactionData: {
+            announcmentId,
+            operation: "REMOVE",
+            reaction: "DISLIKE",
+          },
+        });
       }
     }
   };
@@ -71,6 +149,7 @@ export default function AnnouncmentReaction({
           number={annLikes}
         />
         <button
+          disabled={isPending}
           onClick={() => {
             if (likeAnn) {
               HandleAnnReaction("Like", "remove");
@@ -86,6 +165,7 @@ export default function AnnouncmentReaction({
       {/* Dislike */}
       <div className="flex items-center gap-3">
         <button
+          disabled={isPending}
           title={disLikeAnn ? "Remove Dislike" : "Dislike"}
           onClick={() => {
             if (disLikeAnn) {

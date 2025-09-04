@@ -15,6 +15,10 @@ export type StudentClassAnnouncmentsDataType = {
   content: string;
   created_at: string;
   replies: number;
+  likes: number;
+  dislikes: number;
+  isLiked: boolean;
+  isDisLiked: boolean;
 };
 
 async function getAnnouncments(
@@ -50,6 +54,7 @@ export default function ShowStudentAnnouncments({ name, token }: Props) {
             <StudentClassAnnouncmentCard
               key={ann.id}
               data={ann}
+              name={name}
               token={token}
             />
           ))

@@ -43,6 +43,18 @@ export async function GET(
         _count: {
           select: {
             announcementReplies: true,
+            likes: true,
+            dislikes: true,
+          },
+        },
+        likes: {
+          where: {
+            studentId: authVerify.user.data.id,
+          },
+        },
+        dislikes: {
+          where: {
+            studentId: authVerify.user.data.id,
           },
         },
       },
@@ -58,6 +70,10 @@ export async function GET(
       content: ann.content,
       created_at: ann.created_at,
       replies: ann._count.announcementReplies,
+      likes: ann._count.likes,
+      dislikes: ann._count.dislikes,
+      isLiked: ann.likes.length > 0,
+      isDisLiked: ann.dislikes.length > 0,
     }));
 
     return NextResponse.json(dataRes, { status: 200 });

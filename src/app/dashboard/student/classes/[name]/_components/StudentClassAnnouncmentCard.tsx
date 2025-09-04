@@ -7,8 +7,13 @@ import AnnouncmentReaction from "./AnnouncmentReaction";
 type Props = {
   data: StudentClassAnnouncmentsDataType;
   token: string;
+  name: string;
 };
-export default function StudentClassAnnouncmentCard({ data, token }: Props) {
+export default function StudentClassAnnouncmentCard({
+  data,
+  token,
+  name,
+}: Props) {
   return (
     <div className="w-full border border-soft-border black-box-shadow bg-card-bg rounded-2xl p-4 flex flex-col gap-5">
       {/* Header */}
@@ -32,10 +37,13 @@ export default function StudentClassAnnouncmentCard({ data, token }: Props) {
       {/* Bottom */}
       <div className="mt-auto flex justify-between">
         <AnnouncmentReaction
-          dislikes={2}
-          likes={4}
-          isDisLiked={false}
-          isLiked={true}
+          dislikes={data.dislikes}
+          likes={data.likes}
+          isDisLiked={data.isDisLiked}
+          isLiked={data.isLiked}
+          token={token}
+          announcmentId={data.id}
+          name={name}
         />
 
         <StudentAnnouncmentReplies
