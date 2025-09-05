@@ -69,7 +69,7 @@ export default function ShowStudentsExam({ name, token }: Props) {
             <StudentExamCard className={name} examData={exam} key={exam.id} />
           ))
         ) : (
-          <div className="w-full h-32 rounded-2xl bg-Second-black flex items-center justify-center text-low-white">
+          <div className="lg:w-[80%] md:w-[90%] w-full mx-auto h-52 rounded-2xl flex text-low-white items-center justify-center bg-card-bg">
             No Exams Found ...
           </div>
         )}

@@ -49,22 +49,24 @@ export default function ShowStudentAssignments({ name, token }: Props) {
   if (error && isError) throw new Error(error.message);
   console.log(data);
 
-  return isLoading ? (
-    <div className="flex flex-col gap-3 items-center">
-      <Skeleton className="sm:w-[45rem] w-full max-w-full h-96" />
+  return (
+    <div className="flex flex-col gap-3 items-center lg:w-[80%] md:w-[90%] w-full mx-auto">
+      {isLoading ? (
+        <Skeleton className="sm:w-[45rem] w-full max-w-full h-96" />
+      ) : data && data.length > 0 ? (
+        data.map((assignment) => (
+          <StudentAssignment
+            className={name}
+            key={assignment.id}
+            token={token}
+            assignmentData={assignment}
+          />
+        ))
+      ) : (
+        <div className="w-full h-52 rounded-2xl flex text-low-white items-center justify-center bg-card-bg">
+          No Assignemts Created Yet
+        </div>
+      )}
     </div>
-  ) : data && data.length > 0 ? (
-    <div className="flex flex-col gap-3 items-center">
-      {data.map((assignment) => (
-        <StudentAssignment
-          className={name}
-          key={assignment.id}
-          token={token}
-          assignmentData={assignment}
-        />
-      ))}
-    </div>
-  ) : (
-    <>No Assignemts Created Yet</>
   );
 }

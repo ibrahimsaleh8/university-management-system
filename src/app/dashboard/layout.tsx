@@ -1,5 +1,5 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
-import DashboardSideBar from "./_components/DashboardSideBar";
+import DashboardSideBar from "./_components/sidebar/DashboardSideBar";
 import DashboardHeader from "./_components/DashboardHeader";
 import { cookies } from "next/headers";
 import { VerifyUserFromToken } from "@/lib/VerifyUserFromToken";
