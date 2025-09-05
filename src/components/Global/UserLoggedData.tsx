@@ -24,6 +24,9 @@ export default async function UserLoggedData({
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      next: {
+        tags: ["user_data"],
+      },
     }).then((res) => res.json());
 
     data = res;

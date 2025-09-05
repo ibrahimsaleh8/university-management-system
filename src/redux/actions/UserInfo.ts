@@ -46,6 +46,18 @@ export const userSlice = createSlice({
         image: "",
       };
     },
+    updateMainData: (
+      state,
+      action: PayloadAction<{
+        email: string;
+        first_name: string;
+        last_name: string;
+      }>
+    ) => {
+      state.user.email = action.payload.email;
+      state.user.first_name = action.payload.first_name;
+      state.user.last_name = action.payload.last_name;
+    },
   },
 });
 
