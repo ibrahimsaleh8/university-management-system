@@ -2,14 +2,16 @@
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload, X } from "lucide-react";
+import { Save, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useUpdateAdminImage } from "./hooks/useUpdateAdminImage";
+import { RoleType } from "@/lib/globalTypes";
 type Props = {
   userImage: string;
   token: string;
+  role: RoleType;
 };
-export default function UpdateUserImage({ userImage, token }: Props) {
+export default function UpdateUserImage({ userImage, token, role }: Props) {
   const {
     HandleUpdateImage,
     isPending,
@@ -17,9 +19,11 @@ export default function UpdateUserImage({ userImage, token }: Props) {
     currentImage,
     preview,
     setUploadedImage,
-  } = useUpdateAdminImage({ userImage, token });
+    uploadedImage,
+  } = useUpdateAdminImage({ userImage, token, role });
+
   return (
-    <div className="flex flex-col items-center justify-center gap-3">
+    <div className="flex items-center gap-3 flex-wrap">
       <div className="w-28 h-28 rounded-full flex items-center justify-center">
         {preview ? (
           <div className="w-28 h-28 relative">
@@ -58,18 +62,18 @@ export default function UpdateUserImage({ userImage, token }: Props) {
         id="upoload-img"
       />
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-start gap-2 flex-col">
         <label
           htmlFor="upoload-img"
           className="bg-blue-500 cursor-pointer text-sm duration-300 hover:bg-blue-600 px-4 flex items-center gap-2 py-2  h-9 rounded-sm">
           <Upload className="w-4 h-4" />
-          Upload Image
+          Change Image
         </label>
         <Button
           onClick={HandleUpdateImage}
-          disabled={Uploading || isPending}
+          disabled={Uploading || isPending || !uploadedImage}
           style={{ transition: "0.3s" }}
-          className="bg-main-text text-black hover:bg-main-text hover:opacity-80">
+          className="bg-transparent text-main-text border border-main-text hover:bg-main-text hover:text-black w-full">
           {Uploading ? (
             <>
               Uploading... <SmallLoader />
@@ -79,7 +83,10 @@ export default function UpdateUserImage({ userImage, token }: Props) {
               Updateing... <SmallLoader />
             </>
           ) : (
-            "Save image"
+            <>
+              <Save />
+              Save image
+            </>
           )}
         </Button>
       </div>

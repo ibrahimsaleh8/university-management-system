@@ -17,7 +17,7 @@ export default function ShowUserInfo({ adminData, token }: Props) {
     useUpdateAdminMainData({ adminData, token });
 
   return (
-    <div className="flex flex-col gap-4 w-full bg-Second-black rounded-2xl p-4">
+    <div className="flex flex-col gap-4 w-full bg-Second-black rounded-2xl p-4 h-fit pb-8">
       <p className="font-bold text-main-text flex items-center gap-1">
         <UserRoundCog className="w-5 h-5" />
         User Data

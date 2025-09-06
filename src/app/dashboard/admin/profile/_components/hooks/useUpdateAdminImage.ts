@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { uploadImageApi } from "@/hooks/useAddStudent";
-import { ErrorResponseType } from "@/lib/globalTypes";
+import { ErrorResponseType, RoleType } from "@/lib/globalTypes";
 import { userSlice } from "@/redux/actions/UserInfo";
 import { useAppDispatch } from "@/redux/hooks";
 import { MainDomain } from "@/variables/MainDomain";
@@ -10,6 +10,7 @@ import GlobalToast from "@/components/Global/GlobalToast";
 type Props = {
   userImage: string;
   token: string;
+  role: RoleType;
 };
 async function updateAdminImageApi(
   token: string,
@@ -91,5 +92,6 @@ export const useUpdateAdminImage = ({ token, userImage }: Props) => {
     currentImage,
     preview,
     setUploadedImage,
+    uploadedImage,
   };
 };

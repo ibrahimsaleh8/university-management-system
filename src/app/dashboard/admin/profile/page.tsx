@@ -3,7 +3,7 @@ import ShowUserInfo, { AdminMainData } from "./_components/ShowUserInfo";
 import { cookies } from "next/headers";
 import { MainDomain } from "@/variables/MainDomain";
 import UpdateUserImage from "./_components/UpdateUserImage";
-import UpdateUserPasswrod from "./_components/UpdateUserPasswrod";
+import UpdateUserPasswrod from "../../_components/profile/UpdateUserPasswrod";
 
 export default async function AdminProfilePage() {
   const token = (await (await cookies()).get("token")?.value) as string;
@@ -22,11 +22,11 @@ export default async function AdminProfilePage() {
   } = await res.json();
 
   return (
-    <div className="p-4 flex flex-col gap-6">
-      <UpdateUserImage token={token} userImage={adminData.image} />
+    <div className="sm:p-4 flex flex-col gap-6">
+      <UpdateUserImage role="admin" token={token} userImage={adminData.image} />
       <div className="flex gap-5 flex-col lg:flex-row">
         <ShowUserInfo token={token} adminData={adminData} />
-        <UpdateUserPasswrod token={token} />
+        <UpdateUserPasswrod role="admin" token={token} />
       </div>
     </div>
   );
