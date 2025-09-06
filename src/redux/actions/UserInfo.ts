@@ -58,6 +58,14 @@ export const userSlice = createSlice({
       state.user.first_name = action.payload.first_name;
       state.user.last_name = action.payload.last_name;
     },
+    updateImage: (
+      state,
+      action: PayloadAction<{
+        image: string;
+      }>
+    ) => {
+      state.user.image = action.payload.image;
+    },
   },
 });
 

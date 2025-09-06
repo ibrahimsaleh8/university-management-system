@@ -16,6 +16,7 @@ import { ErrorResponseType } from "@/lib/globalTypes";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { useAppDispatch } from "@/redux/hooks";
 import { userSlice } from "@/redux/actions/UserInfo";
+import { UserRoundCog } from "lucide-react";
 type returnUpdatedDataType = {
   data: {
     first_name: string;
@@ -92,7 +93,10 @@ export default function ShowUserInfo({
 
   return (
     <div className="flex flex-col gap-4 w-full bg-Second-black rounded-2xl p-4">
-      <p className="font-bold text-main-text">User Data</p>
+      <p className="font-bold text-main-text flex items-center gap-1">
+        <UserRoundCog className="w-5 h-5" />
+        User Data
+      </p>
       <form
         className="flex flex-col gap-4"
         onSubmit={handleSubmit(submitNewAdminData)}>
