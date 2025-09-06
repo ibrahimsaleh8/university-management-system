@@ -16,20 +16,23 @@ type Props = {
 
 async function updateAdminPassword(
   token: string,
+  role: RoleType,
   parse: UpdatePasswordDataType
 ) {
-  await axios.patch(
-    `${MainDomain}/api/update/profile/admin/admin-password`,
-    parse,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const endpointMap = {
+    admin: "/api/update/profile/admin/admin-password",
+    student: "/api/update/profile/student/password",
+    teacher: "/api/update/profile/teacher/password",
+  };
+
+  await axios.patch(`${MainDomain}${endpointMap[role]}`, parse, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
 
-export const useUpdateUserPassword = ({ token }: Props) => {
+export const useUpdateUserPassword = ({ token, role }: Props) => {
   const {
     register,
     handleSubmit,
@@ -43,8 +46,14 @@ export const useUpdateUserPassword = ({ token }: Props) => {
   const { mutate, isPending } = useMutation({
     mutationFn: (updateParams: {
       token: string;
+      role: RoleType;
       parse: UpdatePasswordDataType;
-    }) => updateAdminPassword(updateParams.token, updateParams.parse),
+    }) =>
+      updateAdminPassword(
+        updateParams.token,
+        updateParams.role,
+        updateParams.parse
+      ),
     onSuccess: () => {
       GlobalToast({
         icon: "success",
@@ -65,7 +74,7 @@ export const useUpdateUserPassword = ({ token }: Props) => {
   });
 
   const submitNewPassword: SubmitHandler<UpdatePasswordDataType> = (data) => {
-    mutate({ parse: data, token });
+    mutate({ parse: data, token, role });
   };
   return {
     submitNewPassword,

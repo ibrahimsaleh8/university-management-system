@@ -12,24 +12,28 @@ type Props = {
   token: string;
   role: RoleType;
 };
-async function updateAdminImageApi(
+
+async function updateUserImageApi(
   token: string,
+  role: RoleType,
   imageUrl: string
 ): Promise<{ imageUrl: string }> {
+  const endpointMap = {
+    admin: "/api/update/profile/admin/admin-image",
+    student: "/api/update/profile/student/image",
+    teacher: "/api/update/profile/teacher/image",
+  };
+
   const res = await axios.patch(
-    `${MainDomain}/api/update/profile/admin/admin-image`,
-    {
-      imageUrl,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    `${MainDomain}${endpointMap[role]}`,
+    { imageUrl },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
+
   return res.data;
 }
-export const useUpdateAdminImage = ({ token, userImage }: Props) => {
+
+export const useUpdateUserImage = ({ token, userImage, role }: Props) => {
   const dispatch = useAppDispatch();
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -58,8 +62,16 @@ export const useUpdateAdminImage = ({ token, userImage }: Props) => {
   // Creat Api To save new image
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (updateParams: { token: string; imageUrl: string }) =>
-      updateAdminImageApi(updateParams.token, updateParams.imageUrl),
+    mutationFn: (updateParams: {
+      token: string;
+      role: RoleType;
+      imageUrl: string;
+    }) =>
+      updateUserImageApi(
+        updateParams.token,
+        updateParams.role,
+        updateParams.imageUrl
+      ),
     onSuccess: (res) => {
       GlobalToast({
         icon: "success",
@@ -82,9 +94,11 @@ export const useUpdateAdminImage = ({ token, userImage }: Props) => {
       mutate({
         imageUrl: imageUrl.url,
         token,
+        role,
       });
     }
   };
+
   return {
     HandleUpdateImage,
     isPending,

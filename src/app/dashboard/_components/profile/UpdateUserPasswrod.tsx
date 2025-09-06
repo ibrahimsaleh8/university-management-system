@@ -4,9 +4,10 @@ import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Button } from "@/components/ui/button";
 import { RoleType } from "@/lib/globalTypes";
-import { KeyRound } from "lucide-react";
+import { Eye, EyeOff, KeyRound } from "lucide-react";
 import { FaShieldAlt } from "react-icons/fa";
 import { useUpdateUserPassword } from "./Hooks/useUpdateUserPassword";
+import { useState } from "react";
 type Props = {
   token: string;
   role: RoleType;
@@ -14,6 +15,10 @@ type Props = {
 export default function UpdateUserPasswrod({ token, role }: Props) {
   const { submitNewPassword, isPending, register, handleSubmit, errors } =
     useUpdateUserPassword({ token, role });
+  const [showCurrentPass, setShowCurrentPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showReNewPass, setShowReNewPass] = useState(false);
+
   return (
     <div className="w-full bg-Second-black p-4 flex flex-col gap-5 rounded-2xl">
       <p className="font-bold text-main-text flex items-center gap-1 capitalize">
@@ -25,38 +30,62 @@ export default function UpdateUserPasswrod({ token, role }: Props) {
         className="flex flex-col gap-4 h-full"
         onSubmit={handleSubmit(submitNewPassword)}>
         <div className="flex flex-col gap-1">
-          <InputForm
-            isError={errors.currentPassword != undefined}
-            label="Current Password"
-            placeholder="Current Password"
-            type="password"
-            register={register("currentPassword")}
-            className="bg-Second-Card-bg"
-          />
+          <div className="flex items-center gap-1">
+            <InputForm
+              isError={errors.currentPassword != undefined}
+              label="Current Password"
+              placeholder="Current Password"
+              type={showCurrentPass ? "text" : "password"}
+              register={register("currentPassword")}
+              className="bg-Second-Card-bg"
+            />
+            <Button
+              className="mt-[25px] bg-Second-Card-bg hover:bg-Second-Card-bg"
+              type="button"
+              onClick={() => setShowCurrentPass((pre) => !pre)}>
+              {showCurrentPass ? <EyeOff /> : <Eye />}
+            </Button>
+          </div>
           <ErrorMessage error1={errors.currentPassword} />
         </div>
 
         <div className="flex flex-col gap-1">
-          <InputForm
-            isError={errors.newPassword != undefined}
-            label="New Password"
-            placeholder="New Password"
-            type="password"
-            register={register("newPassword")}
-            className="bg-Second-Card-bg"
-          />
+          <div className="flex items-center gap-1">
+            <InputForm
+              isError={errors.newPassword != undefined}
+              label="New Password"
+              placeholder="New Password"
+              type={showNewPass ? "text" : "password"}
+              register={register("newPassword")}
+              className="bg-Second-Card-bg"
+            />
+            <Button
+              className="mt-[25px] bg-Second-Card-bg hover:bg-Second-Card-bg"
+              type="button"
+              onClick={() => setShowNewPass((pre) => !pre)}>
+              {showNewPass ? <EyeOff /> : <Eye />}
+            </Button>
+          </div>
           <ErrorMessage error1={errors.newPassword} />
         </div>
 
         <div className="flex flex-col gap-1">
-          <InputForm
-            isError={errors.currentPassword != undefined}
-            label="Confirm Password"
-            placeholder="Confirm Password"
-            type="password"
-            register={register("reEnterNewPassword")}
-            className="bg-Second-Card-bg"
-          />
+          <div className="flex items-center gap-1">
+            <InputForm
+              isError={errors.currentPassword != undefined}
+              label="Confirm Password"
+              placeholder="Confirm Password"
+              type={showReNewPass ? "text" : "password"}
+              register={register("reEnterNewPassword")}
+              className="bg-Second-Card-bg"
+            />
+            <Button
+              className="mt-[25px] bg-Second-Card-bg hover:bg-Second-Card-bg"
+              type="button"
+              onClick={() => setShowReNewPass((pre) => !pre)}>
+              {showReNewPass ? <EyeOff /> : <Eye />}
+            </Button>
+          </div>
           <ErrorMessage error1={errors.reEnterNewPassword} />
         </div>
 

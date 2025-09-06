@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { MainDomain } from "@/variables/MainDomain";
 import UpdateUserPasswrod from "../../_components/profile/UpdateUserPasswrod";
 import { GenderType } from "@/lib/globalTypes";
-import UpdateUserImage from "../../admin/profile/_components/UpdateUserImage";
+import UpdateUserImage from "../../_components/profile/UpdateUserImage";
 import ShowUserData from "./_components/ShowUserData";
 import UserContactInformation from "../../_components/Details/UserContactInformation";
 
@@ -45,7 +45,7 @@ export default async function StudentProfilePage() {
     <div className="sm:p-4 flex flex-col gap-6">
       <div className="flex justify-between gap-3">
         <UpdateUserImage
-          role="admin"
+          role="student"
           token={token}
           userImage={studentData.image}
         />
@@ -72,7 +72,7 @@ export default async function StudentProfilePage() {
         </div>
       </div>
       <div className="flex gap-5 flex-col lg:flex-row">
-        <UpdateUserPasswrod role="admin" token={token} />
+        <UpdateUserPasswrod role="student" token={token} />
         <div className="w-full  min-h-full bg-Second-black rounded-2xl p-4">
           Links
         </div>

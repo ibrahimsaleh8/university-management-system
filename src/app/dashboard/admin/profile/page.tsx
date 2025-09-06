@@ -1,8 +1,7 @@
-import React from "react";
 import ShowUserInfo, { AdminMainData } from "./_components/ShowUserInfo";
 import { cookies } from "next/headers";
 import { MainDomain } from "@/variables/MainDomain";
-import UpdateUserImage from "./_components/UpdateUserImage";
+import UpdateUserImage from "../../_components/profile/UpdateUserImage";
 import UpdateUserPasswrod from "../../_components/profile/UpdateUserPasswrod";
 
 export default async function AdminProfilePage() {

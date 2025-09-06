@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Save, Upload, X } from "lucide-react";
 import Image from "next/image";
-import { useUpdateAdminImage } from "./hooks/useUpdateAdminImage";
+import { useUpdateUserImage } from "./Hooks/useUpdateUserImage";
 import { RoleType } from "@/lib/globalTypes";
 type Props = {
   userImage: string;
@@ -20,7 +20,7 @@ export default function UpdateUserImage({ userImage, token, role }: Props) {
     preview,
     setUploadedImage,
     uploadedImage,
-  } = useUpdateAdminImage({ userImage, token, role });
+  } = useUpdateUserImage({ userImage, token, role });
 
   return (
     <div className="flex items-center gap-3 flex-wrap">
@@ -76,11 +76,11 @@ export default function UpdateUserImage({ userImage, token, role }: Props) {
           className="bg-transparent text-main-text border border-main-text hover:bg-main-text hover:text-black w-full">
           {Uploading ? (
             <>
-              Uploading... <SmallLoader />
+              Uploading... <SmallLoader color="white" />
             </>
           ) : isPending ? (
             <>
-              Updateing... <SmallLoader />
+              Updateing... <SmallLoader color="white" />
             </>
           ) : (
             <>
