@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
         phone: request_body.phone,
         qualification: request_body.qualification,
         image: request_body.image,
+        departmentId: request_body.departmentId,
       },
     });
 

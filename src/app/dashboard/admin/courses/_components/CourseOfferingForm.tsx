@@ -44,8 +44,10 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
     isPending,
     setHasPreRequired,
     hasPreRequired,
+    setCourseDepartment,
+    courseDepartment,
   } = useAddCourseOffering({ setClose, token });
-
+  console.log("courseDepartment", courseDepartment);
   return (
     <form
       className="flex flex-col gap-3"
@@ -62,7 +64,13 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
               <label htmlFor="courses" className="text-sm">
                 Courses:
               </label>
-              <Select onValueChange={(e) => setValue("courseId", +e)}>
+              <Select
+                onValueChange={(e) => {
+                  setValue("courseId", +e);
+                  setCourseDepartment(
+                    courses.find((c) => c.id == +e)?.department.id ?? null
+                  );
+                }}>
                 <SelectTrigger id="courses" className="w-full">
                   <SelectValue placeholder="Courses" />
                 </SelectTrigger>

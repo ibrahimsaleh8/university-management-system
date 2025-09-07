@@ -9,12 +9,12 @@ import { GetAllSemesters } from "@/lib/GetAllSemesters";
 import { GetAllYears } from "@/lib/GetAllYears";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Dispatch, SetStateAction, useState } from "react";
-import { GetTeachers } from "@/lib/GetTeachers";
 import {
   courseOfferingDataType,
   courseOfferingValidationServer,
 } from "@/validation/serverValidations/CourseOfferingValidationServer";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { GetTeacherByDepartment } from "@/lib/GetTeacherByDepartment";
 
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
@@ -34,7 +34,7 @@ async function createNewOffering(
 export const useAddCourseOffering = ({ setClose, token }: Props) => {
   const [hasPreRequired, setHasPreRequired] = useState(false);
   const queryClient = useQueryClient();
-
+  const [courseDepartment, setCourseDepartment] = useState<number | null>(null);
   const { mutate, isPending } = useMutation({
     mutationKey: ["add_course_offering"],
     mutationFn: (data: { offerData: courseOfferingDataType; token: string }) =>
@@ -84,7 +84,7 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
     isError: isErrorTeachers,
     isLoading: loadingTeachers,
     teachers,
-  } = GetTeachers(0);
+  } = GetTeacherByDepartment(courseDepartment ?? 0, courseDepartment != null);
   if (isErrorTeachers && errorTeachers) throw new Error(errorTeachers.message);
 
   // **** Courses Api ****
@@ -95,7 +95,6 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
     isLoading: loadingCourses,
   } = GetAllMainCourses();
   if (isErrorCourses && errorCourses) throw new Error(errorCourses.message);
-
   // **** Semesters Api ****
   const {
     error: errorSemester,
@@ -138,5 +137,7 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
     isPending,
     setHasPreRequired,
     hasPreRequired,
+    courseDepartment,
+    setCourseDepartment,
   };
 };

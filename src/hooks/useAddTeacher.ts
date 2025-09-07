@@ -12,6 +12,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { uploadImageApi } from "./useAddStudent";
 import { teacherDataTypeServer } from "@/app/api/create/teacher/route";
+import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
   token: string;
@@ -48,7 +49,8 @@ export const useAddTeacher = ({ setClose, token }: Props) => {
       setClose(true);
       GlobalToast({ icon: "success", title: "Teacher added success" });
       queryClient.refetchQueries({ queryKey: ["get_all_teachers"] });
-      queryClient.refetchQueries({ queryKey: ["get_teacher_numbers"] });
+      queryClient.refetchQueries({ queryKey: ["get_all_teachers"] });
+      queryClient.refetchQueries({ queryKey: ["get_all_departments"] });
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({ icon: "error", title: err.response.data.message });
@@ -82,6 +84,14 @@ export const useAddTeacher = ({ setClose, token }: Props) => {
       },
     }
   );
+  const {
+    departments,
+    error: errorDepratment,
+    isError: isErrorDepartment,
+    isLoading: loadingDepartment,
+  } = GetDepartmentsQuery();
+  if (errorDepratment && isErrorDepartment)
+    throw new Error(errorDepratment.message);
 
   const HandleForm = (data: AddTeacherDataType) => {
     if (!image) {
@@ -107,5 +117,7 @@ export const useAddTeacher = ({ setClose, token }: Props) => {
     image,
     setImage,
     uploadingImage,
+    loadingDepartment,
+    departments,
   };
 };

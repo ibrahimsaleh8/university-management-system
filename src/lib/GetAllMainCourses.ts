@@ -8,6 +8,7 @@ export type coursesDataType = {
   name: string;
   credit_hours: number;
   department: {
+    id: number;
     name: string;
   };
   isElective: boolean;

@@ -9,7 +9,7 @@ export async function GET() {
         code: true,
         name: true,
         credit_hours: true,
-        department: { select: { name: true } },
+        department: { select: { name: true, id: true } },
         isElective: true,
       },
       orderBy: {

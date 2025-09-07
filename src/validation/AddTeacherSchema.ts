@@ -30,6 +30,10 @@ export const addTeacherSchema = z
       .string()
       .length(14, { message: "Teacher ID must be exactly 14 digits" })
       .regex(/^\d+$/, { message: "Teacher ID must contain only digits" }),
+    departmentId: z.number({
+      invalid_type_error: "Department Id should be number",
+      required_error: "Department is Required",
+    }),
   })
   .refine((data) => differenceInYears(new Date(), data.date_of_birth) >= 20, {
     message: "Age must be at least 20 years",

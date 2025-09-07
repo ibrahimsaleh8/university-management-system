@@ -15,6 +15,7 @@ import SmallLoader from "@/components/Global/SmallLoader";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import UploadImage from "@/app/dashboard/_components/forms/UploadImage";
+import { Skeleton } from "@/components/ui/skeleton";
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
   token: string;
@@ -32,6 +33,8 @@ export default function FormAddTeacher({ setClose, token }: Props) {
     image,
     setImage,
     uploadingImage,
+    loadingDepartment,
+    departments,
   } = useAddTeacher({ setClose, token });
   return (
     <>
@@ -181,6 +184,36 @@ export default function FormAddTeacher({ setClose, token }: Props) {
           />
         </div>
         <ErrorMessage error1={errors.qualification} error2={errors.phone} />
+
+        {/* Departments */}
+        {loadingDepartment && !departments ? (
+          <Skeleton className="h-9 rounded-md w-full" />
+        ) : (
+          departments && (
+            <div className="flex flex-col gap-1 items-start w-full">
+              <label htmlFor="class" className="text-sm">
+                Department:
+              </label>
+              <Select
+                onValueChange={(e: string) =>
+                  setValue("departmentId", parseInt(e))
+                }>
+                <SelectTrigger
+                  id="class"
+                  className="w-full bg-Second-black border-soft-border cursor-pointer">
+                  <SelectValue placeholder="Department" />
+                </SelectTrigger>
+                <SelectContent className="bg-Second-black text-white border-soft-border">
+                  {departments.map((depart) => (
+                    <SelectItem value={`${depart.id}`} key={depart.id}>
+                      {depart.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )
+        )}
 
         <Button
           variant={"mainWithShadow"}
