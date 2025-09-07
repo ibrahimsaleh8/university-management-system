@@ -49,20 +49,21 @@ model Student {
 }
 
 model Teacher {
-  id            Int                 @id @default(autoincrement())
-  teacher_id    String              @unique
-  first_name    String              @db.VarChar(100)
-  last_name     String              @db.VarChar(100)
-  gender        UserGender          @default(MALE)
-  email         String              @unique
-  image         String              @default("https://i.ibb.co/kV27Z5B3/user-profile.jpg")
+  id            Int              @id @default(autoincrement())
+  teacher_id    String           @unique
+  first_name    String           @db.VarChar(100)
+  last_name     String           @db.VarChar(100)
+  gender        UserGender       @default(MALE)
+  email         String           @unique
+  image         String           @default("https://i.ibb.co/kV27Z5B3/user-profile.jpg")
   password      String
   date_of_birth DateTime
-  address       String?             @db.VarChar(100)
-  phone         String?             @db.VarChar(20)
+  address       String?          @db.VarChar(100)
+  phone         String?          @db.VarChar(20)
   hire_date     DateTime
   qualification String
-  departments   DepartmentTeacher[]
+  department    Department?      @relation(fields: [departmentId], references: [id])
+  departmentId  Int?
   exams         Exam[]
   assignments   Assignment[]
   announcements Announcement[]
@@ -166,13 +167,13 @@ model Course {
 }
 
 model Department {
-  id       Int                 @id @default(autoincrement())
-  name     String              @unique
-  code     String              @unique
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  code     String    @unique
   students Student[]
-  teachers DepartmentTeacher[]
   courses  Course[]
   classes  Class[]
+  teachers Teacher[]
 }
 
 model Class {
@@ -202,17 +203,6 @@ model studentClass {
   classGrade Float   @default(0)
 
   @@id([classId, studentId])
-}
-
-// Start Pivots Tables for Course & Department & Class
-
-model DepartmentTeacher {
-  department   Department @relation(fields: [departmentId], references: [id])
-  departmentId Int
-  teacher      Teacher    @relation(fields: [teacherId], references: [id])
-  teacherId    Int
-
-  @@id([departmentId, teacherId])
 }
 
 // End Pivots Tables for Course & Department & Class

@@ -23,7 +23,7 @@ export default function UpdateUserImage({ userImage, token, role }: Props) {
   } = useUpdateUserImage({ userImage, token, role });
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex flex-col items-center gap-3 flex-wrap">
       <div className="w-28 h-28 rounded-full flex items-center justify-center">
         {preview ? (
           <div className="w-28 h-28 relative">
@@ -65,7 +65,7 @@ export default function UpdateUserImage({ userImage, token, role }: Props) {
       <div className="flex items-start gap-2 flex-col">
         <label
           htmlFor="upoload-img"
-          className="bg-blue-500 cursor-pointer text-sm duration-300 hover:bg-blue-600 px-4 flex items-center gap-2 py-2  h-9 rounded-sm">
+          className="bg-blue-500 cursor-pointer text-sm duration-300 hover:bg-blue-600 px-4 flex items-center gap-2 py-2  h-8 rounded-sm">
           <Upload className="w-4 h-4" />
           Change Image
         </label>
@@ -73,7 +73,7 @@ export default function UpdateUserImage({ userImage, token, role }: Props) {
           onClick={HandleUpdateImage}
           disabled={Uploading || isPending || !uploadedImage}
           style={{ transition: "0.3s" }}
-          className="bg-transparent text-main-text border border-main-text hover:bg-main-text hover:text-black w-full">
+          className="bg-transparent text-main-text border border-main-text hover:bg-main-text hover:text-black w-full h-8">
           {Uploading ? (
             <>
               Uploading... <SmallLoader color="white" />

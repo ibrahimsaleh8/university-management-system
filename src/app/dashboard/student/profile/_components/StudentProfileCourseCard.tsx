@@ -22,9 +22,9 @@ export default function StudentProfileCourseCard({
         className="capitalize"
         variant={
           courseData.status == "ACTIVE"
-            ? "secondary"
-            : courseData.status == "COMPLETED"
             ? "success"
+            : courseData.status == "COMPLETED"
+            ? "primary"
             : "warning"
         }
         appearance="light">

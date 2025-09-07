@@ -27,37 +27,56 @@ export async function DELETE(
 
     // Start deleting related data
 
-    await prisma.courseSchedule.deleteMany({
-      where: { teacherId: teacher.id },
-    });
+    await prisma.$transaction([
+      prisma.courseSchedule.deleteMany({
+        where: { teacherId: teacher.id },
+      }),
 
-    await prisma.announcement.deleteMany({
-      where: { teacherId: teacher.id },
-    });
+      // --- Announcements ---
+      prisma.announcementReply.deleteMany({
+        where: { announcement: { teacherId: teacher.id } },
+      }),
+      prisma.announcementLike.deleteMany({
+        where: { announcement: { teacherId: teacher.id } },
+      }),
+      prisma.announcementDisLike.deleteMany({
+        where: { announcement: { teacherId: teacher.id } },
+      }),
+      prisma.announcement.deleteMany({
+        where: { teacherId: teacher.id },
+      }),
 
-    await prisma.assignment.deleteMany({
-      where: { teacherId: teacher.id },
-    });
+      // --- Assignments & Exams ---
+      prisma.assignment.deleteMany({
+        where: { teacherId: teacher.id },
+      }),
+      prisma.exam.deleteMany({
+        where: { teacherId: teacher.id },
+      }),
 
-    await prisma.exam.deleteMany({
-      where: { teacherId: teacher.id },
-    });
+      // --- Classes ---
+      prisma.studentClass.deleteMany({
+        where: { class: { teacherId: teacher.id } },
+      }),
+      prisma.class.deleteMany({
+        where: { teacherId: teacher.id },
+      }),
 
-    await prisma.class.deleteMany({
-      where: { teacherId: teacher.id },
-    });
+      // --- Course Offerings ---
+      prisma.studentEnrollment.deleteMany({
+        where: {
+          courseOffering: { teacherId: teacher.id }, // delete enrollments first
+        },
+      }),
+      prisma.courseOffering.deleteMany({
+        where: { teacherId: teacher.id },
+      }),
 
-    await prisma.courseOffering.deleteMany({
-      where: { teacherId: teacher.id },
-    });
-
-    await prisma.departmentTeacher.deleteMany({
-      where: { teacherId: teacher.id },
-    });
-
-    await prisma.teacher.delete({
-      where: { teacher_id: id },
-    });
+      // --- Finally, delete teacher ---
+      prisma.teacher.delete({
+        where: { teacher_id: id },
+      }),
+    ]);
 
     return NextResponse.json(
       { message: "Teacher Deleted Success" },

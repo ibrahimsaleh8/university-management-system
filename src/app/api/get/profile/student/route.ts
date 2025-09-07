@@ -48,6 +48,13 @@ export async function GET(req: NextRequest) {
               },
             },
           },
+          where: {
+            courseOffering: {
+              semester: {
+                isActive: true,
+              },
+            },
+          },
         },
         _count: {
           select: {
