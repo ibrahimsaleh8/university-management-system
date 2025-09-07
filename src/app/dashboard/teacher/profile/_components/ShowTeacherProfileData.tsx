@@ -19,7 +19,7 @@ type Props = {
 };
 export default function ShowTeacherProfileData({ userData }: Props) {
   return (
-    <div className="w-full flex flex-col gap-4 bg-Second-black rounded-2xl p-4">
+    <div className="w-full flex flex-col gap-4 bg-main-dark">
       <p className="font-bold text-white capitalize flex items-center gap-1">
         <CircleUserRound className="w-5 h-5 text-main-text" />
         main data

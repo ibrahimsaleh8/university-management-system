@@ -38,6 +38,7 @@ export const useUpdateUserImage = ({ token, userImage, role }: Props) => {
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [currentImage, setCurrentImage] = useState(userImage);
+
   useEffect(() => {
     if (!uploadedImage) {
       setPreview(null);

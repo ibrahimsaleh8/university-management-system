@@ -32,6 +32,13 @@ export async function GET(req: NextRequest) {
         hire_date: true,
         qualification: true,
         teacher_id: true,
+        department: {
+          select: {
+            name: true,
+          },
+        },
+        created_at: true,
+        biography: true,
       },
     });
     if (!teacherData) {

@@ -11,8 +11,9 @@ export async function PATCH(req: NextRequest) {
       return authVerify.response;
     // End Check Teacher Authorize
 
-    const { imageUrl } = (await req.json()) as {
+    const { imageUrl, bio } = (await req.json()) as {
       imageUrl: string;
+      bio: string | null;
     };
 
     if (!imageUrl) {
@@ -41,10 +42,10 @@ export async function PATCH(req: NextRequest) {
       },
       data: {
         image: imageUrl,
+        biography: bio,
       },
     });
 
-    revalidateTag("user_data");
     revalidateTag("teacher_data");
 
     return NextResponse.json({ imageUrl }, { status: 200 });
