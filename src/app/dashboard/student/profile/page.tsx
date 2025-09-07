@@ -1,11 +1,21 @@
 import { cookies } from "next/headers";
 import { MainDomain } from "@/variables/MainDomain";
 import UpdateUserPasswrod from "../../_components/profile/UpdateUserPasswrod";
-import { GenderType } from "@/lib/globalTypes";
+import { EnrollmentStatus, GenderType } from "@/lib/globalTypes";
 import UpdateUserImage from "../../_components/profile/UpdateUserImage";
 import ShowUserData from "./_components/ShowUserData";
 import UserContactInformation from "../../_components/Details/UserContactInformation";
-
+import ShowCurrentCourses from "./_components/ShowCurrentCourses";
+export type StudentProfileCoursesDataType = {
+  id: string;
+  status: EnrollmentStatus;
+  courseOffering: {
+    course: {
+      name: string;
+      code: string;
+    };
+  };
+};
 export type StudentResponse = {
   student_id: string;
   first_name: string;
@@ -21,6 +31,7 @@ export type StudentResponse = {
   email: string;
   address: string;
   phone: string;
+  courses: StudentProfileCoursesDataType[];
   _count: {
     courses: number;
     classes: number;
@@ -73,9 +84,7 @@ export default async function StudentProfilePage() {
       </div>
       <div className="flex gap-5 flex-col lg:flex-row">
         <UpdateUserPasswrod role="student" token={token} />
-        <div className="w-full  min-h-full bg-Second-black rounded-2xl p-4">
-          Links
-        </div>
+        <ShowCurrentCourses courses={studentData.courses} />
       </div>
     </div>
   );

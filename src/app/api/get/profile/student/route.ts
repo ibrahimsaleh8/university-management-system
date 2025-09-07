@@ -33,6 +33,22 @@ export async function GET(req: NextRequest) {
         gender: true,
         phone: true,
         student_id: true,
+        courses: {
+          select: {
+            id: true,
+            status: true,
+            courseOffering: {
+              select: {
+                course: {
+                  select: {
+                    name: true,
+                    code: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         _count: {
           select: {
             courses: true,
