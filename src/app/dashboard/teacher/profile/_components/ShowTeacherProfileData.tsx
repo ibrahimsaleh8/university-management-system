@@ -1,4 +1,4 @@
-import { CircleUserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import StdSmallData from "./StdSmallData";
 import { GenderType } from "@/lib/globalTypes";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
@@ -19,9 +19,9 @@ type Props = {
 };
 export default function ShowTeacherProfileData({ userData }: Props) {
   return (
-    <div className="w-full flex flex-col gap-4 bg-main-dark">
+    <div className="w-full flex flex-col gap-4 bg-main-dark pb-3">
       <p className="font-bold text-white capitalize flex items-center gap-1">
-        <CircleUserRound className="w-5 h-5 text-main-text" />
+        <UserRound className="w-5 h-5 text-main-text" />
         main data
       </p>
       <div className="flex items-center flex-wrap gap-6">

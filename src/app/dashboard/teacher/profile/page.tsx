@@ -61,19 +61,19 @@ export default async function StudentProfilePage() {
       <Tabs
         defaultValue="overview"
         className="bg-main-dark border border-soft-border p-4 rounded-2xl">
-        <TabsList className="bg-main-dark gap-3 border-b rounded-none pb-0 border-Second-Card-bg ">
+        <TabsList className="bg-main-dark gap-3 border-b rounded-none pb-0 pl-0 border-Second-Card-bg ">
           <TabsTrigger
-            className="border-0 rounded-none data-[state=active]:bg-transparent data-[state=active]:text-main-text data-[state=active]:border-b data-[state=active]:border-main-text"
+            className="text-base pl-0 border-0 rounded-none data-[state=active]:bg-transparent data-[state=active]:text-main-text data-[state=active]:border-b data-[state=active]:border-main-text"
             value="overview">
             Overview
           </TabsTrigger>
           <TabsTrigger
-            className="border-0 rounded-none data-[state=active]:bg-transparent data-[state=active]:text-main-text data-[state=active]:border-b data-[state=active]:border-main-text"
+            className="text-base border-0 rounded-none data-[state=active]:bg-transparent data-[state=active]:text-main-text data-[state=active]:border-b data-[state=active]:border-main-text"
             value="password">
             Password
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="overview" className="p-4">
+        <TabsContent value="overview" className="p-4 sm:p-1 mt-5 lg:mt-5">
           <ShowTeacherProfileData
             userData={{
               _count: teacherData._count,
@@ -87,7 +87,7 @@ export default async function StudentProfilePage() {
             }}
           />
         </TabsContent>
-        <TabsContent className="p-4" value="password">
+        <TabsContent className="p-4 sm:p-1" value="password">
           <UpdateUserPasswrod role="teacher" token={token} />
         </TabsContent>
       </Tabs>

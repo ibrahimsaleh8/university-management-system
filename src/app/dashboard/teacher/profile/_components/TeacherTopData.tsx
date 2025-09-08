@@ -34,13 +34,13 @@ export default function TeacherTopData({
     <div className="flex flex-col gap-5 bg-main-dark border border-soft-border rounded-2xl p-4 ">
       <div className="flex items-center justify-between gap-4 flex-wrap sm:pr-4">
         <div className="flex gap-5 flex-wrap">
-          <div className="w-fit">
+          <div className="w-fit border-2 rounded-full h-fit border-glass-green">
             <Image
               src={currentImage}
               alt=" Image"
               width={1000}
               height={1000}
-              className="w-28 h-28 rounded-full object-cover object-center mx-auto"
+              className="w-32 h-32 rounded-full object-cover object-center mx-auto"
             />
           </div>
 
@@ -76,9 +76,13 @@ export default function TeacherTopData({
         />
       </div>
 
-      <div className="p-4 border-t border-soft-border flex flex-col gap-2">
+      <div className="p-2 sm:p-4 border-t border-soft-border flex flex-col gap-2">
         <p className="text-lg font-bold">Biography</p>
-        {bio && <p className="text-low-white capitalize">{bio} </p>}
+        {bio && (
+          <p className="text-low-white capitalize text-sm sm:text-base">
+            {bio}{" "}
+          </p>
+        )}
       </div>
     </div>
   );
