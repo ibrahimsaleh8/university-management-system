@@ -1,4 +1,4 @@
-import { CircleUserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import StdSmallData from "./StdSmallData";
 import { GenderType } from "@/lib/globalTypes";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
@@ -14,6 +14,10 @@ type Props = {
     created_at: Date;
     date_of_birth: Date;
     gender: GenderType;
+    email: string;
+    address: string;
+    phone: string;
+
     _count: {
       courses: number;
       classes: number;
@@ -22,15 +26,18 @@ type Props = {
 };
 export default function ShowUserData({ userData }: Props) {
   return (
-    <div className="w-full flex flex-col gap-4 bg-Second-black rounded-2xl p-4">
+    <div className="w-full flex flex-col gap-4 bg-main-dark rounded-2xl">
       <p className="font-bold text-white capitalize flex items-center gap-1">
-        <CircleUserRound className="w-5 h-5 text-main-text" />
+        <UserRound className="w-5 h-5 text-main-text" />
         main data
       </p>
       <div className="flex items-center flex-wrap gap-6">
         <StdSmallData title="std id" value={userData.student_id} />
         <StdSmallData title="first name" value={userData.first_name} />
         <StdSmallData title="last name" value={userData.last_name} />
+        <StdSmallData title="email" value={userData.email} />
+        <StdSmallData title="address" value={userData.address} />
+        <StdSmallData title="phone" value={userData.phone} />
         <StdSmallData title="gender" value={userData.gender.toLowerCase()} />
         <StdSmallData
           title="department"

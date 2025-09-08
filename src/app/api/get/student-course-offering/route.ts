@@ -39,18 +39,23 @@ export async function GET(req: NextRequest) {
         },
       },
     });
+
     if (!student || !student.academicYearId) {
       return NextResponse.json(
         { message: "Student not found" },
         { status: 404 }
       );
     }
+    const now = new Date();
     const courses = await prisma.courseOffering.findMany({
       where: {
         academicYearId: student.academicYearId,
         semester: {
           isActive: true,
+          registerDeadline: { gte: now },
+          registerBegin: { lte: now },
         },
+
         course: {
           departmentId: student.departmentId,
         },
@@ -144,7 +149,10 @@ export async function GET(req: NextRequest) {
     }));
 
     return NextResponse.json(
-      { courses: coursesRes, totalRegisterdHours },
+      {
+        courses: coursesRes,
+        totalRegisterdHours,
+      },
       { status: 200 }
     );
   } catch (error) {

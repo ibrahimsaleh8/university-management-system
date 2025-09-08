@@ -3,9 +3,9 @@ import { MainDomain } from "@/variables/MainDomain";
 import UpdateUserPasswrod from "../../_components/profile/UpdateUserPasswrod";
 import { EnrollmentStatus, GenderType } from "@/lib/globalTypes";
 import ShowUserData from "./_components/ShowUserData";
-import UserContactInformation from "../../_components/Details/UserContactInformation";
 import ShowCurrentCourses from "./_components/ShowCurrentCourses";
-import ShowUserImageProfile from "../../_components/profile/ShowUserImageProfile";
+import StudentProfileTopData from "./_components/StudentProfileTopData";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export type StudentProfileCoursesDataType = {
   id: string;
   status: EnrollmentStatus;
@@ -57,51 +57,53 @@ export default async function StudentProfilePage() {
 
   return (
     <div className="sm:p-4 flex flex-col gap-6">
-      <div className="flex items-center gap-6 bg-main-dark p-4 rounded-2xl border border-soft-border flex-wrap">
-        <ShowUserImageProfile
-          role="student"
-          token={token}
-          userImage={studentData.image}
-        />
-        <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-bold">
-            {studentData.first_name} {studentData.last_name}
-          </h1>
-          <p className="text-sm text-low-white">
-            Student ID: {studentData.student_id}
-          </p>
-
-          <p className="text-sm text-low-white capitalize">
-            {studentData.academicYear.year_label} |{" "}
-            {studentData.department.name}
-          </p>
-        </div>
-      </div>
-      <div className="flex gap-5 flex-col lg:flex-row">
-        <ShowUserData
-          userData={{
-            date_of_birth: studentData.date_of_birth,
-            department: studentData.department,
-            first_name: studentData.first_name,
-            gender: studentData.gender,
-            last_name: studentData.last_name,
-            student_id: studentData.student_id,
-            created_at: studentData.created_at,
-            _count: studentData._count,
-          }}
-        />
-        <div className="sm:min-w-96">
-          <UserContactInformation
-            address={studentData.address}
-            email={studentData.email}
-            phone={studentData.phone}
+      <StudentProfileTopData
+        department={studentData.department.name}
+        first_name={studentData.first_name}
+        image={studentData.image}
+        last_name={studentData.last_name}
+        student_id={studentData.student_id}
+        token={token}
+        year_label={studentData.academicYear.year_label}
+      />
+      <Tabs
+        defaultValue="overview"
+        className="bg-main-dark border border-soft-border p-4 rounded-2xl">
+        <TabsList className="profile-tab-list">
+          <TabsTrigger className="profile-tab-trigger" value="overview">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger className="profile-tab-trigger" value="password">
+            Password
+          </TabsTrigger>
+          <TabsTrigger className="profile-tab-trigger" value="courses">
+            Courses
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview" className="p-4 sm:p-1 mt-5 lg:mt-5">
+          <ShowUserData
+            userData={{
+              date_of_birth: studentData.date_of_birth,
+              department: studentData.department,
+              first_name: studentData.first_name,
+              gender: studentData.gender,
+              last_name: studentData.last_name,
+              student_id: studentData.student_id,
+              created_at: studentData.created_at,
+              _count: studentData._count,
+              address: studentData.address,
+              email: studentData.email,
+              phone: studentData.phone,
+            }}
           />
-        </div>
-      </div>
-      <div className="flex gap-5 flex-col lg:flex-row">
-        <UpdateUserPasswrod role="student" token={token} />
-        <ShowCurrentCourses courses={studentData.courses} />
-      </div>
+        </TabsContent>
+        <TabsContent className="p-4 sm:p-1 mt-5 lg:mt-5" value="password">
+          <UpdateUserPasswrod role="student" token={token} />
+        </TabsContent>
+        <TabsContent className="p-4 sm:p-1 mt-5 lg:mt-5" value="courses">
+          <ShowCurrentCourses courses={studentData.courses} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

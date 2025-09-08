@@ -8,7 +8,7 @@ export default function ShowCurrentCourses({
   courses: StudentProfileCoursesDataType[];
 }) {
   return (
-    <div className="w-full  min-h-full bg-Second-black rounded-2xl p-4">
+    <div className="w-full min-h-32 bg-main-dark flex flex-col gap-5">
       <p className="font-bold text-white flex items-center gap-1 capitalize">
         <BookOpenText className="w-5 h-5 text-main-text" />
         current courses

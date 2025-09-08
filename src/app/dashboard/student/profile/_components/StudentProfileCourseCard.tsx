@@ -7,7 +7,7 @@ export default function StudentProfileCourseCard({
   courseData: StudentProfileCoursesDataType;
 }) {
   return (
-    <div className="bg-Second-Card-bg w-full rounded-2xl p-4 flex justify-between items-center">
+    <div className="bg-main-dark border border-soft-border w-full rounded-sm p-4 flex justify-between items-center">
       {/* left */}
       <div className="flex flex-col gap-0.5 ">
         <p className="font-bold capitalize">

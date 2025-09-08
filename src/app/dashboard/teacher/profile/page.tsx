@@ -61,15 +61,11 @@ export default async function StudentProfilePage() {
       <Tabs
         defaultValue="overview"
         className="bg-main-dark border border-soft-border p-4 rounded-2xl">
-        <TabsList className="bg-main-dark gap-3 border-b rounded-none pb-0 pl-0 border-Second-Card-bg ">
-          <TabsTrigger
-            className="text-base pl-0 border-0 rounded-none data-[state=active]:bg-transparent data-[state=active]:text-main-text data-[state=active]:border-b data-[state=active]:border-main-text"
-            value="overview">
+        <TabsList className="profile-tab-list">
+          <TabsTrigger className="profile-tab-trigger" value="overview">
             Overview
           </TabsTrigger>
-          <TabsTrigger
-            className="text-base border-0 rounded-none data-[state=active]:bg-transparent data-[state=active]:text-main-text data-[state=active]:border-b data-[state=active]:border-main-text"
-            value="password">
+          <TabsTrigger className="profile-tab-trigger" value="password">
             Password
           </TabsTrigger>
         </TabsList>

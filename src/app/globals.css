@@ -243,6 +243,12 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   .ann-reaction-btn {
     @apply cursor-pointer duration-300 w-10 h-10 rounded-full flex items-center justify-center;
   }
+  .profile-tab-list {
+    @apply !bg-main-dark !gap-3 !border-b !rounded-none !pb-0 !pl-0 !border-Second-Card-bg;
+  }
+  .profile-tab-trigger {
+    @apply !text-base !pl-0 !border-0 !rounded-none data-[state=active]:!bg-transparent data-[state=active]:!text-main-text data-[state=active]:!border-b data-[state=active]:!border-main-text;
+  }
 }
 
 .card-black-shadow {

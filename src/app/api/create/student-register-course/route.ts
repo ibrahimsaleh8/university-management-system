@@ -120,6 +120,7 @@ export async function POST(req: NextRequest) {
       },
     });
     revalidateTag("user_grades");
+    revalidateTag("student_data");
     return NextResponse.json({
       message: `Student has been registered to ${course.course.name} course successfully`,
     });

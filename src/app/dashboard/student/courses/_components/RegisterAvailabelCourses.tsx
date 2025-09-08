@@ -57,17 +57,17 @@ export default function RegisterAvailabelCourses({ token }: Props) {
     queryKey: ["get_availabel_courses_for_register"],
     queryFn: () => getAvailabelCoursesToRegister(token),
   });
-  console.log("course offering", data);
+
   if (isError && error) throw new Error(error.message);
   return (
     <div className="flex flex-col gap-7 w-full">
       {/* Header */}
-
       {data && (
         <div>
           <p className="text-xl font-bold">
             Available Courses ({data.courses.length})
           </p>
+          <p>Register End: </p>
         </div>
       )}
 
