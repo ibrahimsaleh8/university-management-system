@@ -22,10 +22,6 @@ export type StudentCourseResponse = {
   };
   semester: string;
   hall: string;
-  courseSchedual: {
-    dayOfWeek: string;
-    startTime: string;
-  };
   teacher: {
     first_name: string;
     last_name: string;

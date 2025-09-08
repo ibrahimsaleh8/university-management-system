@@ -51,12 +51,7 @@ export async function GET(req: NextRequest) {
                   },
                 },
                 hall: true,
-                courseSchedule: {
-                  select: {
-                    dayOfWeek: true,
-                    startTime: true,
-                  },
-                },
+
                 teacher: {
                   select: {
                     first_name: true,
@@ -96,7 +91,6 @@ export async function GET(req: NextRequest) {
       courseHours: course.courseOffering.course.credit_hours,
       semester: course.courseOffering.semester.name,
       hall: course.courseOffering.hall,
-      courseSchedual: course.courseOffering.courseSchedule[0],
       teacher: course.courseOffering.teacher,
     }));
     return NextResponse.json(coursesRes, { status: 200 });
