@@ -6,21 +6,30 @@ import { Save, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useUpdateUserImage } from "./Hooks/useUpdateUserImage";
 import { RoleType } from "@/lib/globalTypes";
+import { Dispatch, SetStateAction } from "react";
 type Props = {
   userImage: string;
   token: string;
   role: RoleType;
+  setDefaultImage: Dispatch<SetStateAction<string>>;
+  setClose: Dispatch<SetStateAction<boolean>>;
 };
-export default function UpdateUserImage({ userImage, token, role }: Props) {
+export default function UpdateUserImage({
+  userImage,
+  token,
+  role,
+  setDefaultImage,
+  setClose,
+}: Props) {
   const {
     HandleUpdateImage,
     isPending,
     Uploading,
-    currentImage,
+
     preview,
     setUploadedImage,
     uploadedImage,
-  } = useUpdateUserImage({ userImage, token, role });
+  } = useUpdateUserImage({ token, role, setDefaultImage, setClose });
 
   return (
     <div className="flex flex-col items-center gap-3 flex-wrap">
@@ -40,7 +49,7 @@ export default function UpdateUserImage({ userImage, token, role }: Props) {
           </div>
         ) : (
           <Image
-            src={currentImage}
+            src={userImage}
             alt="Admin Image"
             width={1000}
             height={1000}

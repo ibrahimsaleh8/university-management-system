@@ -62,6 +62,11 @@ export async function GET(req: NextRequest) {
             classes: true,
           },
         },
+        academicYear: {
+          select: {
+            year_label: true,
+          },
+        },
       },
     });
     if (!studentData) {

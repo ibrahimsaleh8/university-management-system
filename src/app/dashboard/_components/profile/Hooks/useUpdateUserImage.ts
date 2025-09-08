@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { uploadImageApi } from "@/hooks/useAddStudent";
 import { ErrorResponseType, RoleType } from "@/lib/globalTypes";
 import { userSlice } from "@/redux/actions/UserInfo";
@@ -8,9 +8,10 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import GlobalToast from "@/components/Global/GlobalToast";
 type Props = {
-  userImage: string;
   token: string;
   role: RoleType;
+  setClose: Dispatch<SetStateAction<boolean>>;
+  setDefaultImage: Dispatch<SetStateAction<string>>;
 };
 
 async function updateUserImageApi(
@@ -33,11 +34,15 @@ async function updateUserImageApi(
   return res.data;
 }
 
-export const useUpdateUserImage = ({ token, userImage, role }: Props) => {
+export const useUpdateUserImage = ({
+  token,
+  role,
+  setDefaultImage,
+  setClose,
+}: Props) => {
   const dispatch = useAppDispatch();
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [currentImage, setCurrentImage] = useState(userImage);
 
   useEffect(() => {
     if (!uploadedImage) {
@@ -79,7 +84,8 @@ export const useUpdateUserImage = ({ token, userImage, role }: Props) => {
         title: "image updated success",
       });
       dispatch(userSlice.actions.updateImage({ image: res.imageUrl }));
-      setCurrentImage(res.imageUrl);
+      setDefaultImage(res.imageUrl);
+      setClose(true);
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({
@@ -104,7 +110,6 @@ export const useUpdateUserImage = ({ token, userImage, role }: Props) => {
     HandleUpdateImage,
     isPending,
     Uploading,
-    currentImage,
     preview,
     setUploadedImage,
     uploadedImage,

@@ -2,10 +2,10 @@ import { cookies } from "next/headers";
 import { MainDomain } from "@/variables/MainDomain";
 import UpdateUserPasswrod from "../../_components/profile/UpdateUserPasswrod";
 import { EnrollmentStatus, GenderType } from "@/lib/globalTypes";
-import UpdateUserImage from "../../_components/profile/UpdateUserImage";
 import ShowUserData from "./_components/ShowUserData";
 import UserContactInformation from "../../_components/Details/UserContactInformation";
 import ShowCurrentCourses from "./_components/ShowCurrentCourses";
+import ShowUserImageProfile from "../../_components/profile/ShowUserImageProfile";
 export type StudentProfileCoursesDataType = {
   id: string;
   status: EnrollmentStatus;
@@ -36,6 +36,9 @@ export type StudentResponse = {
     courses: number;
     classes: number;
   };
+  academicYear: {
+    year_label: string;
+  };
 };
 
 export default async function StudentProfilePage() {
@@ -54,12 +57,25 @@ export default async function StudentProfilePage() {
 
   return (
     <div className="sm:p-4 flex flex-col gap-6">
-      <div className="flex justify-between gap-3">
-        <UpdateUserImage
+      <div className="flex items-center gap-6 bg-main-dark p-4 rounded-2xl border border-soft-border flex-wrap">
+        <ShowUserImageProfile
           role="student"
           token={token}
           userImage={studentData.image}
         />
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-bold">
+            {studentData.first_name} {studentData.last_name}
+          </h1>
+          <p className="text-sm text-low-white">
+            Student ID: {studentData.student_id}
+          </p>
+
+          <p className="text-sm text-low-white capitalize">
+            {studentData.academicYear.year_label} |{" "}
+            {studentData.department.name}
+          </p>
+        </div>
       </div>
       <div className="flex gap-5 flex-col lg:flex-row">
         <ShowUserData
