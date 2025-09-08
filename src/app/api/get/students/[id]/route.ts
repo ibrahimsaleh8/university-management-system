@@ -28,6 +28,7 @@ export async function GET(
             finalGrade: true,
             courseOffering: {
               select: {
+                id: true,
                 course: {
                   select: {
                     name: true,

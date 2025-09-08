@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import ShowStudentData from "./_components/ShowStudentData";
+import { GetStudentSchedual } from "./_components/actions/GetStudentSchedual";
 
 export default async function ShowStudentDetails({
   params,
@@ -8,5 +9,11 @@ export default async function ShowStudentDetails({
 }) {
   const { id } = await params;
   const token = (await (await cookies()).get("token")?.value) as string;
-  return <ShowStudentData token={token} id={id} />;
+  const schedualData = await GetStudentSchedual(id);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ShowStudentData schedualData={schedualData} token={token} id={id} />
+    </div>
+  );
 }

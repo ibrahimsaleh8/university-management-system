@@ -1,13 +1,11 @@
 "use client";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAppSelector } from "@/redux/hooks";
-import student_profile from "@images/student_profile.jpeg";
-import user_profile from "@images/user_profile.jpeg";
 import { MessageCircleMore, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 export default function DashboardHeader() {
-  const { first_name, last_name, role } = useAppSelector(
+  const { first_name, last_name, role, image } = useAppSelector(
     (state) => state.user.user
   );
   return (
@@ -25,16 +23,34 @@ export default function DashboardHeader() {
         </Link>
 
         <div className="flex gap-3 h-10 overflow-hidden bg-Second-black px-4 py-1 rounded-md pl-2 ">
-          <Image
-            className="w-8 h-8 object-cover object-top rounded-full"
-            src={role == "STUDENT" ? student_profile : user_profile}
-            alt="User Logo"
-          />
+          {image ? (
+            <Image
+              className="w-8 h-8 object-cover object-center rounded-full"
+              src={image}
+              alt="User Logo"
+              width={1000}
+              height={1000}
+              priority={true}
+            />
+          ) : (
+            <div className="w-8 h-8 bg-Second-Card-bg rounded-full"></div>
+          )}
+
           <div className="flex flex-col gap-0">
-            <p className="font-medium text-xs">{`${first_name} ${last_name}`}</p>
-            <p className="text-low-white capitalize text-xs mt-auto">
-              {role.toLowerCase()}
-            </p>
+            {first_name ? (
+              <p className="font-medium text-xs">{`${first_name} ${last_name}`}</p>
+            ) : (
+              <div className="w-20 flex flex-col gap-0">
+                <div className="bg-Second-Card-bg w-full h-2 "></div>
+              </div>
+            )}
+            {role ? (
+              <p className="text-low-white capitalize text-xs mt-auto">
+                {role.toLowerCase()}
+              </p>
+            ) : (
+              <div className="w-10 mt-3 bg-Second-Card-bg h-2"></div>
+            )}
           </div>
         </div>
       </div>

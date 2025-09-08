@@ -29,13 +29,9 @@ export async function GET(request: NextRequest) {
           email: true,
           first_name: true,
           last_name: true,
+          image: true,
         },
       });
-      userData = {
-        ...userData,
-        image:
-          "https://res.cloudinary.com/dnriyuqpv/image/upload/v1753802858/students/jt2tgm0xwku2umqlv6jb.png",
-      };
     } else if (user.role == "student") {
       userData = await prisma.student.findUnique({
         where: {

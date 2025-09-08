@@ -1,27 +1,32 @@
 "use client";
 
+import { EventDataType } from "@/app/dashboard/_components/Calender/CalenderTable";
 import UserAssignedCard from "@/app/dashboard/_components/Details/UserAssignedCard";
 import UserContactInformation from "@/app/dashboard/_components/Details/UserContactInformation";
 import UserDetails from "@/app/dashboard/_components/Details/UserDetails";
 import UserMainCardWithImage from "@/app/dashboard/_components/Details/UserMainCardWithImage";
 import UserOperations from "@/app/dashboard/_components/Details/UserOperations";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
+import ShowMainSchedual from "@/app/dashboard/teacher/_components/ShowMainSchedual";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { StudentResponse } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { UserCog } from "lucide-react";
+import TeacherDetailsSkeleton from "../../../teachers/[id]/_components/TeacherDetailsSkeleton";
 
 type Props = {
   id: string;
   token: string;
+  schedualData: EventDataType[];
 };
 async function getAllStudents(id: string): Promise<StudentResponse> {
   const res = await axios.get(`${MainDomain}/api/get/students/${id}`);
   return res.data;
 }
-export default function ShowStudentData({ id, token }: Props) {
+export default function ShowStudentData({ id, token, schedualData }: Props) {
+  console.log("schedualData", schedualData);
   const { data, isError, error, isLoading } = useQuery({
     queryKey: ["student_data_details", id],
     queryFn: () => getAllStudents(id),
@@ -29,12 +34,11 @@ export default function ShowStudentData({ id, token }: Props) {
   if (isError && error) throw new Error(error.message);
 
   return isLoading ? (
-    <div className="text-center">Loading...</div>
+    <TeacherDetailsSkeleton />
   ) : (
     data && (
       <div className="flex flex-col gap-3 sm:p-2">
         <BackButton withText={false} />
-
         <div className="flex items-start gap-3 lg:flex-row flex-col">
           <UserMainCardWithImage
             id={data.student_id}
@@ -103,7 +107,6 @@ export default function ShowStudentData({ id, token }: Props) {
             ]}
           />
         </div>
-
         <div className="flex items-start gap-3 lg:flex-row flex-col">
           <UserContactInformation
             address={data.address}
@@ -112,6 +115,7 @@ export default function ShowStudentData({ id, token }: Props) {
           />
           <UserAssignedCard courses={data.courses} />
         </div>
+        <ShowMainSchedual data={schedualData} />;
       </div>
     )
   );

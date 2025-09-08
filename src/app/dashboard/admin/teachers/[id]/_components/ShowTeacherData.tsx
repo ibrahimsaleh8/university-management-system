@@ -82,17 +82,9 @@ export default function ShowTeacherData({ teacher_id, token }: Props) {
               <div className="flex flex-col gap-1">
                 <p className="uppercase text-low-white">Departments</p>
                 <div className="flex gap-2 items-center flex-wrap">
-                  {data.departments.length > 0 ? (
-                    data.departments.map((dep) => (
-                      <p
-                        key={dep.id}
-                        className="bg-glass-green w-fit px-2 py-1 rounded-md capitalize text-main-text text-xs">
-                        {dep.name}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="text-xs font-medium">No Departments Found</p>
-                  )}
+                  <p className="bg-glass-green w-fit px-2 py-1 rounded-md capitalize text-main-text text-xs">
+                    {data.department}
+                  </p>
                 </div>
               </div>
             }
