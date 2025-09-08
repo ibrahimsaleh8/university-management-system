@@ -17,7 +17,7 @@ export default function ShowUserImageProfile({
 }: Props) {
   const [defaultImage, setDefaultImage] = useState(userImage);
   return (
-    <div className="relative">
+    <div className="relative w-fit">
       <Image
         alt="Student image"
         src={defaultImage}
