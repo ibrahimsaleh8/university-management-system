@@ -57,6 +57,13 @@ export async function GET(
             studentId: authVerify.user.data.id,
           },
         },
+        teacher: {
+          select: {
+            first_name: true,
+            last_name: true,
+            image: true,
+          },
+        },
       },
 
       orderBy: {
@@ -74,6 +81,7 @@ export async function GET(
       dislikes: ann._count.dislikes,
       isLiked: ann.likes.length > 0,
       isDisLiked: ann.dislikes.length > 0,
+      teacher: ann.teacher,
     }));
 
     return NextResponse.json(dataRes, { status: 200 });

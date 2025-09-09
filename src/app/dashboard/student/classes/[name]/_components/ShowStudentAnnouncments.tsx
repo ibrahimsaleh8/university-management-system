@@ -3,7 +3,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import StudentClassAnnouncmentCard from "./StudentClassAnnouncmentCard";
-import { Skeleton } from "@/components/ui/skeleton";
+import LoadingTab from "./LoadingTab";
 
 type Props = {
   token: string;
@@ -19,6 +19,11 @@ export type StudentClassAnnouncmentsDataType = {
   dislikes: number;
   isLiked: boolean;
   isDisLiked: boolean;
+  teacher: {
+    first_name: string;
+    last_name: string;
+    image: string;
+  };
 };
 
 async function getAnnouncments(
@@ -42,13 +47,10 @@ export default function ShowStudentAnnouncments({ name, token }: Props) {
   });
 
   return isLoading ? (
-    <div className="flex flex-col gap-3 items-center">
-      <Skeleton className="sm:w-[45rem] w-full h-72" />
-      <Skeleton className="sm:w-[45rem] w-full h-72" />
-    </div>
+    <LoadingTab />
   ) : (
     announcments && (
-      <div className="flex flex-col gap-3 items-center lg:w-[80%] md:w-[90%] w-full mx-auto">
+      <div className="flex flex-col gap-4 items-center w-full">
         {announcments.length > 0 ? (
           announcments.map((ann) => (
             <StudentClassAnnouncmentCard
@@ -59,7 +61,7 @@ export default function ShowStudentAnnouncments({ name, token }: Props) {
             />
           ))
         ) : (
-          <div className="sm:w-[40rem] w-full h-52 rounded-2xl flex text-low-white items-center justify-center bg-card-bg">
+          <div className="w-full h-36 rounded-md flex text-white items-center justify-center bg-main-dark border border-soft-border">
             No Announcement Published Yet...
           </div>
         )}

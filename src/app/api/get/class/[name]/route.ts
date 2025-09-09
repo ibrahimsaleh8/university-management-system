@@ -15,7 +15,20 @@ export async function GET(
       select: {
         id: true,
         course: {
-          select: { course: { select: { name: true, code: true } } },
+          select: {
+            course: {
+              select: {
+                name: true,
+                code: true,
+                department: {
+                  select: {
+                    name: true,
+                    code: true,
+                  },
+                },
+              },
+            },
+          },
         },
         name: true,
         teacher: {
@@ -36,7 +49,11 @@ export async function GET(
       );
     }
     const classData = {
-      course: teacherClass.course.course,
+      course: {
+        name: teacherClass.course.course.name,
+        code: teacherClass.course.course.code,
+      },
+      department: teacherClass.course.course.department,
       name: teacherClass.name,
       teacher: teacherClass.teacher,
       classId: teacherClass.id,

@@ -2,8 +2,8 @@ import { MainDomain } from "@/variables/MainDomain";
 import axios from "axios";
 import StudentExamCard from "./StudentExamCard";
 import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ExamStatusType } from "@/lib/globalTypes";
+import LoadingTab from "./LoadingTab";
 
 type Props = {
   name: string;
@@ -47,29 +47,16 @@ export default function ShowStudentsExam({ name, token }: Props) {
   if (error && isError) throw new Error(error.message);
 
   return isLoading ? (
-    <div
-      style={{
-        gridTemplateColumns: "repeat(auto-fit,minmax(330px , 1fr))",
-      }}
-      className="grid gap-4">
-      <Skeleton className="w-full rounded-2xl h-56" />
-      <Skeleton className="w-full rounded-2xl h-56" />
-      <Skeleton className="w-full rounded-2xl h-56" />
-      <Skeleton className="w-full rounded-2xl h-56" />
-    </div>
+    <LoadingTab />
   ) : (
     data && (
-      <div
-        style={{
-          gridTemplateColumns: "repeat(auto-fit,minmax(330px , 1fr))",
-        }}
-        className="grid gap-4">
+      <div className="flex gap-4 flex-col">
         {data.length > 0 ? (
           data.map((exam) => (
             <StudentExamCard className={name} examData={exam} key={exam.id} />
           ))
         ) : (
-          <div className="lg:w-[80%] md:w-[90%] w-full mx-auto h-52 rounded-2xl flex text-low-white items-center justify-center bg-card-bg">
+          <div className="w-full h-36 rounded-md flex text-white items-center justify-center bg-main-dark border border-soft-border">
             No Exams Found ...
           </div>
         )}

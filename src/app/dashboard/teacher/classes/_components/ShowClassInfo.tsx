@@ -3,14 +3,13 @@
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { BookOpenText, ScrollText } from "lucide-react";
+import { BookOpenText, Megaphone, ScrollText, Settings } from "lucide-react";
 import { PiStudent } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ClassSkeleton from "./ClassSkeleton";
 import TeacherClassAnnouncments from "./TeacherClassAnnouncments";
 import ClassAssignments from "./ClassAssignments";
 import ClassStudentsShow from "./ClassStudentsShow";
-import { TfiAnnouncement } from "react-icons/tfi";
 import { MdOutlineAssignment } from "react-icons/md";
 import ShowClassExams from "./ShowClassExams";
 import Image from "next/image";
@@ -20,6 +19,10 @@ export type TeacherClassDataType = {
   course: {
     code: string;
     name: string;
+  };
+  department: {
+    name: string;
+    code: string;
   };
   name: string;
   teacher: {
@@ -84,10 +87,15 @@ export default function ShowClassInfo({
             </p>
 
             <div className="flex items-center gap-4 text-sm mt-auto flex-wrap justify-center">
-              <p className="flex items-center gap-1 text-low-white">
-                <BookOpenText className="w-4 h-4 " />
-                <span className="font-[500]">Course</span>: {data.course.name}
-                <span className="text-xs pt-2">({data.course.code})</span>
+              <p className="flex items-center gap-1 text-low-white capitalize">
+                <BookOpenText className="w-4 h-4 text-main-text" />
+                {data.course.name}
+                <span className="uppercase">({data.course.code})</span>
+              </p>
+              <p className="flex items-center gap-1 text-low-white capitalize">
+                <Settings className="w-4 h-4 text-main-text" />
+                {data.department.name}
+                <span className="uppercase">({data.department.code})</span>
               </p>
             </div>
           </div>
@@ -99,7 +107,7 @@ export default function ShowClassInfo({
             <TabsTrigger
               className="px-4 py-1 cursor-pointer rounded-sm"
               value="announcements">
-              <TfiAnnouncement className="w-4 h-4" />
+              <Megaphone className="w-4 h-4" />
               Announcements
             </TabsTrigger>
             <TabsTrigger

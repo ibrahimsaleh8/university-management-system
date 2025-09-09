@@ -12,8 +12,8 @@ type Props = {
 
 export default function StudentExamCard({ examData, className }: Props) {
   return (
-    <div className="w-full max-w-[27rem] black-box-shadow !overflow-hidden border border-soft-border bg-card-bg rounded-2xl flex flex-col gap-2">
-      <div className="flex flex-col gap-4 p-3">
+    <div className="w-full black-box-shadow !overflow-hidden border border-soft-border bg-main-dark rounded-md flex flex-col gap-2">
+      <div className="flex flex-col gap-4 p-4">
         {/* Top */}
         <div className="flex items-center gap-2 justify-between flex-wrap">
           <ExamStatusPadge status={examData.status} />
@@ -47,10 +47,10 @@ export default function StudentExamCard({ examData, className }: Props) {
       </div>
 
       {/* Bottom */}
-      <div className="mt-auto bg-[#181C22] font-medium p-4 border-t border-soft-border">
+      <div className="mt-auto bg-Second-black font-medium p-4 border-t border-soft-border">
         {examData.status == "ONGOING" && !examData.isSubmitted && (
           <Link
-            className="flex bg-transparent w-full border border-main-text rounded-md p-3 items-center justify-center text-main-text hover:bg-main-text hover:text-black duration-300 "
+            className="flex bg-transparent w-full border border-main-text rounded-md p-2 items-center justify-center text-main-text hover:bg-main-text hover:text-black duration-300 "
             href={`/dashboard/student/classes/${className}/show-exam/${examData.id}`}>
             Enter to exam
           </Link>

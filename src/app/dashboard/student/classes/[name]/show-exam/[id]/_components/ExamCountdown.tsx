@@ -63,5 +63,5 @@ export default function ExamCountdown({
     }
   }, [examId, mutate, studentAnswers, timeLeft, token]);
 
-  return <div className="font-mono text-lg">{timeLeft}</div>;
+  return <div className="font-bold text-lg">{timeLeft}</div>;
 }

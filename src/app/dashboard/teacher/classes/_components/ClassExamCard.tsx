@@ -28,7 +28,7 @@ export default function ClassExamCard({
         <div className="flex gap-2 items-center flex-wrap">
           <ExamStatusPadge status={status} />
           {autoMark && (
-            <p className="text-xs px-3 py-1 bg-glass-yellow text-yellow-300 rounded-sm">
+            <p className="text-xs px-3 py-1 bg-glass-main-text text-green-400 rounded-sm">
               Auto-Mark
             </p>
           )}

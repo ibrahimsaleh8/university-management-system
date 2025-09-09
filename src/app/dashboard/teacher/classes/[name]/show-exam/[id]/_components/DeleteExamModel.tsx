@@ -42,7 +42,7 @@ export default function DeleteExamModel({ examId, className, token }: Props) {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["class_exams", className] });
       closeRef.current?.click();
-      route.replace("/dashboard/teacher/classes/noyan");
+      route.replace(`/dashboard/teacher/classes/${className}`);
       GlobalToast({
         title: "Exam Deleted Success",
         icon: "success",

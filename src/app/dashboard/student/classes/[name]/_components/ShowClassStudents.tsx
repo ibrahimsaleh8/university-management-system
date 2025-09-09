@@ -7,7 +7,7 @@ import StudentClassCard from "./StudentClassCard";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
-import LoadingSkeletonStudentsInClass from "./LoadingSkeletonStudentsInClass";
+import LoadingTab from "./LoadingTab";
 
 type Props = {
   name: string;
@@ -55,7 +55,7 @@ export default function ShowClassStudents({ name, token }: Props) {
   }, [data, stdName]);
 
   return isLoading ? (
-    <LoadingSkeletonStudentsInClass />
+    <LoadingTab />
   ) : (
     students && (
       <div className="flex flex-col gap-10">

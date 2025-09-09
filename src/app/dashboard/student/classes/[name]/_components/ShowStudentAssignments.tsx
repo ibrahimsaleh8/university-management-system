@@ -4,7 +4,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import StudentAssignment from "./StudentAssignment";
-import { Skeleton } from "@/components/ui/skeleton";
+import LoadingTab from "./LoadingTab";
 export type assignmentSubmission = {
   id: string;
   submited_at: string;
@@ -50,9 +50,9 @@ export default function ShowStudentAssignments({ name, token }: Props) {
   console.log(data);
 
   return (
-    <div className="flex flex-col gap-3 items-center lg:w-[80%] md:w-[90%] w-full mx-auto">
+    <div className="flex flex-col gap-4 items-center w-full">
       {isLoading ? (
-        <Skeleton className="sm:w-[45rem] w-full max-w-full h-96" />
+        <LoadingTab />
       ) : data && data.length > 0 ? (
         data.map((assignment) => (
           <StudentAssignment
@@ -63,7 +63,7 @@ export default function ShowStudentAssignments({ name, token }: Props) {
           />
         ))
       ) : (
-        <div className="w-full h-52 rounded-2xl flex text-low-white items-center justify-center bg-card-bg">
+        <div className="w-full h-36 rounded-md flex text-white items-center justify-center bg-main-dark border border-soft-border">
           No Assignemts Created Yet
         </div>
       )}

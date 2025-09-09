@@ -8,13 +8,13 @@ import SmallClassInfo from "./SmallClassInfo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MdOutlineAssignment } from "react-icons/md";
 import { PiStudent } from "react-icons/pi";
-import SkeletonLoadingMainData from "./SkeletonLoadingMainData";
 import ShowStudentAnnouncments from "./ShowStudentAnnouncments";
 import ShowStudentAssignments from "./ShowStudentAssignments";
 import ShowStudentsExam from "./ShowStudentsExam";
 import Image from "next/image";
 import { GenderType } from "@/lib/globalTypes";
 import ShowClassStudents from "./ShowClassStudents";
+import ClassSkeleton from "@/app/dashboard/teacher/classes/_components/ClassSkeleton";
 type Props = {
   token: string;
   name: string;
@@ -67,14 +67,14 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
   });
   if (error && isError) throw new Error(error.message);
   return isLoading ? (
-    <SkeletonLoadingMainData />
+    <ClassSkeleton />
   ) : (
     data && (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4 lg:w-[86%] w-full mx-auto">
         {/* Top */}
-        <div className="flex items-center gap-2 md:flex-row flex-col">
+        <div className="flex items-center gap-2 lg:flex-row flex-col">
           {/* Teacher Data */}
-          <div className="flex flex-col justify-center items-center text-center gap-2 border border-soft-border bg-Second-black rounded-2xl md:w-fit overflow-hidden w-full md:min-w-52 py-2 px-3">
+          <div className="flex flex-col justify-center items-center text-center gap-2 border border-soft-border bg-main-dark rounded-md lg:w-fit overflow-hidden w-full md:min-w-52 py-2 px-3">
             <Image
               src={data.teacher.image}
               alt="teacher-image"
@@ -92,7 +92,7 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
           </div>
 
           {/* Header */}
-          <div className="w-full bg-Second-black rounded-2xl p-3 flex flex-col gap-10 border border-soft-border">
+          <div className="w-full bg-main-dark rounded-md p-3 flex flex-col gap-10 border border-soft-border">
             {/* text */}
             <div className="flex items-center justify-center">
               <p className="font-bold text-xl capitalize">{data.name}</p>
@@ -103,38 +103,42 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
             <div className="flex items-center gap-6 flex-wrap justify-center mt-auto">
               <SmallClassInfo
                 icon={<BookOpenText className="w-4 h-4 text-main-text" />}
-                text={`${data.course.name} - ${data.course.code.toUpperCase()}`}
+                text={`${data.course.name} (${data.course.code.toUpperCase()})`}
               />
               <SmallClassInfo
                 icon={<Settings className="w-4 h-4 text-main-text" />}
                 text={`${
                   data.department.name
-                } - ${data.department.code.toUpperCase()}`}
+                } (${data.department.code.toUpperCase()})`}
               />
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <Tabs
-          defaultValue="announcments"
-          className="w-full flex items-center justify-center">
-          <TabsList className="bg-Second-black flex-wrap w-fit h-fit">
+        <Tabs defaultValue="announcments" className="w-full flex ">
+          <TabsList className="bg-transparent flex-wrap w-fit h-fit gap-3">
             <TabsTrigger
-              className="p-4 cursor-pointer h-9"
+              className="px-4 py-1 cursor-pointer rounded-sm"
               value="announcments">
               <Megaphone className="w-4 h-4" />
               Announcments ({data.count.announcements})
             </TabsTrigger>
-            <TabsTrigger className="p-4 cursor-pointer h-9" value="assignments">
+            <TabsTrigger
+              className="px-4 py-1 cursor-pointer rounded-sm"
+              value="assignments">
               <MdOutlineAssignment className="w-4 h-4" />
               Assignments ({data.count.assignments})
             </TabsTrigger>
-            <TabsTrigger className="p-4 cursor-pointer h-9" value="exams">
+            <TabsTrigger
+              className="px-4 py-1 cursor-pointer rounded-sm"
+              value="exams">
               <ScrollText className="w-4 h-4" />
               Exams ({data.count.exams})
             </TabsTrigger>
-            <TabsTrigger className="p-4 cursor-pointer h-9" value="students">
+            <TabsTrigger
+              className="px-4 py-1 cursor-pointer rounded-sm"
+              value="students">
               <PiStudent className="w-4 h-4" />
               Students ({data.count.students})
             </TabsTrigger>

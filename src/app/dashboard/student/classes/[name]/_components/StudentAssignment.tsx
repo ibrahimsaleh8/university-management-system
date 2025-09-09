@@ -1,9 +1,16 @@
-import { AlarmClock, SquareArrowOutUpRight, TriangleAlert } from "lucide-react";
+import {
+  AlarmClock,
+  Check,
+  SquareArrowOutUpRight,
+  TriangleAlert,
+  X,
+} from "lucide-react";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { StudentAssignmentResponse } from "./ShowStudentAssignments";
 import SubmitAssignmentSubmisson from "./SubmitAssignmentSubmisson";
 import { timeConverter } from "@/lib/TimeConverter";
 import AssignmentStatusPadge from "@/app/dashboard/teacher/classes/[name]/assignment-submissons/[id]/_components/AssignmentStatusPadge";
+import { GiSandsOfTime } from "react-icons/gi";
 type Props = {
   assignmentData: StudentAssignmentResponse;
   token: string;
@@ -14,12 +21,30 @@ export default function StudentAssignment({
   token,
   className,
 }: Props) {
+  const iconStatusBg = assignmentData.isSubmited
+    ? "bg-glass-green text-main-text"
+    : !assignmentData.isFinished
+    ? "bg-glass-orange text-orange-400"
+    : "bg-glass-red text-red-500";
   return (
-    <div className="sm:w-[45rem] w-full black-box-shadow max-w-full p-4 border border-soft-border bg-card-bg rounded-2xl flex flex-col gap-3">
+    <div className="w-full relative black-box-shadow p-4 border border-soft-border bg-main-dark rounded-md flex flex-col gap-3">
+      <div
+        className={`w-8 h-8 rounded-full flex items-center justify-center absolute right-[-2px] top-[-12px] ${iconStatusBg}`}>
+        {assignmentData.isSubmited ? (
+          <Check className="w-4 h-4" />
+        ) : !assignmentData.isFinished ? (
+          <GiSandsOfTime className="w-4 h-4" />
+        ) : (
+          <X className="w-4 h-4" />
+        )}
+      </div>
+
       {/* Header */}
       <div className="flex items-center gap-2 justify-between flex-wrap">
         <p className="text-lg font-bold capitalize">{assignmentData.title}</p>
-        <p className="text-xs">{GetDateFromTime(assignmentData.created_at)}</p>
+        <p className="text-xs text-low-white">
+          {GetDateFromTime(assignmentData.created_at)}
+        </p>
       </div>
       {/* Body */}
       <div className="flex flex-col gap-3 capitalize">
@@ -36,7 +61,7 @@ export default function StudentAssignment({
 
       {/* Bottom */}
       <div className="flex items-center gap-2 mt-auto justify-between flex-wrap">
-        <p className="text-sm text-red-500 bg-[#45141459] px-3 flex items-center gap-1 py-1 rounded-sm">
+        <p className="text-sm text-red-500 bg-error-red px-3 flex items-center gap-1 py-1 rounded-sm font-medium">
           <AlarmClock className="w-4 h-4" />
           Deadline: {GetDateFromTime(assignmentData.deadline)}
         </p>

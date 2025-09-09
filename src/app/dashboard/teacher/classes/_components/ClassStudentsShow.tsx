@@ -4,8 +4,8 @@ import axios from "axios";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import LoadingSkeletonStudentsInClass from "@/app/dashboard/student/classes/[name]/_components/LoadingSkeletonStudentsInClass";
 import StudentClassCard from "@/app/dashboard/student/classes/[name]/_components/StudentClassCard";
+import LoadingTab from "@/app/dashboard/student/classes/[name]/_components/LoadingTab";
 
 type Props = {
   className: string;
@@ -45,7 +45,7 @@ export default function ClassStudentsShow({ className }: Props) {
 
   if (error && isError) throw new Error(error.message);
   return isLoading ? (
-    <LoadingSkeletonStudentsInClass />
+    <LoadingTab />
   ) : (
     students && (
       <div className="flex flex-col gap-10">
