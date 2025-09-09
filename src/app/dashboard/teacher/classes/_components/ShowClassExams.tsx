@@ -6,6 +6,7 @@ import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Plus } from "lucide-react";
 export type ClassExamDataType = {
   id: string;
   title: string;
@@ -38,10 +39,11 @@ export default function ShowClassExams({ className }: { className: string }) {
   return (
     <div className="flex flex-col gap-3">
       {/* Header */}
-      <div className="flex items-center gap-3 justify-between px-3">
+      <div className="flex items-center gap-3 justify-end px-3">
         <Link
           className="flex items-center gap-1 px-4 py-2 border border-main-text text-main-text hover:bg-main-text hover:text-black duration-300 font-medium rounded-md text-sm"
           href={`/dashboard/teacher/classes/${className}/add-exam`}>
+          <Plus className="w-4 h-4" />
           Add Exam
         </Link>
       </div>
@@ -58,7 +60,7 @@ export default function ShowClassExams({ className }: { className: string }) {
           ))}
         </div>
       ) : (
-        <div className="flex items-center justify-center text-low-white font-medium bg-Second-black w-full h-32 rounded-md">
+        <div className="w-full h-36 border border-soft-border bg-main-dark flex items-center justify-center text-white rounded-md">
           No Exams Found..
         </div>
       )}

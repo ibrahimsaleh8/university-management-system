@@ -24,7 +24,7 @@ export default function AssignmentCard({
   const created_at = timeConverter(data.created_at);
   const deadline = timeConverter(data.deadline);
   return (
-    <div className="w-full p-4 black-box-shadow bg-Second-black rounded-md flex flex-col gap-4">
+    <div className="w-full p-4 black-box-shadow bg-main-dark border border-soft-border rounded-md flex flex-col gap-4">
       {/* Header */}
       <div className="w-full flex items-center gap-3 justify-between flex-wrap">
         <div className="flex items-center gap-2">

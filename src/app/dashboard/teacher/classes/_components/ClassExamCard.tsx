@@ -22,7 +22,7 @@ export default function ClassExamCard({
   autoMark,
 }: ClassExamDataType & { clasName: string }) {
   return (
-    <div className="black-box-shadow w-full flex flex-col gap-5 bg-Second-black rounded-md p-5 text-white">
+    <div className="black-box-shadow w-full flex flex-col gap-5 border border-soft-border bg-main-dark rounded-md p-5 text-white">
       {/* Exam Header */}
       <div className="flex justify-between items-center gap-2 flex-wrap">
         <div className="flex gap-2 items-center flex-wrap">

@@ -8,7 +8,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import AddAssignmentForm from "./AddAssignmentForm";
 
@@ -30,7 +30,8 @@ export default function AddAssignment({ classId, token, className }: Props) {
 
   return (
     <AlertDialog onOpenChange={() => setClose(false)}>
-      <AlertDialogTrigger className="bg-transparent font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
+      <AlertDialogTrigger className="flex items-center gap-1 bg-transparent font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
+        <Plus className="w-4 h-4" />
         Add Assignment
       </AlertDialogTrigger>
       <AlertDialogContent>

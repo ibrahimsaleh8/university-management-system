@@ -44,10 +44,9 @@ export default function ClassAssignments({ classId, token, className }: Props) {
   return (
     <div className="flex flex-col gap-3">
       {/* Add Assignment */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="flex items-center justify-end flex-wrap gap-3">
         <AddAssignment className={className} classId={classId} token={token} />
       </div>
-
       {isLoading ? (
         <Skeleton className="w-full h-36 rounded-md" />
       ) : assignments && assignments.length > 0 ? (
@@ -60,7 +59,7 @@ export default function ClassAssignments({ classId, token, className }: Props) {
           />
         ))
       ) : (
-        <div className="w-full h-32 text-low-white rounded-md flex bg-Second-black p-4 items-center justify-center">
+        <div className="w-full h-36 border border-soft-border bg-main-dark flex items-center justify-center text-white rounded-md">
           No Assignments found..
         </div>
       )}
