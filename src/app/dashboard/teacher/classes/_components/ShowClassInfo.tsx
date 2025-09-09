@@ -3,7 +3,7 @@
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { BookText, ScrollText } from "lucide-react";
+import { BookOpenText, ScrollText } from "lucide-react";
 import { PiStudent } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ClassSkeleton from "./ClassSkeleton";
@@ -13,7 +13,6 @@ import ClassStudentsShow from "./ClassStudentsShow";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { MdOutlineAssignment } from "react-icons/md";
 import ShowClassExams from "./ShowClassExams";
-import { GenderType } from "@/lib/globalTypes";
 import Image from "next/image";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
 
@@ -27,7 +26,6 @@ export type TeacherClassDataType = {
     first_name: string;
     last_name: string;
     image: string;
-    gender: GenderType;
     email: string;
   };
   classId: number;
@@ -56,11 +54,11 @@ export default function ShowClassInfo({
     <ClassSkeleton />
   ) : (
     data && (
-      <div className="flex flex-col gap-3 lg:w-[86%] w-full mx-auto">
+      <div className="flex flex-col gap-3 lg:w-[86%] w-full mx-auto relative">
         <BackButton withText={false} />
         {/* Header */}
-        <div className="flex items-center gap-3 flex-col md:flex-row">
-          <div className="bg-Second-black p-3 rounded-2xl md:w-fit flex flex-col items-center justify-center gap-2 text-center min-w-40 w-full h-28 border border-soft-border">
+        <div className="flex items-center gap-3 flex-col-reverse lg:flex-row">
+          <div className="bg-main-dark p-4 rounded-md md:min-w-60 lg:w-fit flex flex-col items-center justify-center gap-2 text-center  w-full h-28 border border-soft-border">
             <Image
               width={50}
               height={50}
@@ -71,23 +69,25 @@ export default function ShowClassInfo({
             {/* Text */}
             <div className="flex flex-col gap-1 text-xs">
               <p className="font-medium capitalize">
-                {data.teacher.gender == "MALE" ? "Mr/" : "Mrs/"}
+                Dr.
                 {` ${data.teacher.first_name} ${data.teacher.last_name}`}
               </p>
               <p className="text-low-white">{data.teacher.email}</p>
             </div>
           </div>
 
-          <div className="w-full bg-Second-black flex flex-col items-center gap-3 rounded-2xl justify-center px-3 py-4 h-28 border border-soft-border">
-            <p className="capitalize font-bold text-main-text text-xl">
-              {data.name}
+          <div className="w-full bg-main-dark flex flex-col items-center gap-3 rounded-md justify-center px-3 py-4 h-28 border border-soft-border">
+            <p className="capitalize font-bold text-white text-xl">
+              {`${data.name} ${
+                !data.name.toLowerCase().endsWith("class") ? " class" : ""
+              }`}
             </p>
 
             <div className="flex items-center gap-4 text-sm mt-auto flex-wrap justify-center">
-              <p className="flex items-center gap-1">
-                <BookText className="w-4 h-4" />
-                <span className="font-[500]">Course</span>: {data.course.name} -{" "}
-                {data.course.code}
+              <p className="flex items-center gap-1 text-low-white">
+                <BookOpenText className="w-4 h-4 " />
+                <span className="font-[500]">Course</span>: {data.course.name}
+                <span className="text-xs pt-2">({data.course.code})</span>
               </p>
             </div>
           </div>
@@ -95,24 +95,28 @@ export default function ShowClassInfo({
 
         {/* Tabs */}
         <Tabs defaultValue="announcements" className="w-full">
-          <TabsList className="bg-transparent px-2 rounded-sm gap-4 flex-wrap">
+          <TabsList className="bg-transparent  rounded-sm gap-4 flex-wrap">
             <TabsTrigger
-              className="px-4 py-1 cursor-pointer"
+              className="px-4 py-1 cursor-pointer rounded-sm"
               value="announcements">
               <TfiAnnouncement className="w-4 h-4" />
               Announcements
             </TabsTrigger>
             <TabsTrigger
-              className="px-4 py-1 cursor-pointer"
+              className="px-4 py-1 cursor-pointer rounded-sm"
               value="assignments">
               <MdOutlineAssignment className="w-4 h-4" />
               Assignments
             </TabsTrigger>
-            <TabsTrigger className="px-4 py-1 cursor-pointer" value="exams">
+            <TabsTrigger
+              className="px-4 py-1 cursor-pointer rounded-sm"
+              value="exams">
               <ScrollText className="w-4 h-4" />
               Exams
             </TabsTrigger>
-            <TabsTrigger className="px-4 py-1 cursor-pointer" value="students">
+            <TabsTrigger
+              className="px-4 py-1 cursor-pointer rounded-sm"
+              value="students">
               <PiStudent className="w-4 h-4" />
               Students
             </TabsTrigger>

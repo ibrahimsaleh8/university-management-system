@@ -24,6 +24,7 @@ import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SlidingNumber } from "@/components/animate-ui/text/sliding-number";
 export type ReplyDataType = {
   id: string;
   student: {
@@ -71,9 +72,15 @@ export default function ShowAnnouncementReplies({ replies, annId }: Props) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger className="cursor-pointer flex items-center gap-1 border border-[#3f3f3f] hover:bg-white hover:text-black duration-300 w-fit px-4 py-1 rounded-md text-sm font-medium">
+      <AlertDialogTrigger className="cursor-pointer flex items-center gap-1 duration-300 w-fit px-4 py-2 rounded-md text-sm font-medium bg-glass-green text-main-text hover:opacity-80">
         <MessageCircle className="w-4 h-4" />
-        Replies ({replies})
+        (
+        <SlidingNumber
+          transition={{ duration: 1000 }}
+          className="text-sm "
+          number={replies}
+        />
+        )
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

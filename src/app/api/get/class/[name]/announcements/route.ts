@@ -27,7 +27,16 @@ export async function GET(
         title: true,
         content: true,
         created_at: true,
-        _count: { select: { announcementReplies: true } },
+        _count: {
+          select: { announcementReplies: true, likes: true, dislikes: true },
+        },
+        teacher: {
+          select: {
+            first_name: true,
+            last_name: true,
+            image: true,
+          },
+        },
       },
       orderBy: { created_at: "desc" },
     });
@@ -37,6 +46,9 @@ export async function GET(
       content: ann.content,
       created_at: ann.created_at,
       replies: ann._count.announcementReplies,
+      likes: ann._count.likes,
+      dislikes: ann._count.dislikes,
+      teacher: ann.teacher,
     }));
 
     return NextResponse.json(announcmnetsData, { status: 200 });

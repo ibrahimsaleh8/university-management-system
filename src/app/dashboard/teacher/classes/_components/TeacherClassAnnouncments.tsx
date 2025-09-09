@@ -1,6 +1,4 @@
-import AnnouncmentCard, {
-  AnnouncementInfoType,
-} from "@/app/dashboard/_components/AnnouncmentCard";
+import AnnouncmentCard from "@/app/dashboard/_components/AnnouncmentCard";
 import AddingModel from "@/app/dashboard/_components/forms/AddingModel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MainDomain } from "@/variables/MainDomain";
@@ -12,10 +10,24 @@ type Props = {
   classId: number;
   className: string;
 };
+export type AnnouncementClassDataType = {
+  id: string;
+  title: string;
+  content: string;
+  created_at: Date;
+  replies: number;
+  teacher: {
+    first_name: string;
+    last_name: string;
+    image: string;
+  };
+  likes: number;
+  dislikes: number;
+};
 
 async function getAnnouncments(
   className: string
-): Promise<AnnouncementInfoType[]> {
+): Promise<AnnouncementClassDataType[]> {
   const res = await axios.get(
     `${MainDomain}/api/get/class/${className}/announcements`
   );
@@ -39,8 +51,8 @@ export default function TeacherClassAnnouncments({
     </div>
   ) : (
     announcements && (
-      <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center gap-3 flex-wrap">
+      <div className="flex flex-col gap-6">
+        <div className="flex justify-end items-center gap-3">
           <AddingModel
             title="Announcement"
             AddType="Teacher Announcement"
@@ -53,15 +65,15 @@ export default function TeacherClassAnnouncments({
           <div className="flex flex-col gap-3">
             {announcements.map((ann) => (
               <AnnouncmentCard
+                key={ann.id}
                 className={className}
                 token={token}
                 {...ann}
-                key={ann.id}
               />
             ))}
           </div>
         ) : (
-          <div className="w-full h-32 bg-Second-black flex items-center justify-center text-low-white rounded-md">
+          <div className="w-full h-36 border border-soft-border bg-main-dark flex items-center justify-center text-white rounded-md">
             No announcements founded..
           </div>
         )}
