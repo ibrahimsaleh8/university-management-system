@@ -77,6 +77,7 @@ export default function AnnouncmentCard({
                 type="edit"
                 token={token ?? ""}
                 className={className}
+                attachments={attachments}
                 key={1}
               />,
               <AnnouncmentOperations

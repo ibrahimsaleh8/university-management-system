@@ -12,6 +12,7 @@ import { Pencil, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import UpdateAnn from "./UpdateAnn";
 import DeleteAnn from "./DeleteAnn";
+import { AttachmentsFileType } from "@/lib/globalTypes";
 
 type Props = {
   type: "delete" | "edit" | "replies";
@@ -20,6 +21,12 @@ type Props = {
   className?: string;
   token: string;
   annId: string;
+  attachments?: {
+    id: string;
+    name: string;
+    url: string;
+    type: AttachmentsFileType;
+  }[];
 };
 
 export default function AnnouncmentOperations({
@@ -29,6 +36,7 @@ export default function AnnouncmentOperations({
   annId,
   token,
   className,
+  attachments,
 }: Props) {
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const [close, setClose] = useState(false);
@@ -77,8 +85,9 @@ export default function AnnouncmentOperations({
             {type == "delete" &&
               "This action is irreversible. Deleting this item will permanently remove it and its data from the system."}
           </AlertDialogDescription>
-          {type == "edit" && (
+          {type == "edit" && attachments && (
             <UpdateAnn
+              attachments={attachments}
               className={className ?? ""}
               annId={annId}
               content={content as string}

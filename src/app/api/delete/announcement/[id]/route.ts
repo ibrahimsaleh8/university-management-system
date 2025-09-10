@@ -35,6 +35,9 @@ export async function DELETE(
     await prisma.announcementDisLike.deleteMany({
       where: { announcementId: id },
     });
+    await prisma.announcementAttachment.deleteMany({
+      where: { announcementId: id },
+    });
 
     await prisma.announcement.delete({
       where: { id },

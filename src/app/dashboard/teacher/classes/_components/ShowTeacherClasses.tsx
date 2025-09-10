@@ -29,10 +29,10 @@ export default function ShowTeacherClasses({ token }: { token: string }) {
         gridTemplateColumns: "repeat(auto-fill,minmax(320px , 1fr))",
       }}
       className="grid gap-4">
-      <Skeleton className="w-full h-[30rem]" />
-      <Skeleton className="w-full h-[30rem]" />
-      <Skeleton className="w-full h-[30rem]" />
-      <Skeleton className="w-full h-[30rem]" />
+      <Skeleton className="w-full h-96" />
+      <Skeleton className="w-full h-96" />
+      <Skeleton className="w-full h-96" />
+      <Skeleton className="w-full h-96" />
     </div>
   ) : data && data.length > 0 ? (
     <div

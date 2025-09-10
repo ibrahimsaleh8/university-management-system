@@ -16,7 +16,7 @@ export default function AnnouncmentAttachmentView({ type, url, name }: Props) {
       target="_blank"
       href={url}>
       <FaFilePdf className="w-10 h-10" />
-      <p className="capitalize text-low-white text-sm">{name}</p>
+      <p className="text-low-white text-sm">{name}</p>
     </a>
   );
 }

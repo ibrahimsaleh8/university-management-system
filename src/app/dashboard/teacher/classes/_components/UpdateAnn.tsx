@@ -1,17 +1,14 @@
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import TextAreaForm from "@/app/dashboard/_components/forms/TextAreaForm";
-import GlobalToast from "@/components/Global/GlobalToast";
+import UploadAttachment from "@/app/dashboard/_components/forms/UploadAttachment";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Button } from "@/components/ui/button";
-import { ErrorResponseType } from "@/lib/globalTypes";
-import {
-  AnnouncementUpdateSchema,
-  annUpdateDataType,
-} from "@/validation/EditAnnouncementSchema";
-import { MainDomain } from "@/variables/MainDomain";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+import { AttachmentsFileType } from "@/lib/globalTypes";
+import { Trash2 } from "lucide-react";
+import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
+import { FaFilePdf } from "react-icons/fa";
+import { useUpdateAnnouncment } from "./Hook/useUpdateAnnouncment";
 type Props = {
   title: string;
   annId: string;
@@ -19,16 +16,14 @@ type Props = {
   token: string;
   className: string;
   setClose: Dispatch<SetStateAction<boolean>>;
+  attachments: {
+    id: string;
+    name: string;
+    url: string;
+    type: AttachmentsFileType;
+  }[];
 };
-async function updateAnnouncmet(
-  id: string,
-  data: annUpdateDataType,
-  token: string
-) {
-  await axios.put(`${MainDomain}/api/update/announcement/${id}`, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-}
+
 export default function UpdateAnn({
   annId,
   content,
@@ -36,46 +31,31 @@ export default function UpdateAnn({
   token,
   className,
   setClose,
+  attachments,
 }: Props) {
-  const [annTitle, setAnnTitle] = useState(title ?? "");
-  const [annContent, setAnnContent] = useState(content ?? "");
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["update_ann", annId],
-    mutationFn: (data: {
-      id: string;
-      data: annUpdateDataType;
-      token: string;
-    }) => updateAnnouncmet(data.id, data.data, data.token),
-    onSuccess: () => {
-      setClose(true);
-      queryClient.refetchQueries({
-        queryKey: ["class_announcment", className],
-      });
-      GlobalToast({
-        title: "Announcement has been updated successfully",
-        icon: "success",
-      });
-    },
-    onError: (err: ErrorResponseType) => {
-      GlobalToast({ title: err.response.data.message, icon: "error" });
-    },
+  const {
+    HandleEdit,
+    addingAttachments,
+    UploadingImage,
+    Uploading,
+    loadingDelete,
+    isPending,
+    files,
+    setFiles,
+    deleteAttachments,
+    setDeleteAttachments,
+    setAnnContent,
+    setAnnTitle,
+    annTitle,
+    annContent,
+  } = useUpdateAnnouncment({
+    annId,
+    content,
+    title,
+    token,
+    className,
+    setClose,
   });
-
-  const HandleEdit = () => {
-    const data: annUpdateDataType = { title: annTitle, content: annContent };
-    const validation = AnnouncementUpdateSchema.safeParse(data);
-
-    if (!validation.success) {
-      GlobalToast({
-        title: validation.error.errors[0].message,
-        icon: "error",
-      });
-      return;
-    }
-    mutate({ data, id: annId, token });
-  };
   return (
     <div className="flex flex-col gap-3">
       <InputForm
@@ -95,12 +75,60 @@ export default function UpdateAnn({
         placeholder="Content"
       />
 
+      {attachments.length > 0 &&
+        attachments
+          .filter((att) => !deleteAttachments.find((e) => e.id == att.id))
+          .map((att) => (
+            <div
+              className="flex items-center gap-3 w-fit relative"
+              key={att.id}>
+              <Button
+                onClick={() => {
+                  setDeleteAttachments((pre) => [...pre, { id: att.id }]);
+                }}
+                variant={"destructive"}
+                className="w-8 h-8 flex items-center justify-center absolute left-0 top-0 z-10">
+                <Trash2 className="w-4 h-4 text-white" />
+              </Button>
+              {att.type == "PDF" ? (
+                <a
+                  className="p-3 bg-Second-Card-bg hover:opacity-80 duration-300 flex flex-col gap-2 items-center justify-center rounded-md"
+                  target="_blank"
+                  href={att.url}>
+                  <FaFilePdf className="w-10 h-10" />
+                  <p className="text-low-white text-sm">{att.name}</p>
+                </a>
+              ) : (
+                <Image
+                  alt="Placeholder image"
+                  className="w-96 object-cover object-center rounded-2xl"
+                  height={800}
+                  src={att.url}
+                  unoptimized
+                  width={1200}
+                />
+              )}
+            </div>
+          ))}
+
+      <UploadAttachment files={files} setFiles={setFiles} />
+
       <Button
-        disabled={isPending}
+        disabled={
+          isPending ||
+          loadingDelete ||
+          Uploading ||
+          UploadingImage ||
+          addingAttachments
+        }
         onClick={HandleEdit}
         className="mt-2"
         variant={"mainWithShadow"}>
-        {isPending ? (
+        {isPending ||
+        loadingDelete ||
+        Uploading ||
+        UploadingImage ||
+        addingAttachments ? (
           <>
             Updating... <SmallLoader />
           </>
