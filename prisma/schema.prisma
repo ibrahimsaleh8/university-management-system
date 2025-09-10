@@ -70,6 +70,8 @@ model Teacher {
   courses       CourseOffering[]
   classes       Class[]
   schedules     CourseSchedule[]
+  created_at    DateTime         @default(now())
+  biography     String?
 
   @@index([first_name, last_name])
   @@index([email])
@@ -365,6 +367,7 @@ model AnnouncementDisLike {
 
 model AnnouncementAttachment {
   id             String             @id @default(cuid())
+  name           String
   url            String
   type           AttachmentFileType
   announcement   Announcement       @relation(fields: [announcementId], references: [id])

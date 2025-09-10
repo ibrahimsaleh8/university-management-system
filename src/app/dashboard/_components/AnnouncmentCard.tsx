@@ -6,6 +6,8 @@ import OperationsDropdown from "./OperationsDropdown";
 import Image from "next/image";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { SlidingNumber } from "@/components/animate-ui/text/sliding-number";
+import { AttachmentsFileType } from "@/lib/globalTypes";
+import AnnouncmentAttachmentView from "./AnnouncmentAttachmentView";
 
 export type AnnouncementInfoType = {
   id: string;
@@ -22,6 +24,12 @@ export type AnnouncementInfoType = {
   };
   likes: number;
   dislikes: number;
+  attachments: {
+    id: string;
+    name: string;
+    url: string;
+    type: AttachmentsFileType;
+  }[];
 };
 
 export default function AnnouncmentCard({
@@ -35,6 +43,7 @@ export default function AnnouncmentCard({
   teacher,
   dislikes,
   likes,
+  attachments,
 }: AnnouncementInfoType) {
   const ann_created_at = timeConverter(created_at);
 
@@ -93,6 +102,37 @@ export default function AnnouncmentCard({
         </p>
         <p className="text-sm pl-1 opacity-90">{content}</p>
       </div>
+
+      {/* Attachments */}
+      {attachments.length > 0 && (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-4 flex-wrap">
+            {attachments
+              .filter((att) => att.type == "PDF")
+              .map((att) => (
+                <AnnouncmentAttachmentView
+                  key={att.id}
+                  type={att.type}
+                  url={att.url}
+                  name={att.name}
+                />
+              ))}
+          </div>
+          <div className="flex items-center gap-4 flex-wrap">
+            {attachments
+              .filter((att) => att.type == "IMAGE")
+              .map((att) => (
+                <AnnouncmentAttachmentView
+                  key={att.id}
+                  type={att.type}
+                  url={att.url}
+                  name={att.name}
+                />
+              ))}
+          </div>
+        </div>
+      )}
+
       {/* Bottom */}
       <div className="mt-auto flex sm:items-center justify-between gap-4 ">
         <div className="flex items-center gap-4">

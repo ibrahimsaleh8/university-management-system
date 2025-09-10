@@ -1,12 +1,16 @@
 "use client";
+import { CreateTeacherAnnouncmentDataType } from "@/app/api/create/teacher-announcement/route";
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import TextAreaForm from "@/app/dashboard/_components/forms/TextAreaForm";
-import UploadAttachment from "@/app/dashboard/_components/forms/UploadAttachment";
+import UploadAttachment, {
+  UploadAttachmentApi,
+} from "@/app/dashboard/_components/forms/UploadAttachment";
 import GlobalToast from "@/components/Global/GlobalToast";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Button } from "@/components/ui/button";
-import { ErrorResponseType } from "@/lib/globalTypes";
+import { uploadImageApi } from "@/hooks/useAddStudent";
+import { AttachmentsFileType, ErrorResponseType } from "@/lib/globalTypes";
 import {
   addAnnouncementDataType,
   AddAnnouncementSchema,
@@ -26,7 +30,7 @@ type Props = {
 };
 
 async function createAnnouncment(
-  annData: addAnnouncementDataType,
+  annData: CreateTeacherAnnouncmentDataType,
   token: string
 ) {
   await axios.post(`${MainDomain}/api/create/teacher-announcement`, annData, {
@@ -43,6 +47,8 @@ export default function TeacherAnnouncmentForm({
   className,
 }: Props) {
   const queryClient = useQueryClient();
+  const [files, setFiles] = useState<File[]>([]);
+
   const {
     register,
     handleSubmit,
@@ -56,8 +62,10 @@ export default function TeacherAnnouncmentForm({
   });
   const { isPending, mutate } = useMutation({
     mutationKey: ["create_new_ann"],
-    mutationFn: (data: { annData: addAnnouncementDataType; token: string }) =>
-      createAnnouncment(data.annData, data.token),
+    mutationFn: (data: {
+      annData: CreateTeacherAnnouncmentDataType;
+      token: string;
+    }) => createAnnouncment(data.annData, data.token),
 
     onSuccess: () => {
       setClose(true);
@@ -76,13 +84,61 @@ export default function TeacherAnnouncmentForm({
       });
     },
   });
-  const [files, setFiles] = useState<File[]>([]);
 
-  const submitNewAnnounc: SubmitHandler<addAnnouncementDataType> = (data) => {
-    mutate({ annData: data, token });
-    console.log(data);
+  const { mutateAsync: uploadPDF, isPending: Uploading } = useMutation({
+    mutationFn: (file: File) => UploadAttachmentApi(file),
+    onError: (err: ErrorResponseType) => {
+      GlobalToast({
+        title: err.response?.data?.message || "Upload failed",
+        icon: "error",
+      });
+    },
+  });
+
+  const { mutateAsync: uploadImag, isPending: UploadingImage } = useMutation({
+    mutationFn: (imageFile: File) => uploadImageApi(imageFile),
+    onError: (err: ErrorResponseType) => {
+      GlobalToast({
+        title: err.response.data.message ?? "Something went wrong",
+        icon: "error",
+      });
+    },
+  });
+
+  const submitNewAnnounc: SubmitHandler<addAnnouncementDataType> = async (
+    data
+  ) => {
+    if (files.length > 0) {
+      const attachmentsFiles: {
+        type: AttachmentsFileType;
+        name: string;
+        url: string;
+      }[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const uploaded = files[i].type.includes("image")
+          ? await uploadImag(files[i])
+          : await uploadPDF(files[i]);
+        attachmentsFiles.push({
+          type: files[i].type.includes("image") ? "IMAGE" : "PDF",
+          url: uploaded.url,
+          name: files[i].name,
+        });
+      }
+
+      mutate({
+        annData: {
+          classId: data.classId,
+          content: data.content,
+          title: data.title,
+          attachments: attachmentsFiles,
+        },
+        token,
+      });
+    } else {
+      mutate({ annData: data, token });
+    }
   };
-  console.log("files", files);
   return (
     <form
       className="flex flex-col gap-3"
@@ -103,14 +159,19 @@ export default function TeacherAnnouncmentForm({
       />
       <ErrorMessage error1={errors.content} />
       <UploadAttachment files={files} setFiles={setFiles} />
+
       <Button
         type="submit"
-        disabled={isPending}
+        disabled={isPending || Uploading || UploadingImage}
         variant={"mainWithShadow"}
         className="mt-2">
         {isPending ? (
           <>
             Publishing... <SmallLoader />
+          </>
+        ) : Uploading || UploadingImage ? (
+          <>
+            Uploading... <SmallLoader />
           </>
         ) : (
           "Publish"

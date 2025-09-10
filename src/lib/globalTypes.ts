@@ -11,7 +11,7 @@ export type ErrorResponseType = {
   };
 };
 export type EnrollmentStatus = "ACTIVE" | "WITHDRAWN" | "COMPLETED";
-
+export type AttachmentsFileType = "IMAGE" | "PDF";
 export type ExamStatusType =
   | "SCHEDULED"
   | "ONGOING"

@@ -1,6 +1,7 @@
 import AnnouncmentCard from "@/app/dashboard/_components/AnnouncmentCard";
 import AddingModel from "@/app/dashboard/_components/forms/AddingModel";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AttachmentsFileType } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -23,6 +24,12 @@ export type AnnouncementClassDataType = {
   };
   likes: number;
   dislikes: number;
+  attachments: {
+    id: string;
+    name: string;
+    url: string;
+    type: AttachmentsFileType;
+  }[];
 };
 
 async function getAnnouncments(

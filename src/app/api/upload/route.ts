@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const uploadResponse = await new Promise<UploadApiResponse>(
       (resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
-          { folder: pathName, resource_type: "auto" },
+          { folder: pathName, resource_type: "auto", access_mode: "public" },
           (
             error: UploadApiErrorResponse | undefined,
             result: UploadApiResponse | undefined
@@ -34,7 +34,10 @@ export async function POST(request: NextRequest) {
     );
 
     return NextResponse.json(
-      { url: uploadResponse.secure_url },
+      {
+        url: uploadResponse.secure_url,
+        fileType: uploadResponse.resource_type,
+      },
       { status: 200 }
     );
   } catch (error) {

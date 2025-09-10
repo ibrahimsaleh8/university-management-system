@@ -1,7 +1,7 @@
 "use client";
 import { MainDomain } from "@/variables/MainDomain";
 import axios from "axios";
-import { FileText, FileUp, X } from "lucide-react";
+import { FileText, FileUp, TriangleAlert, X } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 type Props = {
   files: File[];
@@ -9,13 +9,17 @@ type Props = {
 };
 export async function UploadAttachmentApi(
   file: File
-): Promise<{ url: string }> {
+): Promise<{ url: string; fileType: "image" | "video" | "raw" | "auto" }> {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("pathName", "students");
-  const res = await axios.post(`${MainDomain}/api/upload`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const res = await axios.post(
+    `${MainDomain}/api/upload/attachment`,
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
   return res.data;
 }
 export default function UploadAttachment({ files, setFiles }: Props) {
@@ -46,6 +50,10 @@ export default function UploadAttachment({ files, setFiles }: Props) {
           accept="image/*,.pdf"
         />
         <p className="text-low-white text-sm">Upload new attachment</p>
+        <p className="text-low-white text-sm flex items-center gap-1">
+          <TriangleAlert className="w-4 h-4 text-orange-300" />
+          Only images and pdf Files
+        </p>
       </div>
       {files && files.length > 0 && (
         <div className="flex flex-col gap-3">

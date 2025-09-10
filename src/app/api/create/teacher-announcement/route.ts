@@ -1,18 +1,26 @@
 import { TeacherAuthGuard } from "@/lib/AuthGuard/TeacherAuthGuard";
+import { AttachmentsFileType } from "@/lib/globalTypes";
 import {
   addAnnouncementDataType,
   AddAnnouncementSchema,
 } from "@/validation/AddAnnouncementSchema";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
-
+export type CreateTeacherAnnouncmentDataType = addAnnouncementDataType & {
+  attachments?: {
+    type: AttachmentsFileType;
+    name: string;
+    url: string;
+  }[];
+};
 export async function POST(req: NextRequest) {
   try {
     // Start Check Teacher Authorize
     const authVerify = await TeacherAuthGuard(req);
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Teacher Authorize
-    const announcementData = (await req.json()) as addAnnouncementDataType;
+    const announcementData =
+      (await req.json()) as CreateTeacherAnnouncmentDataType;
     const validation = AddAnnouncementSchema.safeParse(announcementData);
 
     if (!validation.success) {
@@ -28,7 +36,7 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-    await prisma.announcement.create({
+    const ann = await prisma.announcement.create({
       data: {
         title: announcementData.title,
         content: announcementData.content,
@@ -36,6 +44,18 @@ export async function POST(req: NextRequest) {
         teacherId,
       },
     });
+
+    if (announcementData.attachments) {
+      const attachData = announcementData.attachments.map((a) => ({
+        announcementId: ann.id,
+        type: a.type,
+        url: a.url,
+        name: a.name,
+      }));
+      await prisma.announcementAttachment.createMany({
+        data: attachData,
+      });
+    }
 
     return NextResponse.json(
       {

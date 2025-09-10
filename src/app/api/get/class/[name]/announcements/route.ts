@@ -37,6 +37,14 @@ export async function GET(
             image: true,
           },
         },
+        AnnouncementAttachment: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            url: true,
+          },
+        },
       },
       orderBy: { created_at: "desc" },
     });
@@ -49,6 +57,7 @@ export async function GET(
       likes: ann._count.likes,
       dislikes: ann._count.dislikes,
       teacher: ann.teacher,
+      attachments: ann.AnnouncementAttachment,
     }));
 
     return NextResponse.json(announcmnetsData, { status: 200 });
