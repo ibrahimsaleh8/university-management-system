@@ -6,6 +6,7 @@ import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { StudentClassesResponseType } from "./ShowUnRegisterdClasses";
 import JoinClassBtn from "./JoinClassBtn";
 import Link from "next/link";
+import Image from "next/image";
 type Props = {
   classData: StudentClassesResponseType;
   token: string;
@@ -15,7 +16,9 @@ export default function StudentClassCard({ classData, token, type }: Props) {
   return (
     <div className="max-w-96 overflow-hidden bg-card-bg flex flex-col gap-3 rounded-sm p-4 border border-soft-border">
       <div className="w-full rounded-md overflow-hidden flex items-center justify-center">
-        <img
+        <Image
+          width={1000}
+          height={1000}
           className="w-full"
           src={classData.wideImage}
           alt="Class Room Image"

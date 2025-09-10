@@ -22,13 +22,15 @@ export default function ClassCard({
 }: ClassTeacherData) {
   return (
     <div className="max-w-[26rem] border rounded-md hover:border-[#b9f82169] duration-300 overflow-hidden border-soft-border flex flex-col">
-      <Image
-        className="w-full h-80 object-cover object-center"
-        src={wide_image}
-        alt={name}
-        width={400}
-        height={100}
-      />
+      <div className="w-full">
+        <Image
+          className="w-full object-cover object-center"
+          src={wide_image}
+          alt={name}
+          width={400}
+          height={100}
+        />
+      </div>
 
       {/* Info */}
       <div className="text-sm flex flex-col gap-5 p-3 bg-Second-black border-t border-soft-border">

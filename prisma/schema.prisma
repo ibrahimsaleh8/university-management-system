@@ -321,17 +321,18 @@ enum AssignmentSubmissionStatus {
 // Start Announcement Schema
 
 model Announcement {
-  id                  String                @id @default(cuid())
-  title               String
-  content             String
-  created_at          DateTime              @default(now())
-  teacher             Teacher               @relation(fields: [teacherId], references: [id])
-  teacherId           Int
-  class               Class                 @relation(fields: [classId], references: [id])
-  announcementReplies AnnouncementReply[]
-  classId             Int
-  likes               AnnouncementLike[]
-  dislikes            AnnouncementDisLike[]
+  id                     String                   @id @default(cuid())
+  title                  String
+  content                String
+  created_at             DateTime                 @default(now())
+  teacher                Teacher                  @relation(fields: [teacherId], references: [id])
+  teacherId              Int
+  class                  Class                    @relation(fields: [classId], references: [id])
+  announcementReplies    AnnouncementReply[]
+  classId                Int
+  likes                  AnnouncementLike[]
+  dislikes               AnnouncementDisLike[]
+  AnnouncementAttachment AnnouncementAttachment[]
 }
 
 model AnnouncementReply {
@@ -360,6 +361,19 @@ model AnnouncementDisLike {
   studentId      Int
 
   @@id([announcementId, studentId])
+}
+
+model AnnouncementAttachment {
+  id             String             @id @default(cuid())
+  url            String
+  type           AttachmentFileType
+  announcement   Announcement       @relation(fields: [announcementId], references: [id])
+  announcementId String
+}
+
+enum AttachmentFileType {
+  IMAGE
+  PDF
 }
 
 // End Announcement Schema

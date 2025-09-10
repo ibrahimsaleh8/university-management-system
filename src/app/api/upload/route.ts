@@ -1,25 +1,36 @@
 import cloudinary from "@/lib/Cloudnairy";
 import { NextRequest, NextResponse } from "next/server";
+import type { UploadApiResponse, UploadApiErrorResponse } from "cloudinary";
 
-type FormDataFile = Blob & {
-  name?: string;
-};
+type FormDataFile = Blob & { name?: string };
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as FormDataFile | null;
-    const pathName = formData.get("pathName") as string;
+    const pathName = (formData.get("pathName") as string) || "uploads";
 
     if (!file || !(file instanceof Blob)) {
       return NextResponse.json({ message: "Invalid file" }, { status: 400 });
     }
-    // Conver File to format cloudnairy can handle
-    const fileBuffer = await file.arrayBuffer();
-    const base64File = Buffer.from(fileBuffer).toString("base64");
-    // Upload file to Cloudinary
-    const uploadResponse = await cloudinary.uploader.upload(
-      `data:${file.type};base64,${base64File}`,
-      { folder: pathName }
+
+    const fileBuffer = Buffer.from(await file.arrayBuffer());
+
+    const uploadResponse = await new Promise<UploadApiResponse>(
+      (resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: pathName, resource_type: "auto" },
+          (
+            error: UploadApiErrorResponse | undefined,
+            result: UploadApiResponse | undefined
+          ) => {
+            if (error) reject(error);
+            else if (result) resolve(result);
+            else reject(new Error("Unknown Cloudinary error"));
+          }
+        );
+        uploadStream.end(fileBuffer);
+      }
     );
 
     return NextResponse.json(
@@ -27,9 +38,9 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.log("Uploading Error");
+    console.error("Uploading Error:", error);
     return NextResponse.json(
-      { message: "Uploading Error " + error },
+      { message: "Uploading Error", error: (error as Error).message },
       { status: 500 }
     );
   }

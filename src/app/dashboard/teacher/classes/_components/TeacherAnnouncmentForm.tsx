@@ -2,6 +2,7 @@
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import TextAreaForm from "@/app/dashboard/_components/forms/TextAreaForm";
+import UploadAttachment from "@/app/dashboard/_components/forms/UploadAttachment";
 import GlobalToast from "@/components/Global/GlobalToast";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
@@ -41,19 +42,18 @@ export default function TeacherAnnouncmentForm({
   token,
   className,
 }: Props) {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<addAnnouncementDataType>({
     resolver: zodResolver(AddAnnouncementSchema),
     mode: "all",
+    defaultValues: {
+      classId,
+    },
   });
-  useEffect(() => {
-    setValue("classId", classId);
-  }, [classId, setValue]);
-  const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
     mutationKey: ["create_new_ann"],
     mutationFn: (data: { annData: addAnnouncementDataType; token: string }) =>
@@ -76,12 +76,13 @@ export default function TeacherAnnouncmentForm({
       });
     },
   });
+  const [files, setFiles] = useState<File[]>([]);
 
   const submitNewAnnounc: SubmitHandler<addAnnouncementDataType> = (data) => {
     mutate({ annData: data, token });
     console.log(data);
   };
-
+  console.log("files", files);
   return (
     <form
       className="flex flex-col gap-3"
@@ -101,7 +102,7 @@ export default function TeacherAnnouncmentForm({
         register={register("content")}
       />
       <ErrorMessage error1={errors.content} />
-
+      <UploadAttachment files={files} setFiles={setFiles} />
       <Button
         type="submit"
         disabled={isPending}
