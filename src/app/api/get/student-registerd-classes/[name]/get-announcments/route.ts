@@ -64,6 +64,14 @@ export async function GET(
             image: true,
           },
         },
+        attachment: {
+          select: {
+            id: true,
+            name: true,
+            url: true,
+            type: true,
+          },
+        },
       },
 
       orderBy: {
@@ -82,6 +90,7 @@ export async function GET(
       isLiked: ann.likes.length > 0,
       isDisLiked: ann.dislikes.length > 0,
       teacher: ann.teacher,
+      attachments: ann.attachment,
     }));
 
     return NextResponse.json(dataRes, { status: 200 });

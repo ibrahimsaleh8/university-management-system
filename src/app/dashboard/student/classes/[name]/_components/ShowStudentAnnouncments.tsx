@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import StudentClassAnnouncmentCard from "./StudentClassAnnouncmentCard";
 import LoadingTab from "./LoadingTab";
+import { AttachemntsFilesDataType } from "@/app/dashboard/teacher/classes/_components/TeacherClassAnnouncments";
 
 type Props = {
   token: string;
@@ -24,6 +25,7 @@ export type StudentClassAnnouncmentsDataType = {
     last_name: string;
     image: string;
   };
+  attachments: AttachemntsFilesDataType[];
 };
 
 async function getAnnouncments(

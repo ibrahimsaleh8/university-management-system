@@ -3,6 +3,7 @@ import { StudentClassAnnouncmentsDataType } from "./ShowStudentAnnouncments";
 import StudentAnnouncmentReplies from "./StudentAnnouncmentReplies";
 import AnnouncmentReaction from "./AnnouncmentReaction";
 import Image from "next/image";
+import ShowAttachments from "@/app/dashboard/_components/ShowAttachments";
 
 type Props = {
   data: StudentClassAnnouncmentsDataType;
@@ -44,6 +45,8 @@ export default function StudentClassAnnouncmentCard({
         </p>
         <p className="leading-7">{data.content} </p>
       </div>
+      <ShowAttachments attachments={data.attachments} />
+
       {/* Bottom */}
       <div className="mt-auto flex justify-between">
         <AnnouncmentReaction
