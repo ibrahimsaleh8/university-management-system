@@ -62,6 +62,14 @@ export async function GET(
             status: true,
           },
         },
+        attachment: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            url: true,
+          },
+        },
       },
       orderBy: {
         created_at: "desc",
@@ -74,6 +82,7 @@ export async function GET(
       deadline: assig.deadline,
       external_url: assig.external_url,
       created_at: assig.created_at,
+      attachments: assig.attachment,
       isSubmited: assig.assignmentSubmission.length > 0,
       isFinished: new Date() > assig.deadline,
       submissionDetails:

@@ -1,7 +1,12 @@
 import { StudentAuthGuard } from "@/lib/AuthGuard/StudentAuthGard";
+import { AnnouncementAttachmentDataType } from "@/validation/CreateAttachmentSchema";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
-
+export type CreateStudentSubmissionApiDataType = {
+  assignmentId: string;
+  external_url?: string;
+  attachments: AnnouncementAttachmentDataType[];
+};
 export async function POST(req: NextRequest) {
   try {
     // Start Check Student Authorize
@@ -12,12 +17,10 @@ export async function POST(req: NextRequest) {
     }
     // End Check Student Authorize
 
-    const { assignmentId, external_url } = (await req.json()) as {
-      assignmentId: string;
-      external_url: string;
-    };
+    const { assignmentId, external_url, attachments } =
+      (await req.json()) as CreateStudentSubmissionApiDataType;
 
-    if (!assignmentId || !external_url) {
+    if (!assignmentId) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
@@ -82,14 +85,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await prisma.assignmentSubmission.create({
+    const newSubmission = await prisma.assignmentSubmission.create({
       data: {
-        external_url,
+        external_url: external_url ?? null,
         assignmentId: assignment.id,
         studentId: authVerify.user.data.id,
         status: "SUBMITTED",
       },
     });
+
+    if (attachments.length > 0) {
+      const attachmentsData = attachments.map((att) => ({
+        assignmentSubmissionId: newSubmission.id,
+        name: att.name,
+        type: att.type,
+        url: att.url,
+      }));
+      await prisma.attachment.createMany({
+        data: attachmentsData,
+      });
+    }
     return NextResponse.json(
       { message: "Assignment has been submitted successfully" },
       { status: 201 }

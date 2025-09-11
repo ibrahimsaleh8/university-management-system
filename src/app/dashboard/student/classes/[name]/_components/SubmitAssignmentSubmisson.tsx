@@ -1,5 +1,3 @@
-import GlobalToast from "@/components/Global/GlobalToast";
-import SmallLoader from "@/components/Global/SmallLoader";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -11,13 +9,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ErrorResponseType } from "@/lib/globalTypes";
-import { MainDomain } from "@/variables/MainDomain";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import StudentSubmitAssignmentForm from "./StudentSubmitAssignmentForm";
 
 type Props = {
   assignmentId: string;
@@ -25,78 +19,20 @@ type Props = {
   className: string;
 };
 
-async function sendAssignmentSubmission({
-  assignmentId,
-  token,
-  url,
-}: {
-  assignmentId: string;
-  token: string;
-  url: string;
-}) {
-  await axios.post(
-    `${MainDomain}/api/create/assignment-submisson`,
-    {
-      assignmentId: assignmentId,
-      external_url: url,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-}
-
 export default function SubmitAssignmentSubmisson({
   className,
   assignmentId,
   token,
 }: Props) {
+  const [close, setClose] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const queryClient = useQueryClient();
-  const [url, setUrl] = useState("");
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: { assignmentId: string; token: string; url: string }) =>
-      sendAssignmentSubmission(data),
-    onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["student_class_assignment", className],
-      });
-      GlobalToast({
-        icon: "success",
-        title: "Assignment has been submitted successfully",
-      });
-      closeRef.current?.click();
-    },
-    onError: (err: ErrorResponseType) => {
-      GlobalToast({
-        title: err.response.data.message,
-        icon: "error",
-      });
-    },
-  });
-
-  const HandleNewSubmission = () => {
-    const urlPattern =
-      /\b(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\/\S*)?\b/;
-    const isValidUrl = urlPattern.test(url);
-
-    if (!isValidUrl) {
-      GlobalToast({
-        icon: "warning",
-        title: "Invalid URL",
-      });
-      return;
+  useEffect(() => {
+    if (close && closeRef.current) {
+      closeRef.current.click();
+      setClose(false);
     }
-
-    mutate({
-      url,
-      assignmentId,
-      token,
-    });
-  };
+  }, [close]);
 
   return (
     <AlertDialog>
@@ -111,25 +47,12 @@ export default function SubmitAssignmentSubmisson({
             this field.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium" htmlFor="sub-url">
-              Your Work Link:
-            </label>
-            <Input
-              onChange={(e) => setUrl(e.target.value)}
-              id="sub-url"
-              placeholder="URL"
-              type="text"
-            />
-          </div>
-          <Button
-            disabled={isPending}
-            onClick={HandleNewSubmission}
-            variant={"mainWithShadow"}>
-            {isPending ? <SmallLoader /> : "Send"}
-          </Button>
-        </div>
+        <StudentSubmitAssignmentForm
+          assignmentId={assignmentId}
+          className={className}
+          setClose={setClose}
+          token={token}
+        />
         <AlertDialogFooter>
           <AlertDialogCancel
             ref={closeRef}

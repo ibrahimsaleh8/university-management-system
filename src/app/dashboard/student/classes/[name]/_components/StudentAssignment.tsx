@@ -11,6 +11,7 @@ import SubmitAssignmentSubmisson from "./SubmitAssignmentSubmisson";
 import { timeConverter } from "@/lib/TimeConverter";
 import AssignmentStatusPadge from "@/app/dashboard/teacher/classes/[name]/assignment-submissons/[id]/_components/AssignmentStatusPadge";
 import { GiSandsOfTime } from "react-icons/gi";
+import ShowAttachments from "@/app/dashboard/_components/ShowAttachments";
 type Props = {
   assignmentData: StudentAssignmentResponse;
   token: string;
@@ -58,6 +59,8 @@ export default function StudentAssignment({
           </a>
         )}
       </div>
+
+      <ShowAttachments attachments={assignmentData.attachments} />
 
       {/* Bottom */}
       <div className="flex items-center gap-2 mt-auto justify-between flex-wrap">

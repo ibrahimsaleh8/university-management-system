@@ -304,7 +304,7 @@ model Assignment {
 
 model AssignmentSubmission {
   id           String                     @id @default(cuid())
-  external_url String
+  external_url String?
   submited_at  DateTime                   @default(now())
   grade        Float                      @default(0)
   assignment   Assignment                 @relation(fields: [assignmentId], references: [id])

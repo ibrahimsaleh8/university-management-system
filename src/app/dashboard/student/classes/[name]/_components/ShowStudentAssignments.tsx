@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import StudentAssignment from "./StudentAssignment";
 import LoadingTab from "./LoadingTab";
+import { AttachemntsFilesDataType } from "@/app/dashboard/teacher/classes/_components/TeacherClassAnnouncments";
 export type assignmentSubmission = {
   id: string;
   submited_at: string;
@@ -21,6 +22,7 @@ export type StudentAssignmentResponse = {
   isFinished: boolean;
   external_url?: string;
   submissionDetails: assignmentSubmission | null;
+  attachments: AttachemntsFilesDataType[];
 };
 
 type Props = {
