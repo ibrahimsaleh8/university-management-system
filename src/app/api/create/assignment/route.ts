@@ -3,16 +3,21 @@ import {
   assignmentDataType,
   assignmentSchema,
 } from "@/validation/AddAssignmentSchema";
+import { AnnouncementAttachmentDataType } from "@/validation/CreateAttachmentSchema";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
-
+export type CreateAssignmentAPiDataType = {
+  assignmentData: assignmentDataType;
+  attachments: AnnouncementAttachmentDataType[];
+};
 export async function POST(req: NextRequest) {
   try {
     // Start Check Teacher Authorize
     const authVerify = await TeacherAuthGuard(req);
     if (!authVerify.isAuthorized) return authVerify.response;
     // End Check Teacher Authorize
-    const assignmentData = (await req.json()) as assignmentDataType;
+    const { assignmentData, attachments } =
+      (await req.json()) as CreateAssignmentAPiDataType;
     const validation = assignmentSchema.safeParse(assignmentData);
 
     if (!validation.success) {
@@ -27,7 +32,7 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-    await prisma.assignment.create({
+    const assignment = await prisma.assignment.create({
       data: {
         title: assignmentData.title,
         description: assignmentData.description,
@@ -37,6 +42,16 @@ export async function POST(req: NextRequest) {
         classId: assignmentData.classId,
       },
     });
+
+    if (attachments.length > 0) {
+      const attachmentsData = attachments.map((att) => ({
+        name: att.name,
+        type: att.type,
+        url: att.url,
+        assignmentId: assignment.id,
+      }));
+      await prisma.attachment.createMany({ data: attachmentsData });
+    }
 
     return NextResponse.json(
       { message: "Assignment has been created successfully" },

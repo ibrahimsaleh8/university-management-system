@@ -299,6 +299,7 @@ model Assignment {
   assignmentSubmission AssignmentSubmission[]
   class                Class                  @relation(fields: [classId], references: [id])
   classId              Int
+  attachment           Attachment[]
 }
 
 model AssignmentSubmission {
@@ -310,6 +311,7 @@ model AssignmentSubmission {
   assignmentId String
   student      Student                    @relation(fields: [studentId], references: [id])
   studentId    Int
+  attachment   Attachment[]
   status       AssignmentSubmissionStatus @default(SUBMITTED)
 }
 
@@ -323,18 +325,18 @@ enum AssignmentSubmissionStatus {
 // Start Announcement Schema
 
 model Announcement {
-  id                     String                   @id @default(cuid())
-  title                  String
-  content                String
-  created_at             DateTime                 @default(now())
-  teacher                Teacher                  @relation(fields: [teacherId], references: [id])
-  teacherId              Int
-  class                  Class                    @relation(fields: [classId], references: [id])
-  announcementReplies    AnnouncementReply[]
-  classId                Int
-  likes                  AnnouncementLike[]
-  dislikes               AnnouncementDisLike[]
-  AnnouncementAttachment AnnouncementAttachment[]
+  id                  String                @id @default(cuid())
+  title               String
+  content             String
+  created_at          DateTime              @default(now())
+  teacher             Teacher               @relation(fields: [teacherId], references: [id])
+  teacherId           Int
+  class               Class                 @relation(fields: [classId], references: [id])
+  announcementReplies AnnouncementReply[]
+  classId             Int
+  likes               AnnouncementLike[]
+  dislikes            AnnouncementDisLike[]
+  attachment          Attachment[]
 }
 
 model AnnouncementReply {
@@ -365,13 +367,17 @@ model AnnouncementDisLike {
   @@id([announcementId, studentId])
 }
 
-model AnnouncementAttachment {
-  id             String             @id @default(cuid())
-  name           String
-  url            String
-  type           AttachmentFileType
-  announcement   Announcement       @relation(fields: [announcementId], references: [id])
-  announcementId String
+model Attachment {
+  id                     String                @id @default(cuid())
+  name                   String
+  url                    String
+  type                   AttachmentFileType
+  announcement           Announcement?         @relation(fields: [announcementId], references: [id])
+  announcementId         String?
+  Assignment             Assignment?           @relation(fields: [assignmentId], references: [id])
+  assignmentId           String?
+  AssignmentSubmission   AssignmentSubmission? @relation(fields: [assignmentSubmissionId], references: [id])
+  assignmentSubmissionId String?
 }
 
 enum AttachmentFileType {

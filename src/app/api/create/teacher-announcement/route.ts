@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
         url: a.url,
         name: a.name,
       }));
-      await prisma.announcementAttachment.createMany({
+      await prisma.attachment.createMany({
         data: attachData,
       });
     }

@@ -1,8 +1,7 @@
 import { CreateAttachmentDataApi } from "@/app/api/create/announcment-attachments/route";
-import { UploadAttachmentApi } from "@/app/dashboard/_components/forms/UploadAttachment";
 import GlobalToast from "@/components/Global/GlobalToast";
-import { uploadImageApi } from "@/hooks/useAddStudent";
-import { AttachmentsFileType, ErrorResponseType } from "@/lib/globalTypes";
+import { ErrorResponseType } from "@/lib/globalTypes";
+import { useUploadAttachment } from "@/lib/useUploadAttachment";
 import {
   AnnouncementUpdateSchema,
   annUpdateDataType,
@@ -69,6 +68,7 @@ export const useUpdateAnnouncment = ({
     []
   );
   const [files, setFiles] = useState<File[]>([]);
+  const { UploadAttch, Uploading, UploadingImage } = useUploadAttachment();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["update_ann", annId],
@@ -104,26 +104,6 @@ export const useUpdateAnnouncment = ({
       },
     });
 
-  const { mutateAsync: uploadPDF, isPending: Uploading } = useMutation({
-    mutationFn: (file: File) => UploadAttachmentApi(file),
-    onError: (err: ErrorResponseType) => {
-      GlobalToast({
-        title: err.response?.data?.message || "Upload failed",
-        icon: "error",
-      });
-    },
-  });
-
-  const { mutateAsync: uploadImag, isPending: UploadingImage } = useMutation({
-    mutationFn: (imageFile: File) => uploadImageApi(imageFile),
-    onError: (err: ErrorResponseType) => {
-      GlobalToast({
-        title: err.response.data.message ?? "Something went wrong",
-        icon: "error",
-      });
-    },
-  });
-
   const { mutateAsync: mutatNewAttachment, isPending: addingAttachments } =
     useMutation({
       mutationFn: (data: { token: string; data: CreateAttachmentDataApi }) =>
@@ -156,22 +136,7 @@ export const useUpdateAnnouncment = ({
     }
 
     if (files.length > 0) {
-      const attachmentsFiles: {
-        type: AttachmentsFileType;
-        name: string;
-        url: string;
-      }[] = [];
-
-      for (let i = 0; i < files.length; i++) {
-        const uploaded = files[i].type.includes("image")
-          ? await uploadImag(files[i])
-          : await uploadPDF(files[i]);
-        attachmentsFiles.push({
-          type: files[i].type.includes("image") ? "IMAGE" : "PDF",
-          url: uploaded.url,
-          name: files[i].name,
-        });
-      }
+      const attachmentsFiles = await UploadAttch(files);
       await mutatNewAttachment({
         data: { annId, attachments: attachmentsFiles },
         token,
@@ -180,6 +145,7 @@ export const useUpdateAnnouncment = ({
 
     mutate({ data, id: annId, token });
   };
+
   return {
     HandleEdit,
     addingAttachments,

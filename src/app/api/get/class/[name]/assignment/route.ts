@@ -30,6 +30,17 @@ export async function GET(
         description: true,
         external_url: true,
         _count: { select: { assignmentSubmission: true } },
+        attachment: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            url: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
     const assignemtnsResponse = assignemtns.map((assig) => ({
@@ -39,6 +50,7 @@ export async function GET(
       deadline: assig.deadline,
       external_url: assig.external_url,
       created_at: assig.created_at,
+      attachments: assig.attachment,
       submissions: assig._count.assignmentSubmission,
     }));
     return NextResponse.json(assignemtnsResponse, { status: 200 });

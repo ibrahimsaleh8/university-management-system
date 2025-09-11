@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       type: att.type,
       url: att.url,
     }));
-    await prisma.announcementAttachment.createMany({
+    await prisma.attachment.createMany({
       data: attachmentsData,
     });
 

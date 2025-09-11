@@ -6,8 +6,8 @@ import OperationsDropdown from "./OperationsDropdown";
 import Image from "next/image";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { SlidingNumber } from "@/components/animate-ui/text/sliding-number";
-import { AttachmentsFileType } from "@/lib/globalTypes";
-import AnnouncmentAttachmentView from "./AnnouncmentAttachmentView";
+import { AttachemntsFilesDataType } from "../teacher/classes/_components/TeacherClassAnnouncments";
+import ShowAttachments from "./ShowAttachments";
 
 export type AnnouncementInfoType = {
   id: string;
@@ -24,12 +24,7 @@ export type AnnouncementInfoType = {
   };
   likes: number;
   dislikes: number;
-  attachments: {
-    id: string;
-    name: string;
-    url: string;
-    type: AttachmentsFileType;
-  }[];
+  attachments: AttachemntsFilesDataType[];
 };
 
 export default function AnnouncmentCard({
@@ -105,34 +100,7 @@ export default function AnnouncmentCard({
       </div>
 
       {/* Attachments */}
-      {attachments.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-4 flex-wrap">
-            {attachments
-              .filter((att) => att.type == "PDF")
-              .map((att) => (
-                <AnnouncmentAttachmentView
-                  key={att.id}
-                  type={att.type}
-                  url={att.url}
-                  name={att.name}
-                />
-              ))}
-          </div>
-          <div className="flex items-center gap-4 flex-wrap">
-            {attachments
-              .filter((att) => att.type == "IMAGE")
-              .map((att) => (
-                <AnnouncmentAttachmentView
-                  key={att.id}
-                  type={att.type}
-                  url={att.url}
-                  name={att.name}
-                />
-              ))}
-          </div>
-        </div>
-      )}
+      <ShowAttachments attachments={attachments} />
 
       {/* Bottom */}
       <div className="mt-auto flex sm:items-center justify-between gap-4 ">

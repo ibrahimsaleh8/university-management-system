@@ -11,6 +11,7 @@ import AssignmentModel from "./AssignmentModel";
 import { ClassAssignmentsDataType } from "./ClassAssignments";
 import Link from "next/link";
 import OperationsDropdown from "@/app/dashboard/_components/OperationsDropdown";
+import ShowAttachments from "@/app/dashboard/_components/ShowAttachments";
 
 export default function AssignmentCard({
   data,
@@ -60,6 +61,8 @@ export default function AssignmentCard({
       <div className="text-base capitalize">
         <p>{data.description} </p>
       </div>
+
+      <ShowAttachments attachments={data.attachments} />
 
       {/* Bottom */}
       <div className="flex items-end gap-3 justify-between flex-wrap">

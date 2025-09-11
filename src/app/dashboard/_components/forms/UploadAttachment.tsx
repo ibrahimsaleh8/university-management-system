@@ -74,7 +74,11 @@ export default function UploadAttachment({ files, setFiles }: Props) {
                   <X className="w-4 h-4" />
                 </button>
                 <FileText className="w-5 h-5" />
-                <p className="text-xs text-low-white">{fi.name}</p>
+                <p
+                  title={fi.name}
+                  className="text-xs text-low-white w-40 line-clamp-1">
+                  {fi.name}
+                </p>
                 <p className="text-xs text-low-white">
                   {`${(fi.size / 1048576).toFixed(3)} MB`}
                 </p>

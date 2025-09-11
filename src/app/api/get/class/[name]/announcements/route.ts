@@ -37,7 +37,7 @@ export async function GET(
             image: true,
           },
         },
-        AnnouncementAttachment: {
+        attachment: {
           select: {
             id: true,
             name: true,
@@ -57,7 +57,7 @@ export async function GET(
       likes: ann._count.likes,
       dislikes: ann._count.dislikes,
       teacher: ann.teacher,
-      attachments: ann.AnnouncementAttachment,
+      attachments: ann.attachment,
     }));
 
     return NextResponse.json(announcmnetsData, { status: 200 });

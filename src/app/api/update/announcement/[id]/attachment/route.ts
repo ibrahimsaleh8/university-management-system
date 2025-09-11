@@ -35,7 +35,7 @@ export async function PATCH(
         { status: 400 }
       );
     }
-    await prisma.announcementAttachment.deleteMany({
+    await prisma.attachment.deleteMany({
       where: {
         id: {
           in: ids.map((i) => i.id),

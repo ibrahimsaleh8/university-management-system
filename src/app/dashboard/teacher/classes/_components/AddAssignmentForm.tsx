@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ErrorResponseType } from "@/lib/globalTypes";
+import { AttachmentsFileType, ErrorResponseType } from "@/lib/globalTypes";
 import {
   assignmentDataType,
   assignmentSchema,
@@ -8,7 +8,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
@@ -20,13 +20,19 @@ import {
 } from "@/components/animate-ui/radix/radio-group";
 import GlobalToast from "@/components/Global/GlobalToast";
 import SmallLoader from "@/components/Global/SmallLoader";
+import UploadAttachment from "@/app/dashboard/_components/forms/UploadAttachment";
+import { CreateAssignmentAPiDataType } from "@/app/api/create/assignment/route";
+import { useUploadAttachment } from "@/lib/useUploadAttachment";
 type Props = {
   classId: number;
   className: string;
   token: string;
   setClose: Dispatch<SetStateAction<boolean>>;
 };
-async function createNewAssignment(data: assignmentDataType, token: string) {
+async function createNewAssignment(
+  data: CreateAssignmentAPiDataType,
+  token: string
+) {
   await axios.post(`${MainDomain}/api/create/assignment`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -41,22 +47,27 @@ export default function AddAssignmentForm({
   setClose,
 }: Props) {
   const queryClient = useQueryClient();
-
   const [isExternalUrl, setIsExternalUrl] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const { UploadAttch, Uploading, UploadingImage } = useUploadAttachment();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<assignmentDataType>({
     resolver: zodResolver(assignmentSchema),
     mode: "all",
+    defaultValues: {
+      classId,
+    },
   });
 
   const { isPending, mutate } = useMutation({
     mutationKey: ["create_assginment"],
-    mutationFn: (assignmentData: { data: assignmentDataType; token: string }) =>
-      createNewAssignment(assignmentData.data, assignmentData.token),
+    mutationFn: (assignmentData: {
+      data: CreateAssignmentAPiDataType;
+      token: string;
+    }) => createNewAssignment(assignmentData.data, assignmentData.token),
     onSuccess: () => {
       GlobalToast({
         title: "Assignment has been created successfully",
@@ -72,18 +83,29 @@ export default function AddAssignmentForm({
     },
   });
 
-  const addNewAssignment: SubmitHandler<assignmentDataType> = (data) => {
+  const addNewAssignment: SubmitHandler<assignmentDataType> = async (data) => {
     if (isExternalUrl && data.external_url == "") {
       GlobalToast({ title: "Enter External Link", icon: "warning" });
       return;
     }
-    mutate({ data, token });
-  };
-  useEffect(() => {
-    if (classId) {
-      setValue("classId", classId);
+    let attachmentsFiles: {
+      type: AttachmentsFileType;
+      name: string;
+      url: string;
+    }[] = [];
+    if (files.length > 0) {
+      const attachments = await UploadAttch(files);
+      attachmentsFiles = attachments;
     }
-  }, [classId, setValue]);
+
+    mutate({
+      data: {
+        assignmentData: data,
+        attachments: attachmentsFiles,
+      },
+      token,
+    });
+  };
 
   return (
     <form
@@ -135,6 +157,8 @@ export default function AddAssignmentForm({
         </RadioGroup>
       </div>
 
+      <UploadAttachment files={files} setFiles={setFiles} />
+
       {isExternalUrl && (
         <>
           <InputForm
@@ -148,10 +172,16 @@ export default function AddAssignmentForm({
         </>
       )}
 
-      <Button disabled={isPending} variant={"mainWithShadow"}>
+      <Button
+        disabled={isPending || Uploading || UploadingImage}
+        variant={"mainWithShadow"}>
         {isPending ? (
           <>
             Adding.. <SmallLoader />
+          </>
+        ) : Uploading || UploadingImage ? (
+          <>
+            Uploading.. <SmallLoader />
           </>
         ) : (
           "Add"

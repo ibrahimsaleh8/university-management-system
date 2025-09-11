@@ -4,6 +4,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import AssignmentCard from "./AssignmentCard";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AttachemntsFilesDataType } from "./TeacherClassAnnouncments";
 
 type Props = {
   classId: number;
@@ -19,6 +20,7 @@ export type ClassAssignmentsDataType = {
   external_url: string | null;
   created_at: Date;
   submissions: number;
+  attachments: AttachemntsFilesDataType[];
 };
 
 async function getAllAssignements(
