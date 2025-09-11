@@ -84,6 +84,7 @@ export default function AssignmentCard({
                 token={token}
                 type="edit"
                 className={className}
+                attachments={data.attachments}
                 assignmentData={{
                   deadline: data.deadline,
                   description: data.description,

@@ -3,104 +3,51 @@
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import TextAreaForm from "@/app/dashboard/_components/forms/TextAreaForm";
-import {
-  updateAssignmentDataType,
-  updateAssignmentSchema,
-} from "@/validation/EditAssignmentSchema";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { updateAssignmentDataType } from "@/validation/EditAssignmentSchema";
 import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/animate-ui/radix/radio-group";
 import { Button } from "@/components/ui/button";
-import { Dispatch, SetStateAction, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Dispatch, SetStateAction } from "react";
 import { formatDeadline } from "@/lib/FormatDeadline";
-import GlobalToast from "@/components/Global/GlobalToast";
-import axios from "axios";
-import { MainDomain } from "@/variables/MainDomain";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SmallLoader from "@/components/Global/SmallLoader";
-import { ErrorResponseType } from "@/lib/globalTypes";
+import { AttachemntsFilesDataType } from "./TeacherClassAnnouncments";
+import UploadAttachment from "@/app/dashboard/_components/forms/UploadAttachment";
+import EditeAttachments from "./EditeAttachments";
+import { useEditeAssignment } from "./Hook/useEditeAssignment";
 type Props = {
   data: { id: string } & updateAssignmentDataType;
   token: string;
   setClose: Dispatch<SetStateAction<boolean>>;
   className: string;
+  attachments: AttachemntsFilesDataType[];
 };
-async function updateAssignmentApi(
-  assignID: string,
-  token: string,
-  data: updateAssignmentDataType
-) {
-  await axios.put(`${MainDomain}/api/update/assignment/${assignID}`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-}
 
 export default function EditAssignmentForm({
   data,
   setClose,
   token,
   className,
+  attachments,
 }: Props) {
-  const [isExternalUrl, setIsExternalUrl] = useState(data.external_url != "");
   const {
+    updateAssignment,
+    addingAttachments,
+    deleting,
+    isPending,
+    errors,
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<updateAssignmentDataType>({
-    resolver: zodResolver(updateAssignmentSchema),
-    mode: "all",
-    defaultValues: {
-      title: data.title,
-      description: data.description,
-      external_url: data.external_url ?? "",
-    },
-  });
-  const queryClient = useQueryClient();
-  const { isPending, mutate } = useMutation({
-    mutationKey: ["update_assignmetn"],
-    mutationFn: (data: {
-      assignID: string;
-      token: string;
-      data: updateAssignmentDataType;
-    }) => updateAssignmentApi(data.assignID, data.token, data.data),
-    onSuccess: () => {
-      setClose(true);
-      GlobalToast({
-        title: "Assignment has been updated successfully",
-        icon: "success",
-      });
-      queryClient.refetchQueries({
-        queryKey: ["class_assignments", className],
-      });
-    },
-    onError: (err: ErrorResponseType) => {
-      console.log(err);
-      GlobalToast({
-        title: err.response.data.message,
-        icon: "error",
-      });
-    },
-  });
-
-  const updateAssignment: SubmitHandler<updateAssignmentDataType> = (
-    formData
-  ) => {
-    if (isExternalUrl && formData.external_url == "") {
-      GlobalToast({ title: "Enter External Link", icon: "warning" });
-      return;
-    }
-
-    if (!isExternalUrl) {
-      formData.external_url = "";
-    }
-    mutate({ assignID: data.id, data: formData, token });
-  };
-
+    Uploading,
+    UploadingImage,
+    files,
+    setFiles,
+    deleteAttachments,
+    setDeleteAttachments,
+    setIsExternalUrl,
+    isExternalUrl,
+  } = useEditeAssignment({ data, setClose, token, className });
   return (
     <form
       className="flex flex-col gap-3"
@@ -154,6 +101,13 @@ export default function EditAssignmentForm({
         </RadioGroup>
       </div>
 
+      <EditeAttachments
+        attachments={attachments}
+        deleteAttachments={deleteAttachments}
+        setDeleteAttachments={setDeleteAttachments}
+      />
+      <UploadAttachment files={files} setFiles={setFiles} />
+
       {isExternalUrl && (
         <>
           <InputForm
@@ -168,8 +122,20 @@ export default function EditAssignmentForm({
         </>
       )}
 
-      <Button disabled={isPending} variant={"mainWithShadow"}>
-        {isPending ? (
+      <Button
+        disabled={
+          isPending ||
+          deleting ||
+          Uploading ||
+          UploadingImage ||
+          addingAttachments
+        }
+        variant={"mainWithShadow"}>
+        {isPending ||
+        deleting ||
+        Uploading ||
+        UploadingImage ||
+        addingAttachments ? (
           <>
             Updateing... <SmallLoader />
           </>

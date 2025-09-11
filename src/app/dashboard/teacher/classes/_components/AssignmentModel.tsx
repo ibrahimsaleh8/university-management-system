@@ -13,12 +13,14 @@ import EditAssignmentForm from "./EditAssignmentForm";
 import { updateAssignmentDataType } from "@/validation/EditAssignmentSchema";
 import { useEffect, useRef, useState } from "react";
 import DeleteAssignment from "./DeleteAssignment";
+import { AttachemntsFilesDataType } from "./TeacherClassAnnouncments";
 type Props = {
   type: "edit" | "delete";
   assignmentData?: updateAssignmentDataType & { id: string };
   token: string;
   className: string;
   assignmentId?: string;
+  attachments?: AttachemntsFilesDataType[];
 };
 export default function AssignmentModel({
   type,
@@ -26,6 +28,7 @@ export default function AssignmentModel({
   token,
   className,
   assignmentId,
+  attachments,
 }: Props) {
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const [close, setClose] = useState(false);
@@ -69,12 +72,13 @@ export default function AssignmentModel({
               "Are you sure you want to delete this assignment? This action cannot be undone."}
           </AlertDialogDescription>
 
-          {type == "edit" && assignmentData && (
+          {type == "edit" && assignmentData && attachments && (
             <EditAssignmentForm
               className={className}
               setClose={setClose}
               data={assignmentData}
               token={token}
+              attachments={attachments}
             />
           )}
           {type == "delete" && assignmentId && (
