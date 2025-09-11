@@ -77,7 +77,7 @@ export default function StudentSubmitAssignmentForm({
       return;
     }
 
-    if (url && !isValidUrl) {
+    if (externalUrl.trim().length > 5 && !isValidUrl) {
       GlobalToast({
         icon: "warning",
         title: "Invalid URL",

@@ -20,6 +20,7 @@ import { timeConverter } from "@/lib/TimeConverter";
 import ShowStudentSubmissionModel from "./ShowStudentSubmissionModel";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { AttachemntsFilesDataType } from "../../../../_components/TeacherClassAnnouncments";
 
 type StudentData = {
   id: number;
@@ -35,6 +36,7 @@ export type AssignmentSubmissionDataType = {
   status: AssignmentSubmissionStatus;
   submited_at: Date;
   student: StudentData;
+  attachment: AttachemntsFilesDataType[];
 };
 type Props = {
   token: string;

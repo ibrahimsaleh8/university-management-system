@@ -28,6 +28,14 @@ export async function GET(
           select: {
             id: true,
             external_url: true,
+            attachment: {
+              select: {
+                id: true,
+                name: true,
+                type: true,
+                url: true,
+              },
+            },
             grade: true,
             status: true,
             submited_at: true,

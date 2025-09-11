@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import GlobalToast from "@/components/Global/GlobalToast";
 import SmallLoader from "@/components/Global/SmallLoader";
+import ShowAttachments from "@/app/dashboard/_components/ShowAttachments";
 
 type Props = {
   submissionData: AssignmentSubmissionDataType;
@@ -91,6 +92,8 @@ export default function ShowStudentSubmission({
     });
   };
 
+  console.log("submissionData", submissionData);
+
   return (
     <div className="flex flex-col gap-4">
       {/* Top */}
@@ -125,6 +128,11 @@ export default function ShowStudentSubmission({
           Show Answer
         </a>
       </div>
+
+      <ShowAttachments
+        fullView={false}
+        attachments={submissionData.attachment}
+      />
 
       {/* Mark Answer */}
       <div className="flex flex-col gap-4">

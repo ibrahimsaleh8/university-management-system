@@ -3,8 +3,10 @@ import AnnouncmentAttachmentView from "./AnnouncmentAttachmentView";
 
 export default function ShowAttachments({
   attachments,
+  fullView,
 }: {
   attachments: AttachemntsFilesDataType[];
+  fullView: boolean;
 }) {
   return (
     attachments.length > 0 && (
@@ -14,6 +16,7 @@ export default function ShowAttachments({
             .filter((att) => att.type == "PDF")
             .map((att) => (
               <AnnouncmentAttachmentView
+                fullView={false}
                 key={att.id}
                 type={att.type}
                 url={att.url}
@@ -30,6 +33,7 @@ export default function ShowAttachments({
                 type={att.type}
                 url={att.url}
                 name={att.name}
+                fullView={fullView}
               />
             ))}
         </div>

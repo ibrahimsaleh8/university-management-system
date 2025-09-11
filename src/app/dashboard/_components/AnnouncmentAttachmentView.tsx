@@ -6,10 +6,16 @@ type Props = {
   url: string;
   name: string;
   type: AttachmentsFileType;
+  fullView: boolean;
 };
-export default function AnnouncmentAttachmentView({ type, url, name }: Props) {
+export default function AnnouncmentAttachmentView({
+  type,
+  url,
+  name,
+  fullView,
+}: Props) {
   return type == "IMAGE" ? (
-    <AnnouncmentImagePreview imageUrl={url} />
+    <AnnouncmentImagePreview fullView={fullView} imageUrl={url} />
   ) : (
     <a
       className="p-3 bg-Second-Card-bg hover:opacity-80 duration-300 flex flex-col gap-2 items-center justify-center rounded-md"

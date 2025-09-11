@@ -45,7 +45,7 @@ export default function StudentClassAnnouncmentCard({
         </p>
         <p className="leading-7">{data.content} </p>
       </div>
-      <ShowAttachments attachments={data.attachments} />
+      <ShowAttachments fullView={true} attachments={data.attachments} />
 
       {/* Bottom */}
       <div className="mt-auto flex justify-between">

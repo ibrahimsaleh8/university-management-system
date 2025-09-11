@@ -100,7 +100,7 @@ export default function AnnouncmentCard({
       </div>
 
       {/* Attachments */}
-      <ShowAttachments attachments={attachments} />
+      <ShowAttachments fullView={true} attachments={attachments} />
 
       {/* Bottom */}
       <div className="mt-auto flex sm:items-center justify-between gap-4 ">

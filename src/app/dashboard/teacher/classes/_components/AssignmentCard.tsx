@@ -62,7 +62,7 @@ export default function AssignmentCard({
         <p>{data.description} </p>
       </div>
 
-      <ShowAttachments attachments={data.attachments} />
+      <ShowAttachments fullView={true} attachments={data.attachments} />
 
       {/* Bottom */}
       <div className="flex items-end gap-3 justify-between flex-wrap">

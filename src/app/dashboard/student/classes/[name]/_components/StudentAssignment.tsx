@@ -60,7 +60,10 @@ export default function StudentAssignment({
         )}
       </div>
 
-      <ShowAttachments attachments={assignmentData.attachments} />
+      <ShowAttachments
+        fullView={true}
+        attachments={assignmentData.attachments}
+      />
 
       {/* Bottom */}
       <div className="flex items-center gap-2 mt-auto justify-between flex-wrap">
