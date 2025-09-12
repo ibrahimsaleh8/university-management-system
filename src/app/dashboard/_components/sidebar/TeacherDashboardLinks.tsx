@@ -1,7 +1,13 @@
 "use client";
 import { MotionHighlight } from "@/components/animate-ui/effects/motion-highlight";
 import { useSidebar } from "@/components/ui/sidebar";
-import { Home, MessageCircleMore, BookOpenText, LogOut } from "lucide-react";
+import {
+  Home,
+  MessageCircleMore,
+  BookOpenText,
+  LogOut,
+  CalendarRange,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SiGoogleclassroom } from "react-icons/si";
@@ -52,6 +58,19 @@ export default function TeacherDashboardLinks({
         <SiGoogleclassroom className="w-5 h-5" />
         <span>Classes</span>
       </Link>
+
+      <Link
+        onClick={() => setOpenMobile(false)}
+        href={"/dashboard/teacher/schedule"}
+        className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
+          pathname.startsWith("/dashboard/teacher/schedule")
+            ? "bg-main-text text-black"
+            : ""
+        }`}>
+        <CalendarRange className="w-5 h-5" />
+        <span>Schedule</span>
+      </Link>
+
       <Link
         onClick={() => setOpenMobile(false)}
         href={"/dashboard/teacher/messages"}

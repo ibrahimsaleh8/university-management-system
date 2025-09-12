@@ -5,8 +5,8 @@ import ClassExamCard from "./ClassExamCard";
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Plus } from "lucide-react";
+import LoadingTab from "@/app/dashboard/student/classes/[name]/_components/LoadingTab";
 export type ClassExamDataType = {
   id: string;
   title: string;
@@ -49,10 +49,7 @@ export default function ShowClassExams({ className }: { className: string }) {
       </div>
 
       {isLoading && !exams ? (
-        <div className="flex flex-col gap-3">
-          <Skeleton className="w-full h-36" />
-          <Skeleton className="w-full h-36" />
-        </div>
+        <LoadingTab />
       ) : exams && exams.length > 0 ? (
         <div className="flex flex-col gap-5">
           {exams.map((exam) => (

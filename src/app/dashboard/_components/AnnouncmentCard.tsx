@@ -5,7 +5,6 @@ import ShowAnnouncementReplies from "../teacher/classes/_components/ShowAnnounce
 import OperationsDropdown from "./OperationsDropdown";
 import Image from "next/image";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
-import { SlidingNumber } from "@/components/animate-ui/text/sliding-number";
 import { AttachemntsFilesDataType } from "../teacher/classes/_components/TeacherClassAnnouncments";
 import ShowAttachments from "./ShowAttachments";
 
@@ -103,22 +102,15 @@ export default function AnnouncmentCard({
       <ShowAttachments fullView={true} attachments={attachments} />
 
       {/* Bottom */}
-      <div className="mt-auto flex sm:items-center justify-between gap-4 ">
+      <div className="mt-auto flex sm:items-center justify-between gap-4 sm:px-1">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <SlidingNumber
-              transition={{ duration: 1000 }}
-              className="text-base"
-              number={likes}
-            />
+            <p className="text-base">{likes}</p>
             <AiFillLike className="w-5 h-5" />
           </div>
           <div className="flex items-center gap-2">
-            <SlidingNumber
-              transition={{ duration: 1000 }}
-              className="text-base"
-              number={dislikes}
-            />
+            <p className="text-base">{dislikes}</p>
+
             <AiFillDislike className="w-5 h-5 mt-1" />
           </div>
         </div>

@@ -17,6 +17,7 @@ export default async function TeacherDashboardPage() {
   if (!teacher) {
     redirect("/");
   }
+
   const res = await fetch(`${MainDomain}/api/get/teacher-schedual`, {
     headers: {
       Authorization: `Bearer ${token}`,

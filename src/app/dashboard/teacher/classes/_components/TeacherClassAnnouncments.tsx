@@ -1,6 +1,6 @@
 import AnnouncmentCard from "@/app/dashboard/_components/AnnouncmentCard";
 import AddingModel from "@/app/dashboard/_components/forms/AddingModel";
-import { Skeleton } from "@/components/ui/skeleton";
+import LoadingTab from "@/app/dashboard/student/classes/[name]/_components/LoadingTab";
 import { AttachmentsFileType } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
@@ -52,10 +52,7 @@ export default function TeacherClassAnnouncments({
   });
 
   return isLoading && !announcements ? (
-    <div className="flex flex-col gap-2 w-full">
-      <Skeleton className="w-44 h-10 ml-auto" />
-      <Skeleton className="w-full h-48 " />
-    </div>
+    <LoadingTab />
   ) : (
     announcements && (
       <div className="flex flex-col gap-6">

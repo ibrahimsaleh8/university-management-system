@@ -3,8 +3,8 @@ import AddAssignment from "./AddAssignment";
 import { MainDomain } from "@/variables/MainDomain";
 import AssignmentCard from "./AssignmentCard";
 import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AttachemntsFilesDataType } from "./TeacherClassAnnouncments";
+import LoadingTab from "@/app/dashboard/student/classes/[name]/_components/LoadingTab";
 
 type Props = {
   classId: number;
@@ -50,7 +50,7 @@ export default function ClassAssignments({ classId, token, className }: Props) {
         <AddAssignment className={className} classId={classId} token={token} />
       </div>
       {isLoading ? (
-        <Skeleton className="w-full h-36 rounded-md" />
+        <LoadingTab />
       ) : assignments && assignments.length > 0 ? (
         assignments.map((assign) => (
           <AssignmentCard

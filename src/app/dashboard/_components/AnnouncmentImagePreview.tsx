@@ -13,7 +13,7 @@ export default function AnnouncmentImagePreview({ imageUrl, fullView }: Props) {
       )}>
       <Image
         alt="Placeholder image"
-        className="w-96 object-cover object-center rounded-2xl"
+        className="w-60 object-cover object-center rounded-2xl"
         height={800}
         src={imageUrl}
         unoptimized

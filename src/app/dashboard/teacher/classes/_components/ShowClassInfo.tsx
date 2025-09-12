@@ -63,9 +63,9 @@ export default function ShowClassInfo({
         <div className="flex items-center gap-3 flex-col-reverse lg:flex-row">
           <div className="bg-main-dark p-4 rounded-md md:min-w-60 lg:w-fit flex flex-col items-center justify-center gap-2 text-center  w-full h-28 border border-soft-border">
             <Image
-              width={50}
-              height={50}
-              className="rounded-full"
+              width={1000}
+              height={1000}
+              className="rounded-full w-14 h-14 object-cover object-center"
               src={data.teacher.image}
               alt={`image-${data.teacher.first_name}`}
             />
