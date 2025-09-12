@@ -7,6 +7,7 @@ import {
   BookOpenText,
   ChartPie,
   LogOut,
+  CalendarRange,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -70,6 +71,18 @@ export default function StudentDashboadLinks({
         <ChartPie className="w-5 h-5" />
         <span>Courses Grades</span>
       </Link>
+      <Link
+        onClick={() => setOpenMobile(false)}
+        href={"/dashboard/student/schedule"}
+        className={`h-11 hover:text-black duration-200 font-medium flex items-center gap-3 px-10 pl-3 rounded-md ${
+          pathname.startsWith("/dashboard/student/schedule")
+            ? "bg-main-text text-black"
+            : ""
+        }`}>
+        <CalendarRange className="w-5 h-5" />
+        <span>Schedule</span>
+      </Link>
+
       <Link
         onClick={() => setOpenMobile(false)}
         href={"/dashboard/student/messages"}
