@@ -84,7 +84,7 @@ export default function ShowStudentClassInfo({ name, token }: Props) {
             />
             <div className="flex flex-col gap-0.5 text-low-white text-sm">
               <p>
-                {data.teacher.gender == "MALE" ? "Mr/" : "Mrs/"}
+                Dr.
                 {`${data.teacher.first_name} ${data.teacher.last_name}`}
               </p>
               <p>{data.teacher.email}</p>

@@ -21,7 +21,6 @@ export async function DELETE(
         { status: 404 }
       );
     }
-    await prisma.departmentTeacher.deleteMany({ where: { departmentId: +id } });
     await prisma.class.deleteMany({ where: { departmentId: +id } });
     await prisma.course.deleteMany({ where: { departmentId: +id } });
     await prisma.student.updateMany({

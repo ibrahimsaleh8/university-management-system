@@ -76,7 +76,7 @@ export default function ShowStudentsSubmissons({
         {isLoading ? (
           <TableRow>
             <TableCell colSpan={4}>
-              <div className="w-full flex items-center justify-center gap-2">
+              <div className="w-full flex items-center justify-center gap-2 p-2">
                 <SmallLoader color="white" />
                 Loading...
               </div>
@@ -124,7 +124,7 @@ export default function ShowStudentsSubmissons({
         ) : (
           <TableRow>
             <TableCell colSpan={4}>
-              <div className="w-full flex items-center justify-center gap-2 text-low-white">
+              <div className="w-full flex items-center justify-center gap-2 p-2 text-low-white">
                 No Submissions Founded ....
               </div>
             </TableCell>

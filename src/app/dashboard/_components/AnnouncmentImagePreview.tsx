@@ -14,20 +14,18 @@ export default function AnnouncmentImagePreview({ imageUrl, fullView }: Props) {
       <Image
         alt="Placeholder image"
         className="w-60 object-cover object-center rounded-2xl"
-        height={800}
+        height={1000}
         src={imageUrl}
-        unoptimized
-        width={1200}
+        width={1000}
       />
     </ImageZoom>
   ) : (
     <Image
       alt="Placeholder image"
-      className="w-96 object-cover object-center rounded-2xl"
-      height={800}
+      className="w-60 object-cover object-center rounded-2xl"
+      height={1000}
       src={imageUrl}
-      unoptimized
-      width={1200}
+      width={1000}
     />
   );
 }

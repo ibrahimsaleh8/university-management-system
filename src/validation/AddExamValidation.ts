@@ -48,6 +48,10 @@ export const AddExamSchema = z
   .refine((data) => data.endDate > data.startDate, {
     message: "End date must be after start date",
     path: ["endDate"],
+  })
+  .refine((data) => data.startDate > new Date(), {
+    message: "Start date must be in the future",
+    path: ["startDate"],
   });
 
 export type ExamDataType = z.infer<typeof AddExamSchema>;
