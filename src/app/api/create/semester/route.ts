@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       if (checkAnotherSemester) {
         return NextResponse.json(
           {
-            message: `${checkAnotherSemester.name} is current active please make update it to be not active or new semester not active`,
+            message: `${checkAnotherSemester.name} is current active please update it to be not active or new semester not active`,
           },
           { status: 400 }
         );

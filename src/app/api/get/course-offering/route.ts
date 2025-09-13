@@ -24,12 +24,7 @@ export async function GET() {
       orderBy: [
         {
           semester: {
-            isActive: "asc",
-          },
-        },
-        {
-          course: {
-            name: "asc",
+            isActive: "desc",
           },
         },
       ],

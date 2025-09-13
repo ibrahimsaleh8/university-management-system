@@ -3,22 +3,20 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-async function getSchedualsTime(year: number): Promise<EventDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/course-time?academicYear=${year}`
-  );
+async function getSchedualsTime(): Promise<EventDataType[]> {
+  const res = await axios.get(`${MainDomain}/api/get/course-time`);
   return res.data;
 }
 
-export const GetCoursesTimes = (year: number) => {
+export const GetCoursesTimes = () => {
   const {
     data: times,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["get_schedual_times", year],
-    queryFn: () => getSchedualsTime(year),
+    queryKey: ["get_schedual_times"],
+    queryFn: () => getSchedualsTime(),
   });
   return { times, isLoading, isError, error };
 };

@@ -63,6 +63,12 @@ export default function SemestrAddForm({ setClose, token }: Props) {
       queryClient.refetchQueries({
         queryKey: ["get_all_semesters"],
       });
+      queryClient.refetchQueries({
+        queryKey: ["get_active_semester_main_courses"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["get_all_courses_offering"],
+      });
       setClose(true);
       GlobalToast({
         title: "Semester has been created successfully",

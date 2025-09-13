@@ -14,7 +14,7 @@ export type EventDataType = {
   time: string;
   title: string;
   teacher: string;
-  academicYear?: string;
+  academicYear: string;
   hall?: string;
 };
 
@@ -104,7 +104,7 @@ export default function CalendarTable({
                               {cellEvent.hall}
                             </p>
                           )}
-                          {canDelete && deleteFn && isPending && isSuccess && (
+                          {canDelete && deleteFn && (
                             <div className="flex justify-end">
                               <DeleteAlert
                                 isPending={isPending}

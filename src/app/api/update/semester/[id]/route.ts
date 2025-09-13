@@ -1,8 +1,6 @@
 import { AdminAuthGuard } from "@/lib/AuthGuard/AdminAuthGuard";
-import {
-  addSemesterDataType,
-  addSemesterValidation,
-} from "@/validation/AddSemesterValidation";
+import { addSemesterDataType } from "@/validation/AddSemesterValidation";
+import { editSemesterValidation } from "@/validation/EditSemesetrSchema";
 import prisma from "@/variables/PrismaVar";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,7 +17,7 @@ export async function PUT(
 
     const semesterData = (await req.json()) as addSemesterDataType;
 
-    const validation = addSemesterValidation.safeParse(semesterData);
+    const validation = editSemesterValidation.safeParse(semesterData);
 
     if (!validation.success) {
       return NextResponse.json(
@@ -70,7 +68,7 @@ export async function PUT(
       if (checkAnotherSemester) {
         return NextResponse.json(
           {
-            message: `${checkAnotherSemester.name} is current active please make update it to be not active or new semester not active`,
+            message: `${checkAnotherSemester.name} is current active please update it to be not active or new semester not active`,
           },
           { status: 400 }
         );

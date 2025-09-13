@@ -5,10 +5,7 @@ import { semesterDataType } from "@/lib/GetAllSemesters";
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import { Button } from "@/components/ui/button";
-import {
-  addSemesterDataType,
-  addSemesterValidation,
-} from "@/validation/AddSemesterValidation";
+import { addSemesterDataType } from "@/validation/AddSemesterValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -25,6 +22,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import GlobalToast from "@/components/Global/GlobalToast";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import SmallLoader from "@/components/Global/SmallLoader";
+import { editSemesterValidation } from "@/validation/EditSemesetrSchema";
 
 type Props = {
   semesterData: semesterDataType;
@@ -59,8 +57,8 @@ export default function UpdateSemester({ semesterData, token }: Props) {
     formState: { errors },
     setValue,
   } = useForm<addSemesterDataType>({
-    resolver: zodResolver(addSemesterValidation),
-    mode: "all",
+    resolver: zodResolver(editSemesterValidation),
+    mode: "onSubmit",
     defaultValues: {
       isActive: semesterData.isActive,
       name: semesterData.name,
@@ -74,6 +72,16 @@ export default function UpdateSemester({ semesterData, token }: Props) {
       queryClient.refetchQueries({
         queryKey: ["get_all_semesters"],
       });
+      queryClient.refetchQueries({
+        queryKey: ["get_active_semester"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["get_all_courses_offering"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["get_active_semester_main_courses"],
+      });
+
       setServerError(null);
       GlobalToast({
         title: "Semester has been updated successfully",

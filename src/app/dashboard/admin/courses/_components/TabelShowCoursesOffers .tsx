@@ -37,6 +37,9 @@ export default function TabelShowCoursesOffers({ token }: { token: string }) {
       queryClient.refetchQueries({
         queryKey: ["get_all_courses_offering"],
       });
+      queryClient.refetchQueries({
+        queryKey: ["get_active_semester_main_courses"],
+      });
       GlobalToast({
         icon: "success",
         title: "Course offering has been deleted successfully",

@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { GetAllCoursesOffering } from "@/lib/GetAllCoursesOffering";
+import { GetActiveSemesterCourseOffers } from "@/lib/GetActiveSemesterCourseOffers";
 import { GetCoursesTimes } from "@/lib/GetCoursesTimes";
 import { ErrorResponseType } from "@/lib/globalTypes";
 import {
@@ -78,23 +78,19 @@ export default function FormAddTime({ setClose, token }: Props) {
 
   //   ******* Get Courses Offering API *******
   const {
-    coursesOffers,
+    courses: coursesOffers,
     error: courseOfferingError,
     isError: isErrorCourseOffering,
     isLoading: loadingCourseOffering,
-  } = GetAllCoursesOffering();
+  } = GetActiveSemesterCourseOffers();
 
   if (isErrorCourseOffering && courseOfferingError)
     throw new Error(courseOfferingError.message);
 
   // Get Times Already Added
-  const {
-    error: timesError,
-    isError: timesIsError,
-    times,
-  } = GetCoursesTimes(-1);
+  const { error: timesError, isError: timesIsError, times } = GetCoursesTimes();
   if (timesIsError && timesError) throw new Error(timesError.message);
-  console.log("times", times);
+
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       {/* Days And Times */}
@@ -163,18 +159,16 @@ export default function FormAddTime({ setClose, token }: Props) {
                 <SelectContent>
                   {coursesOffers.length > 0 &&
                   coursesOffers.filter(
-                    (cf) => !times.some((t) => t.title == cf.course.name)
+                    (cf) => !times.some((t) => t.title == cf.name)
                   ).length > 0 ? (
                     coursesOffers
-                      .filter(
-                        (cf) => !times.some((t) => t.title == cf.course.name)
-                      )
+                      .filter((cf) => !times.some((t) => t.title == cf.name))
                       .map((course) => (
                         <SelectItem
                           className="capitalize"
                           key={course.id}
                           value={course.id}>
-                          {course.course.name}
+                          {course.name}
                         </SelectItem>
                       ))
                   ) : (

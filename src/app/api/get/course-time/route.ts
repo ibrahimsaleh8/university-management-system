@@ -1,50 +1,37 @@
 import prisma from "@/variables/PrismaVar";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const grade = (await req.nextUrl.searchParams.get("academicYear")) || -1;
-    let times = [];
-    if (grade == -1) {
-      times = await prisma.courseSchedule.findMany({
-        select: {
-          id: true,
-          dayOfWeek: true,
-          startTime: true,
-          course: {
-            select: {
-              course: {
-                select: {
-                  name: true,
-                },
+    const times = await prisma.courseSchedule.findMany({
+      select: {
+        id: true,
+        dayOfWeek: true,
+        startTime: true,
+        course: {
+          select: {
+            course: {
+              select: {
+                name: true,
               },
-              teacher: { select: { first_name: true, last_name: true } },
             },
+            teacher: { select: { first_name: true, last_name: true } },
           },
         },
-      });
-    } else {
-      times = await prisma.courseSchedule.findMany({
-        where: {
-          academicYear: { level_number: +grade },
-        },
-        select: {
-          id: true,
-          dayOfWeek: true,
-          startTime: true,
-          course: {
-            select: {
-              course: {
-                select: {
-                  name: true,
-                },
-              },
-              teacher: { select: { first_name: true, last_name: true } },
-            },
+        academicYear: {
+          select: {
+            year_label: true,
           },
         },
-      });
-    }
+      },
+      where: {
+        course: {
+          semester: {
+            isActive: true,
+          },
+        },
+      },
+    });
 
     const scheduledTimes = times.map((t) => ({
       id: t.id,
@@ -52,6 +39,7 @@ export async function GET(req: NextRequest) {
       day: t.dayOfWeek.toLowerCase(),
       time: t.startTime,
       teacher: `${t.course.teacher.first_name} ${t.course.teacher.last_name}`,
+      academicYear: t.academicYear.year_label,
     }));
     return NextResponse.json(scheduledTimes, { status: 200 });
   } catch (error) {

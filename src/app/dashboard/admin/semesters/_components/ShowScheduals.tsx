@@ -16,7 +16,7 @@ import { ErrorResponseType } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 async function deleteSchedualTime(id: string, token: string) {
   await axios.delete(`${MainDomain}/api/delete/course-time/${id}`, {
@@ -27,15 +27,14 @@ async function deleteSchedualTime(id: string, token: string) {
 }
 
 export default function ShowScheduals({ token }: { token: string }) {
-  const [gradeNumber, setGradeNumber] = useState(1);
+  const [academicYear, setAcademicYear] = useState("");
   const queryClient = useQueryClient();
   const { mutate, isPending, isSuccess } = useMutation({
-    mutationKey: ["delete_schedual_time"],
     mutationFn: (data: { id: string; token: string }) =>
       deleteSchedualTime(data.id, data.token),
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["get_schedual_times", gradeNumber],
+        queryKey: ["get_schedual_times"],
       });
       GlobalToast({
         icon: "success",
@@ -62,9 +61,24 @@ export default function ShowScheduals({ token }: { token: string }) {
 
   //  ****** Get Schedual Times Api ******
 
-  const { error, isError, isLoading, times } = GetCoursesTimes(gradeNumber);
+  const { error, isError, isLoading, times } = GetCoursesTimes();
   if (isError && error) throw new Error(error.message);
 
+  const schedualTimes = useMemo(() => {
+    if (times) {
+      return academicYear
+        ? times.filter((t) => t.academicYear == academicYear)
+        : times;
+    }
+  }, [academicYear, times]);
+
+  console.log("times", times);
+  console.log("academicYear", academicYear);
+  useEffect(() => {
+    if (years && years.length > 0) {
+      setAcademicYear(years[1].year_label);
+    }
+  }, [years]);
   return (
     <div className="pt-3 flex flex-col gap-3">
       <div className="flex flex-col sm:flex-row gap-2 justify-between items-center pb-4">
@@ -78,8 +92,8 @@ export default function ShowScheduals({ token }: { token: string }) {
                 Grade:
               </label>
               <Select
-                defaultValue="1"
-                onValueChange={(e) => setGradeNumber(+e)}>
+                defaultValue={years[1].year_label}
+                onValueChange={(e) => setAcademicYear(e)}>
                 <SelectTrigger id="grade" className="w-[180px]">
                   <SelectValue placeholder="Grade" />
                 </SelectTrigger>
@@ -91,7 +105,7 @@ export default function ShowScheduals({ token }: { token: string }) {
                         <SelectItem
                           className="capitalize"
                           key={year.id}
-                          value={`${year.level_number}`}>
+                          value={`${year.year_label}`}>
                           {year.year_label}
                         </SelectItem>
                       ))
@@ -112,13 +126,13 @@ export default function ShowScheduals({ token }: { token: string }) {
       {isLoading && !times ? (
         <Skeleton className="w-full h-[35rem] rounded-md" />
       ) : (
-        times && (
+        schedualTimes && (
           <CalendarTable
             isSuccess={isSuccess}
             isPending={isPending}
             deleteFn={(id: string) => HandleDeleteShedualTime(id)}
             canDelete={true}
-            events={times}
+            events={schedualTimes}
           />
         )
       )}

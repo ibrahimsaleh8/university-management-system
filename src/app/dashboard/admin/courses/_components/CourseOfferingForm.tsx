@@ -26,11 +26,9 @@ type Props = {
 
 export default function CourseOfferingForm({ setClose, token }: Props) {
   const {
-    coursesOffers,
     years,
     loadingYears,
     loadingSemester,
-    semestersData,
     loadingCourses,
     courses,
     loadingTeachers,
@@ -45,9 +43,10 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
     setHasPreRequired,
     hasPreRequired,
     setCourseDepartment,
-    courseDepartment,
+    semesterData,
+    loadingMainCourses,
+    mainCourses,
   } = useAddCourseOffering({ setClose, token });
-  console.log("courseDepartment", courseDepartment);
   return (
     <form
       className="flex flex-col gap-3"
@@ -58,8 +57,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
         {loadingCourses && !courses ? (
           <Skeleton className="h-10 rounded-md w-full" />
         ) : (
-          courses &&
-          coursesOffers && (
+          courses && (
             <div className="flex flex-col gap-1 w-full text-left">
               <label htmlFor="courses" className="text-sm">
                 Courses:
@@ -75,21 +73,12 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                   <SelectValue placeholder="Courses" />
                 </SelectTrigger>
                 <SelectContent>
-                  {courses.length > 0 &&
-                  courses.filter(
-                    (c) =>
-                      !coursesOffers.some((cf) => cf.course.name === c.name)
-                  ).length > 0 ? (
-                    courses
-                      .filter(
-                        (c) =>
-                          !coursesOffers.some((cf) => cf.course.name === c.name)
-                      )
-                      .map((course) => (
-                        <SelectItem
-                          key={course.id}
-                          value={`${course.id}`}>{`${course.name}`}</SelectItem>
-                      ))
+                  {courses.length > 0 ? (
+                    courses.map((course) => (
+                      <SelectItem
+                        key={course.id}
+                        value={`${course.id}`}>{`${course.name}`}</SelectItem>
+                    ))
                   ) : (
                     <SelectItem disabled value="none">
                       No Courses Found
@@ -137,48 +126,35 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
       {/* Semesters & Years */}
       <div className="flex items-center gap-3 flex-col sm:flex-row">
         {/* Semesters */}
-        {loadingSemester && !semestersData ? (
+        {loadingSemester ? (
           <Skeleton className="h-10 rounded-md w-full" />
         ) : (
-          semestersData && (
-            <div className="flex flex-col gap-1 w-full text-left">
-              <label htmlFor="semeseters" className="text-sm">
-                Semesters:
-              </label>
-              <Select onValueChange={(e) => setValue("semesterId", e)}>
-                <SelectTrigger id="semeseters" className="w-full">
-                  <SelectValue placeholder="Semesters" />
-                </SelectTrigger>
-                <SelectContent>
-                  {semestersData.length > 0 ? (
-                    semestersData.map((smester) => (
-                      <SelectItem
-                        className="w-full"
-                        key={smester.id}
-                        value={`${smester.id}`}>
-                        <span className="flex items-center gap-2">
-                          {smester.name}
-                          {smester.isActive ? (
-                            <Badge variant="success" appearance="light">
-                              Activce
-                            </Badge>
-                          ) : (
-                            <Badge variant="destructive" appearance="light">
-                              Not Activce
-                            </Badge>
-                          )}
-                        </span>
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem disabled value="none">
-                      No Semesters Found
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-          )
+          <div className="flex flex-col gap-1 w-full text-left">
+            <label htmlFor="semeseters" className="text-sm">
+              Semester:
+            </label>
+            <Select onValueChange={(e) => setValue("semesterId", e)}>
+              <SelectTrigger id="semeseters" className="w-full">
+                <SelectValue placeholder="Semesters" />
+              </SelectTrigger>
+              <SelectContent>
+                {semesterData ? (
+                  <SelectItem className="w-full" value={`${semesterData.id}`}>
+                    <span className="flex items-center gap-2">
+                      {semesterData.name}
+                      <Badge variant="success" appearance="light">
+                        Activce
+                      </Badge>
+                    </span>
+                  </SelectItem>
+                ) : (
+                  <SelectItem disabled value="none">
+                    No Semesters Found
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
         )}
 
         {/* Years */}
@@ -254,10 +230,10 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
       {hasPreRequired && (
         <MotionEffect blur>
           {/* Courses */}
-          {loadingCourses && !courses ? (
+          {loadingMainCourses && !mainCourses ? (
             <Skeleton className="h-10 rounded-md w-full" />
           ) : (
-            courses && (
+            mainCourses && (
               <div className="flex flex-col gap-1 w-full text-left">
                 <label htmlFor="pre-courses" className="text-sm">
                   Prerequired Course:
@@ -268,8 +244,8 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
                     <SelectValue placeholder="Prerequired Course" />
                   </SelectTrigger>
                   <SelectContent>
-                    {courses.length > 0 ? (
-                      courses.map((course) => (
+                    {mainCourses.length > 0 ? (
+                      mainCourses.map((course) => (
                         <SelectItem
                           disabled={watch("courseId") == course.id}
                           key={course.id}

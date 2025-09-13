@@ -1,11 +1,8 @@
 import GlobalToast from "@/components/Global/GlobalToast";
 import { ErrorResponseType } from "@/lib/globalTypes";
-import { GetAllCoursesOffering } from "@/lib/GetAllCoursesOffering";
 import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { GetAllMainCourses } from "@/lib/GetAllMainCourses";
-import { GetAllSemesters } from "@/lib/GetAllSemesters";
 import { GetAllYears } from "@/lib/GetAllYears";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -15,6 +12,9 @@ import {
 } from "@/validation/serverValidations/CourseOfferingValidationServer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GetTeacherByDepartment } from "@/lib/GetTeacherByDepartment";
+import { GetActiveSemester } from "@/lib/GetActiveSemester";
+import { GetActiveSemesterMainCourses } from "@/lib/GetActiveSemesterMainCourses";
+import { GetAllMainCourses } from "@/lib/GetAllMainCourses";
 
 type Props = {
   setClose: Dispatch<SetStateAction<boolean>>;
@@ -41,6 +41,12 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
       createNewOffering(data.offerData, data.token),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["get_all_courses_offering"] });
+      queryClient.refetchQueries({
+        queryKey: ["get_active_semester_main_courses"],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["get_active_semester_courses_offers"],
+      });
       setClose(true);
       GlobalToast({
         title: "Course offering has been created successfully",
@@ -93,15 +99,15 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
     error: errorCourses,
     isError: isErrorCourses,
     isLoading: loadingCourses,
-  } = GetAllMainCourses();
+  } = GetActiveSemesterMainCourses();
   if (isErrorCourses && errorCourses) throw new Error(errorCourses.message);
   // **** Semesters Api ****
   const {
     error: errorSemester,
     isError: isErrorSemester,
     isLoading: loadingSemester,
-    semestersData,
-  } = GetAllSemesters();
+    semesterData,
+  } = GetActiveSemester();
   if (isErrorSemester && errorSemester) throw new Error(errorSemester.message);
 
   // **** Academic Years Api ****
@@ -112,18 +118,20 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
     years,
   } = GetAllYears();
   if (isErrorYears && errorYears) throw new Error(errorYears.message);
-
-  // Course Offering Already Exist
-  const { coursesOffers, error, isError } = GetAllCoursesOffering();
-
-  if (isError && error) throw new Error(error.message);
+  // **** Main Courses  Api ****
+  const {
+    courses: mainCourses,
+    error,
+    isError,
+    isLoading: loadingMainCourses,
+  } = GetAllMainCourses();
+  if (error && isError) throw new Error(error.message);
 
   return {
-    coursesOffers,
     years,
     loadingYears,
     loadingSemester,
-    semestersData,
+    semesterData,
     loadingCourses,
     courses,
     loadingTeachers,
@@ -137,7 +145,8 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
     isPending,
     setHasPreRequired,
     hasPreRequired,
-    courseDepartment,
     setCourseDepartment,
+    mainCourses,
+    loadingMainCourses,
   };
 };

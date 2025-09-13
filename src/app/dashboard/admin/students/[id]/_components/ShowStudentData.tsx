@@ -115,7 +115,7 @@ export default function ShowStudentData({ id, token, schedualData }: Props) {
           />
           <UserAssignedCard courses={data.courses} />
         </div>
-        <ShowMainSchedual data={schedualData} />;
+        <ShowMainSchedual data={schedualData} />
       </div>
     )
   );
