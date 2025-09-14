@@ -59,7 +59,7 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     onSuccess: () => {
       setClose(true);
       GlobalToast({ title: "Student added success", icon: "success" });
-      queryClient.refetchQueries({ queryKey: ["get_all_student"] });
+      queryClient.refetchQueries({ queryKey: ["get_all_students"] });
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({

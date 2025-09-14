@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { NumberOfStudents } from "@/variables/Pagination";
 import { StudentResDataType } from "@/app/dashboard/admin/students/_components/ShowStudentsTable";
@@ -6,16 +6,8 @@ import axios from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { GetAllYears } from "@/lib/GetAllYears";
 
-async function getAllStudents(
-  pageNumber: number
-): Promise<StudentResDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/students?page=${pageNumber}`
-  );
-  return res.data;
-}
-async function getStudentsNumber(): Promise<{ numbers: number }> {
-  const res = await axios.get(`${MainDomain}/api/get/students-number`);
+async function getAllStudents(): Promise<StudentResDataType[]> {
+  const res = await axios.get(`${MainDomain}/api/get/students`);
   return res.data;
 }
 
@@ -26,6 +18,10 @@ export const useShowStudentsTable = () => {
     null
   );
   const [filterGrade, setFilterGrade] = useState("all");
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterGrade]);
 
   const {
     error: errYears,
@@ -41,38 +37,37 @@ export const useShowStudentsTable = () => {
     isError,
     error,
   } = useQuery({
-    queryKey: ["get_all_student", currentPage],
-    queryFn: () => getAllStudents(currentPage),
+    queryKey: ["get_all_students"],
+    queryFn: () => getAllStudents(),
   });
 
   if (isError) {
     throw new Error(error.message);
   }
 
-  const { data: studentNumber } = useQuery({
-    queryKey: ["students_number"],
-    queryFn: () => getStudentsNumber(),
-  });
-
   const students = useMemo(() => {
-    if (!allStudents) return undefined;
+    if (!allStudents) return [];
 
-    if (searched && SearchedData) {
-      return filterGrade !== "all"
-        ? SearchedData.filter((s) => s.academicYear.year_label === filterGrade)
-        : SearchedData;
-    }
+    const source = searched && SearchedData ? SearchedData : allStudents;
 
-    return filterGrade !== "all"
-      ? allStudents.filter((std) => std.academicYear.year_label === filterGrade)
-      : allStudents.filter((std) => std.academicYear.year_label != "Graduated");
-  }, [SearchedData, allStudents, filterGrade, searched]);
+    const filtered =
+      filterGrade !== "all"
+        ? source.filter((s) => s.academicYear.year_label === filterGrade)
+        : source.filter((s) => s.academicYear.year_label != "Graduated");
+
+    const startIndex = (currentPage - 1) * NumberOfStudents;
+    return filtered.slice(startIndex, startIndex + NumberOfStudents);
+  }, [SearchedData, allStudents, currentPage, filterGrade, searched]);
 
   const Pages = useMemo(() => {
-    return studentNumber
-      ? Math.ceil(studentNumber.numbers / NumberOfStudents)
-      : 0;
-  }, [studentNumber]);
+    if (!allStudents) return 0;
+    const source = searched && SearchedData ? SearchedData : allStudents;
+    const filtered =
+      filterGrade !== "all"
+        ? source.filter((std) => std.academicYear.year_label === filterGrade)
+        : source.filter((std) => std.academicYear.year_label != "Graduated");
+    return Math.ceil(filtered.length / NumberOfStudents);
+  }, [allStudents, SearchedData, searched, filterGrade]);
 
   return {
     Pages,

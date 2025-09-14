@@ -1,12 +1,9 @@
-import { NumberOfStudents } from "@/variables/Pagination";
 import prisma from "@/variables/PrismaVar";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 // Get all students
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const pageNumber = (await request.nextUrl.searchParams.get("page")) || "1";
-
     const students = await prisma.student.findMany({
       select: {
         id: true,
@@ -20,8 +17,6 @@ export async function GET(request: NextRequest) {
       orderBy: {
         first_name: "asc",
       },
-      take: NumberOfStudents,
-      skip: NumberOfStudents * (parseInt(pageNumber) - 1),
     });
 
     return NextResponse.json(students, { status: 200 });

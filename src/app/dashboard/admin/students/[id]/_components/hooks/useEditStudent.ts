@@ -56,7 +56,7 @@ export const useEditStudent = ({
     onSuccess: () => {
       setClose(true);
       GlobalToast({ title: "Student Updated Success", icon: "success" });
-      queryClient.refetchQueries({ queryKey: ["get_all_student"] });
+      queryClient.refetchQueries({ queryKey: ["get_all_students"] });
       queryClient.refetchQueries({
         queryKey: ["student_data_details", studentDeafultData.student_id],
       });

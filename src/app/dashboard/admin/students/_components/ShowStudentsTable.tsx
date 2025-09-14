@@ -100,7 +100,6 @@ export default function ShowStudentsTable({ token }: { token: string }) {
                   .filter((y) => y.level_number != 0)
                   .map((year) => (
                     <MoveingToNextGrade
-                      currentPage={currentPage}
                       token={token}
                       level_number={year.level_number}
                       yearLabel={year.year_label}

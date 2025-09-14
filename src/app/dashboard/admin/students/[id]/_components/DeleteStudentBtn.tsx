@@ -39,7 +39,7 @@ export default function DeleteStudentBtn({
         queryKey: ["students_number"],
       });
       queryClient.refetchQueries({
-        queryKey: ["get_all_student"],
+        queryKey: ["get_all_students"],
       });
       route.replace("/dashboard/admin/students");
     },

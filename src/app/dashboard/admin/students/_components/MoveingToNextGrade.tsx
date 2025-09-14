@@ -22,7 +22,6 @@ type Props = {
   yearLabel: string;
   token: string;
   level_number: number;
-  currentPage: number;
 };
 
 async function moveStudentsToNextGrade(
@@ -45,7 +44,6 @@ export default function MoveingToNextGrade({
   yearLabel,
   level_number,
   token,
-  currentPage,
 }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
@@ -55,7 +53,7 @@ export default function MoveingToNextGrade({
       moveStudentsToNextGrade(params.level_number, params.token),
     onSuccess: (res) => {
       queryClient.refetchQueries({
-        queryKey: ["get_all_student", currentPage],
+        queryKey: ["get_all_students"],
       });
       queryClient.refetchQueries({ queryKey: ["students_number"] });
       GlobalToast({
