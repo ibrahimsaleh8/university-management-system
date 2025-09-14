@@ -37,7 +37,6 @@ export const useAddTeacher = ({ setClose, token }: Props) => {
   const [teacherData, setTeacherData] = useState<AddTeacherDataType | null>();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["add_new_teacher"],
     mutationFn: ({
       data,
       token,
@@ -48,7 +47,6 @@ export const useAddTeacher = ({ setClose, token }: Props) => {
     onSuccess: () => {
       setClose(true);
       GlobalToast({ icon: "success", title: "Teacher added success" });
-      queryClient.refetchQueries({ queryKey: ["get_all_teachers"] });
       queryClient.refetchQueries({ queryKey: ["get_all_teachers"] });
       queryClient.refetchQueries({ queryKey: ["get_all_departments"] });
     },

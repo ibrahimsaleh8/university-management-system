@@ -21,7 +21,7 @@ export default function UserMainCardWithImage({
           alt={name}
           width={1000}
           height={1000}
-          className="w-32 h-32 rounded-full"
+          className="w-32 h-32 rounded-full object-cover object-center"
         />
       </div>
       {/* Text */}

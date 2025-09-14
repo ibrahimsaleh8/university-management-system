@@ -41,6 +41,7 @@ export default function SearchInTeacherTable({
   const [searchTxt, setSearchTxt] = useState("");
   const searchRef = useRef<HTMLButtonElement>(null);
   const searchInput = useRef<HTMLInputElement>(null);
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["search_teacher", searchTxt, searchBy],
     mutationFn: ({
@@ -68,7 +69,9 @@ export default function SearchInTeacherTable({
   return (
     <div className="flex items-center  gap-3 flex-col sm:flex-row">
       <div className="flex items-center gap-3 w-full flex-wrap">
-        <Select onValueChange={(e: searchMethod) => setSearchBy(e)}>
+        <Select
+          defaultValue={searchBy}
+          onValueChange={(e: searchMethod) => setSearchBy(e)}>
           <SelectTrigger className="sm:w-[180px] w-full cursor-pointer bg-Second-black border-soft-border">
             <SelectValue placeholder={`Search by ${searchBy}`} />
           </SelectTrigger>

@@ -1,2 +1,2 @@
-export const NumberOfTeachers = 8;
+export const NumberOfTeachers = 10;
 export const NumberOfStudents = 8;
