@@ -41,7 +41,7 @@ export default function TableShowTeachers({ token }: Props) {
     activePaginateNumber,
   } = useShowTeachers();
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
       {/* Search & add */}
       <div className="flex sm:items-center flex-wrap gap-3 justify-between sm:flex-row flex-col">
         {/* Search */}

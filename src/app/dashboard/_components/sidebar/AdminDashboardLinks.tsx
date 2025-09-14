@@ -6,10 +6,10 @@ import {
   Home,
   ChartBarStacked,
   CalendarRange,
-  BookText,
   MessageCircleMore,
   Clock9,
   LogOut,
+  BookOpenText,
 } from "lucide-react";
 import Link from "next/link";
 import { FaChalkboardTeacher } from "react-icons/fa";
@@ -72,7 +72,7 @@ export default function AdminDashboardLinks({
             ? "bg-main-text text-black"
             : ""
         }`}>
-        <BookText className="w-5 h-5" />
+        <BookOpenText className="w-5 h-5" />
         <span>Courses</span>
       </Link>
 

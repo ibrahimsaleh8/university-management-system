@@ -17,7 +17,7 @@ export default async function DashboardLayout({
     <div className="bg-Main-black">
       <NextTopLoader zIndex={1600} color="#b9f821" height={3} easing="ease" />
       <SidebarProvider>
-        <div className="flex gap-2 w-full">
+        <div className="flex gap-0 w-full">
           <DashboardSideBar role={user?.role as string} />
 
           <main className="flex flex-col gap-2 w-full overflow-x-hidden sm:pr-3 pt-0.5 sm:pt-1">
@@ -26,7 +26,7 @@ export default async function DashboardLayout({
               style={{
                 minHeight: "calc(100vh - 80px)",
               }}
-              className="p-3 w-full sm:rounded-t-xl relative bg-low-black sm:border border-soft-border">
+              className="p-4 w-full relative bg-low-black">
               {children}
             </div>
           </main>

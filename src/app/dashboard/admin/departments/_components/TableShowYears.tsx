@@ -58,7 +58,7 @@ export default function TableShowYears({ token }: { token: string }) {
           <TableRow>
             <TableHead>#</TableHead>
             <TableHead>Label</TableHead>
-            <TableHead>Number</TableHead>
+            <TableHead>Level Number</TableHead>
             <TableHead>Students</TableHead>
             <TableHead>Action</TableHead>
           </TableRow>

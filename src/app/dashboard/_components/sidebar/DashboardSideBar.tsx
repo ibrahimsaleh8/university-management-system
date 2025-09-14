@@ -12,13 +12,23 @@ import { usePathname } from "next/navigation";
 import AdminDashboardLinks from "./AdminDashboardLinks";
 import StudentDashboadLinks from "./StudentDashboadLinks";
 import TeacherDashboardLinks from "./TeacherDashboardLinks";
-
+import Image from "next/image";
+import logoImage from "@images/logo.webp";
 export default function DashboardSideBar({ role }: { role: string }) {
   const pathname = usePathname();
   return (
     <Sidebar>
-      <SidebarContent className="pt-4 bg-low-black border border-soft-border m-1 rounded-lg">
-        <p className="px-4 font-bold text-center">School-Managment</p>
+      <SidebarContent className="pt-4 flex flex-col  bg-low-black border-r border-soft-border rounded-none">
+        <div className="pl-4">
+          <Image
+            alt="Logo"
+            src={logoImage}
+            width={1000}
+            height={1000}
+            priority
+            className="w-32"
+          />
+        </div>
 
         <SidebarGroup>
           <SidebarGroupLabel>Main Links</SidebarGroupLabel>

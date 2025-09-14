@@ -9,13 +9,17 @@ export default function DashboardHeader() {
     (state) => state.user.user
   );
   return (
-    <header className="py-2 sm:border border-soft-border px-3 flex items-center justify-between bg-low-black sm:rounded-md">
-      <SidebarTrigger />
+    <header className="py-2 sm:border-b border-soft-border px-3 flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <SidebarTrigger />
+      </div>
       {/* Items */}
       <div className="flex items-center gap-4">
-        <div className="bg-Second-black relative rounded-sm p-1 w-10 h-10 flex items-center justify-center">
+        <Link
+          href={`/dashboard/${role}/profile`}
+          className="bg-Second-black relative rounded-sm p-1 w-10 h-10 flex items-center justify-center">
           <Settings className="w-5 h-5" />
-        </div>
+        </Link>
         <Link
           href={`/dashboard/${role}/messages`}
           className="bg-Second-black relative rounded-sm p-1 w-10 h-10 flex items-center justify-center">
