@@ -130,10 +130,12 @@ export default function ShowStudentsTable({ token }: { token: string }) {
                 students.map((std) => (
                   <TableRow key={std.id}>
                     <TableCell>
-                      <UserCardImageAndName
-                        image={std.image}
-                        name={`${std.first_name} ${std.last_name}`}
-                      />
+                      <div className="w-[150px] lg:w-fit">
+                        <UserCardImageAndName
+                          image={std.image}
+                          name={`${std.first_name} ${std.last_name}`}
+                        />
+                      </div>
                     </TableCell>
                     <TableCell className="text-sm">{std.student_id}</TableCell>
                     <TableCell>{std.email}</TableCell>

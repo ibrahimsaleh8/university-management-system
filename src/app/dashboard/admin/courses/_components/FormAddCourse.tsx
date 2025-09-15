@@ -26,7 +26,6 @@ export default function FormAddCourse({ setClose, token }: Props) {
   const {
     departments,
     errors,
-
     handleSubmit,
     isLoading,
     isPending,
@@ -73,7 +72,7 @@ export default function FormAddCourse({ setClose, token }: Props) {
         ) : (
           departments && (
             <div className="flex flex-col gap-1 w-full">
-              <label className="text-sm" htmlFor="department">
+              <label className="text-sm text-left" htmlFor="department">
                 Department:
               </label>
               <Select onValueChange={(e) => setValue("departmentId", +e)}>
@@ -88,11 +87,9 @@ export default function FormAddCourse({ setClose, token }: Props) {
                       </SelectItem>
                     ))
                   ) : (
-                    <>
-                      <SelectItem disabled value="none">
-                        No Departments Found
-                      </SelectItem>
-                    </>
+                    <SelectItem disabled value="none">
+                      No Departments Found
+                    </SelectItem>
                   )}
                 </SelectContent>
               </Select>
@@ -104,14 +101,14 @@ export default function FormAddCourse({ setClose, token }: Props) {
 
       {/* Is Elective */}
       <div className="flex flex-col gap-2">
-        <p className="text-sm">Is this course elective ?</p>
+        <p className="text-sm text-left">Is this course elective ?</p>
 
         <RadioGroup
           onValueChange={(e) => setValue("isElective", e == "true")}
           defaultValue="false">
           <div className="flex items-center gap-2">
             <RadioGroupItem id="yes-label" value={"true"} />
-            <label className="text-sm" htmlFor="yes-label">
+            <label className="text-sm " htmlFor="yes-label">
               Yes
             </label>
           </div>

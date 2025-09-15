@@ -15,8 +15,8 @@ export default function UserCardImageAndName({ image, name }: Props) {
         height={100}
       />
       {/* Text */}
-      <div className="flex flex-col items-start gap-0.5 text-sm">
-        <p className="font-medium">{name}</p>
+      <div className="flex flex-col items-start gap-0.5 sm:text-sm text-xs">
+        <p className="font-medium line-clamp-1">{name}</p>
       </div>
     </div>
   );

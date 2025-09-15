@@ -9,12 +9,12 @@ export default function TeacherDetailsSkeleton() {
       </div>
 
       <div className="flex items-start gap-3 lg:flex-row flex-col">
-        <Skeleton className="w-96 h-72 rounded-2xl" />
+        <Skeleton className="sm:w-96 w-full h-72 rounded-2xl" />
         <Skeleton className="w-full h-72 rounded-2xl" />
       </div>
 
       <div className="flex items-start gap-3 lg:flex-row flex-col">
-        <Skeleton className="w-96 h-72 rounded-2xl" />
+        <Skeleton className="sm:w-96 w-full h-72 rounded-2xl" />
         <Skeleton className="w-full h-72 rounded-2xl" />
       </div>
 

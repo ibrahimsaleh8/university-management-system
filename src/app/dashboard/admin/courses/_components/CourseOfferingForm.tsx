@@ -212,7 +212,7 @@ export default function CourseOfferingForm({ setClose, token }: Props) {
       <ErrorMessage error1={errors.hall} error2={errors.maxCapacity} />
 
       <div>
-        <p>Has pre required courses ?</p>
+        <p className="text-left">Has pre required courses ?</p>
         <RadioGroup
           onValueChange={(e) => setHasPreRequired(e == "yes")}
           defaultValue="no">

@@ -60,7 +60,7 @@ export default function AddingModel({
   }, [close]);
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="bg-transparent flex items-center gap-1 font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
+      <AlertDialogTrigger className="bg-transparent flex items-center sm:justify-baseline  justify-center gap-1 font-medium cursor-pointer text-sm text-main-text px-4 py-2 border border-main-text hover:bg-main-text hover:text-Main-black duration-300 rounded-sm sm:w-fit w-full">
         <Plus className="w-4 h-4" /> Add {title ?? AddType}
       </AlertDialogTrigger>
       <AlertDialogContent className="sm:p-6 p-4">
@@ -70,70 +70,64 @@ export default function AddingModel({
           </AlertDialogTitle>
 
           <AlertDialogDescription></AlertDialogDescription>
-          <div
-            style={{
-              maxHeight: "calc(100vh - 200px)",
-            }}
-            className="w-full overflow-y-auto pb-2">
-            {/* Form Add New Teacher */}
-            {AddType == "Teacher" && (
-              <FormAddTeacher token={token} setClose={setClose} />
-            )}
+          {/* Form Add New Teacher */}
+          {AddType == "Teacher" && (
+            <FormAddTeacher token={token} setClose={setClose} />
+          )}
 
-            {/* Form Add New Student */}
-            {AddType == "Student" && (
-              <AddStudentForm setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Student */}
+          {AddType == "Student" && (
+            <AddStudentForm setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Department */}
-            {AddType == "Department" && (
-              <AddDepartmentForm setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Department */}
+          {AddType == "Department" && (
+            <AddDepartmentForm setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Semester */}
-            {AddType == "Semester" && (
-              <SemestrAddForm setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Semester */}
+          {AddType == "Semester" && (
+            <SemestrAddForm setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Course */}
-            {AddType == "Course" && (
-              <FormAddCourse setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Course */}
+          {AddType == "Course" && (
+            <FormAddCourse setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Course-Offering */}
-            {AddType == "Course-offering" && (
-              <CourseOfferingForm setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Course-Offering */}
+          {AddType == "Course-offering" && (
+            <CourseOfferingForm setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Acadimic Years */}
-            {AddType == "Academic Year" && (
-              <AcadimicYearForm setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Acadimic Years */}
+          {AddType == "Academic Year" && (
+            <AcadimicYearForm setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Course Time */}
-            {AddType == "Course Time" && (
-              <FormAddTime setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Course Time */}
+          {AddType == "Course Time" && (
+            <FormAddTime setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Class */}
-            {AddType == "Class" && (
-              <FormAddClass setClose={setClose} token={token} />
-            )}
-            {/* Form Add New Event */}
-            {AddType == "Event" && (
-              <AddEventForm setClose={setClose} token={token} />
-            )}
+          {/* Form Add New Class */}
+          {AddType == "Class" && (
+            <FormAddClass setClose={setClose} token={token} />
+          )}
+          {/* Form Add New Event */}
+          {AddType == "Event" && (
+            <AddEventForm setClose={setClose} token={token} />
+          )}
 
-            {/* Form Add New Announcment in teacher class */}
-            {AddType == "Teacher Announcement" && classId && className && (
-              <TeacherAnnouncmentForm
-                className={className}
-                classId={classId}
-                setClose={setClose}
-                token={token}
-              />
-            )}
-          </div>
+          {/* Form Add New Announcment in teacher class */}
+          {AddType == "Teacher Announcement" && classId && className && (
+            <TeacherAnnouncmentForm
+              className={className}
+              classId={classId}
+              setClose={setClose}
+              token={token}
+            />
+          )}
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel

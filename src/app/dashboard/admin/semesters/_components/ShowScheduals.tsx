@@ -87,14 +87,14 @@ export default function ShowScheduals({ token }: { token: string }) {
           <Skeleton className="w-[180px] h-10 rounded-md" />
         ) : (
           years && (
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 sm:w-fit w-full">
               <label className="text-sm" htmlFor="grade">
                 Grade:
               </label>
               <Select
                 defaultValue={years[1].year_label}
                 onValueChange={(e) => setAcademicYear(e)}>
-                <SelectTrigger id="grade" className="w-[180px]">
+                <SelectTrigger id="grade" className="sm:w-[180px] w-full">
                   <SelectValue placeholder="Grade" />
                 </SelectTrigger>
                 <SelectContent>

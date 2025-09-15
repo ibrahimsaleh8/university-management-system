@@ -8,7 +8,7 @@ export default async function StudentCalsses() {
   return (
     <div className="flex flex-col gap-3">
       <Tabs defaultValue="registerd" className="w-full">
-        <TabsList className="bg-Second-black">
+        <TabsList className="bg-transparent flex-wrap">
           <TabsTrigger
             className="px-3 data-[state=active]:text-black data-[state=active]:bg-white"
             value="registerd">

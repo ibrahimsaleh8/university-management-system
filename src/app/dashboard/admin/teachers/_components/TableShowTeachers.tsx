@@ -73,10 +73,12 @@ export default function TableShowTeachers({ token }: Props) {
                   Data.map((teacher) => (
                     <TableRow key={teacher.id}>
                       <TableCell>
-                        <UserCardImageAndName
-                          image={teacher.image}
-                          name={`${teacher.first_name} ${teacher.last_name}`}
-                        />
+                        <div className="w-[150px] lg:w-fit">
+                          <UserCardImageAndName
+                            image={teacher.image}
+                            name={`${teacher.first_name} ${teacher.last_name}`}
+                          />
+                        </div>
                       </TableCell>
                       <TableCell>{teacher.teacher_id}</TableCell>
                       <TableCell>{teacher.email}</TableCell>

@@ -28,7 +28,7 @@ export default function EditDepartment({ departmentData, token }: Props) {
   return (
     <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-3">
       {/* Top */}
-      <div className="flex gap-2 justify-between pb-4">
+      <div className="flex gap-2 justify-between pb-4 flex-wrap">
         <p className="px-3 py-1 bg-Second-Card-bg rounded-sm text-sm capitalize">
           {update ? "Update" : "Show"} mode
         </p>
@@ -59,7 +59,7 @@ export default function EditDepartment({ departmentData, token }: Props) {
         />
       </div>
       <ErrorMessage error1={errors.name} error2={errors.code} />
-      <div className="flex flex-row gap-2 text-sm mt-3">
+      <div className="flex flex-wrap gap-2 text-sm mt-3">
         <DepartmentSmallInfo
           icon={<FaChalkboardTeacher className="w-4 h-4" />}
           title="Teachers"

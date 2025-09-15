@@ -108,7 +108,7 @@ export default function ShowStudentAnswers({
         </div>
         <AlertDialogFooter className="border-t border-soft-border px-6 py-4">
           <AlertDialogCancel className="bg-red-500 sm:w-20 w-full rounded-sm !p-2 text-white border-red-500 hover:bg-red-600 hover:text-white duration-300">
-            Cancel
+            Close
           </AlertDialogCancel>
           <Button
             onClick={() => {
