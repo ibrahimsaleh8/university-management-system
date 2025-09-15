@@ -16,6 +16,9 @@ export default async function AdminProfilePage() {
       tags: ["admin_data"],
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch admin profile");
+  }
 
   const adminData: AdminMainData & {
     image: string;

@@ -19,15 +19,11 @@ type Props = {
 };
 
 async function addNewTeacherMutate(data: teacherDataTypeServer, token: string) {
-  try {
-    await axios.post(`${MainDomain}/api/create/teacher`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  } catch (error) {
-    throw error;
-  }
+  await axios.post(`${MainDomain}/api/create/teacher`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
 
 export const useAddTeacher = ({ setClose, token }: Props) => {

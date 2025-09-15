@@ -4,7 +4,7 @@ import LoadingTab from "@/app/dashboard/student/classes/[name]/_components/Loadi
 import { AttachmentsFileType } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 export type AttachemntsFilesDataType = {
   id: string;
   name: string;
@@ -35,10 +35,17 @@ export type AnnouncementClassDataType = {
 async function getAnnouncments(
   className: string
 ): Promise<AnnouncementClassDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/class/${className}/announcements`
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/class/${className}/announcements`
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 export default function TeacherClassAnnouncments({

@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import TableCourseStudents from "./TableCourseStudents";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { EnrollmentStatus } from "@/lib/globalTypes";
 import { useQuery } from "@tanstack/react-query";
@@ -31,15 +31,22 @@ async function getCourseStudents(
   id: string,
   token: string
 ): Promise<CourseStudentDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/teacher-courses/${id}/students`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/teacher-courses/${id}/students`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 export default function ShowCourseStudents({ courseId, token }: Props) {

@@ -52,7 +52,9 @@ export default async function StudentProfilePage() {
       tags: ["student_data"],
     },
   });
-
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const studentData: StudentResponse = await res.json();
 
   return (

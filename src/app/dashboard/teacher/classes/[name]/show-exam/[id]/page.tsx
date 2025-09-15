@@ -28,6 +28,9 @@ export default async function ShowExamById({
       },
     }
   );
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const questions: typeExamQuestionDataType[] = await res.json();
 
   return (

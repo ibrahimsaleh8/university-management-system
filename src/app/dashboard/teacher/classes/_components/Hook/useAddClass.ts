@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "@/redux/hooks";
@@ -27,8 +27,15 @@ async function getCoursesForTeacher(
   id: number
 ): Promise<teacherCoursesDataType[] | undefined> {
   if (id == 0) return undefined;
-  const res = await axios.get(`${MainDomain}/api/get/teacher-courses/${id}`);
-  return res.data;
+  try {
+    const res = await axios.get(`${MainDomain}/api/get/teacher-courses/${id}`);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 async function createNewClass(

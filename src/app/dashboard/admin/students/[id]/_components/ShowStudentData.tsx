@@ -12,7 +12,7 @@ import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { StudentResponse } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { UserCog } from "lucide-react";
 import TeacherDetailsSkeleton from "../../../teachers/[id]/_components/TeacherDetailsSkeleton";
 
@@ -22,8 +22,15 @@ type Props = {
   schedualData: EventDataType[];
 };
 async function getAllStudents(id: string): Promise<StudentResponse> {
-  const res = await axios.get(`${MainDomain}/api/get/students/${id}`);
-  return res.data;
+  try {
+    const res = await axios.get(`${MainDomain}/api/get/students/${id}`);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export default function ShowStudentData({ id, token, schedualData }: Props) {
   console.log("schedualData", schedualData);

@@ -1,5 +1,5 @@
 import { MainDomain } from "@/variables/MainDomain";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import StudentExamCard from "./StudentExamCard";
 import { useQuery } from "@tanstack/react-query";
 import { ExamStatusType } from "@/lib/globalTypes";
@@ -29,15 +29,22 @@ async function getExams(
   className: string,
   token: string
 ): Promise<StudentExamResponse[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/student-class/${className}/exams`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/student-class/${className}/exams`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export default function ShowStudentsExam({ name, token }: Props) {
   const { error, isError, isLoading, data } = useQuery({

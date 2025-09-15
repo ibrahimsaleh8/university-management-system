@@ -26,6 +26,10 @@ export default async function StudentMainPage() {
       Authorization: `Bearer ${token}`,
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
   const schedualData: EventDataType[] = await res.json();
   const announcmnets = await GetLatestStudentAnnouncments(user.userId);
   return (

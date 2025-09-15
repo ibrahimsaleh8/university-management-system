@@ -1,7 +1,7 @@
 "use client";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import StudentClassAnnouncmentCard from "./StudentClassAnnouncmentCard";
 import LoadingTab from "./LoadingTab";
 import { AttachemntsFilesDataType } from "@/app/dashboard/teacher/classes/_components/TeacherClassAnnouncments";
@@ -32,15 +32,22 @@ async function getAnnouncments(
   name: string,
   token: string
 ): Promise<StudentClassAnnouncmentsDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/student-registerd-classes/${name}/get-announcments`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/student-registerd-classes/${name}/get-announcments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export default function ShowStudentAnnouncments({ name, token }: Props) {
   const { data: announcments, isLoading } = useQuery({

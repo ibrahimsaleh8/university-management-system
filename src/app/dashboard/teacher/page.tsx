@@ -26,6 +26,9 @@ export default async function TeacherDashboardPage() {
       revalidate: 300,
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const schedualData: EventDataType[] = await res.json();
 
   const { activeClasses, activeCourses, totalStudents, upcomingExams } =

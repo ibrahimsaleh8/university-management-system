@@ -29,7 +29,7 @@ import TextAreaForm from "../forms/TextAreaForm";
 import ErrorMessage from "../forms/ErrorMessage";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import SmallLoader from "@/components/Global/SmallLoader";
 import GlobalToast from "@/components/Global/GlobalToast";
@@ -39,11 +39,18 @@ import EmojiPickerTab from "./EmojiPicker";
 async function createNewMessageApi(msgData: CreateMessageDataType): Promise<{
   chatId: string;
 }> {
-  const res = await axios.post(
-    `${MainDomain}/api/messages/create-message`,
-    msgData
-  );
-  return res.data;
+  try {
+    const res = await axios.post(
+      `${MainDomain}/api/messages/create-message`,
+      msgData
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 type Props = {
   role: string;

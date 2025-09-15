@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import AddAssignment from "./AddAssignment";
 import { MainDomain } from "@/variables/MainDomain";
 import AssignmentCard from "./AssignmentCard";
@@ -26,10 +26,17 @@ export type ClassAssignmentsDataType = {
 async function getAllAssignements(
   className: string
 ): Promise<ClassAssignmentsDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/class/${className}/assignment`
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/class/${className}/assignment`
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 export default function ClassAssignments({ classId, token, className }: Props) {

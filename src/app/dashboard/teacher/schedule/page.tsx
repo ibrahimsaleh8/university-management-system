@@ -16,6 +16,9 @@ export default async function TeacherSchedulePage() {
       revalidate: 300,
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const schedualData: EventDataType[] = await res.json();
 
   const semester = await GetCurrentSemester();

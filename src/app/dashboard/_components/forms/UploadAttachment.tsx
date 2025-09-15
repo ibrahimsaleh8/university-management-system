@@ -1,6 +1,6 @@
 "use client";
 import { MainDomain } from "@/variables/MainDomain";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { FileText, FileUp, TriangleAlert, X } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 type Props = {
@@ -13,14 +13,21 @@ export async function UploadAttachmentApi(
   const formData = new FormData();
   formData.append("file", file);
   formData.append("pathName", "students");
-  const res = await axios.post(
-    `${MainDomain}/api/upload/attachment`,
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.post(
+      `${MainDomain}/api/upload/attachment`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export default function UploadAttachment({ files, setFiles }: Props) {
   return (

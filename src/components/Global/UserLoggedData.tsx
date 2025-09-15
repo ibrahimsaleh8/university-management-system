@@ -30,6 +30,10 @@ export default async function UserLoggedData({
     }).then((res) => res.json());
 
     data = res;
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
   }
+
   return <UpdateUserInfoState userInfo={data}>{children}</UpdateUserInfoState>;
 }

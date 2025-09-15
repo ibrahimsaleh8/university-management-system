@@ -39,6 +39,9 @@ export default async function StudentProfilePage() {
       tags: ["teacher_data"],
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
 
   const teacherData: TeacherResponse = await res.json();
   console.log("teacherData", teacherData);

@@ -1,7 +1,7 @@
 import { ErrorResponseType, ExamQuestionType } from "@/lib/globalTypes";
 import GlobalToast from "@/components/Global/GlobalToast";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -48,15 +48,22 @@ async function getExamQuestionsWithAnswers(
   token: string,
   stdId: string
 ): Promise<ExamQuestionWithAnswerType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/class/${className}/exams/${examId}/${stdId}/student-answers`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/class/${className}/exams/${examId}/${stdId}/student-answers`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 async function markAnswers({

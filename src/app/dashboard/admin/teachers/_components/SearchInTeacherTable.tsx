@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { TeachersDataType } from "./TableShowTeachers";
 import { useMutation } from "@tanstack/react-query";
 import SmallLoader from "@/components/Global/SmallLoader";
@@ -21,10 +21,17 @@ async function SearachInTeachers({
   method: searchMethod;
   searchTxt: string;
 }): Promise<TeachersDataType[]> {
-  const res = await axios.get(
-    `/api/search/teachers?text=${searchTxt}&method=${method}`
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `/api/search/teachers?text=${searchTxt}&method=${method}`
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 type Props = {

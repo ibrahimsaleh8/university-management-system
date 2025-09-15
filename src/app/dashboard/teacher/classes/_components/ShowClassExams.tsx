@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import ClassExamCard from "./ClassExamCard";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
@@ -19,8 +19,17 @@ export type ClassExamDataType = {
 };
 
 async function getClassExams(className: string): Promise<ClassExamDataType[]> {
-  const res = await axios.get(`${MainDomain}/api/get/class/${className}/exams`);
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/class/${className}/exams`
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 export default function ShowClassExams({ className }: { className: string }) {

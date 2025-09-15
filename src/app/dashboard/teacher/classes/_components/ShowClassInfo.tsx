@@ -2,7 +2,7 @@
 
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BookOpenText, Megaphone, ScrollText, Settings } from "lucide-react";
 import { PiStudent } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -37,9 +37,17 @@ export type TeacherClassDataType = {
 async function getTeacherClassInformation(
   name: string
 ): Promise<TeacherClassDataType> {
-  const res = await axios.get(`${MainDomain}/api/get/class/${name}`);
-  return res.data;
+  try {
+    const res = await axios.get(`${MainDomain}/api/get/class/${name}`);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
+
 export default function ShowClassInfo({
   token,
   className,
@@ -52,7 +60,7 @@ export default function ShowClassInfo({
     queryFn: () => getTeacherClassInformation(className),
   });
   if (error && isError) throw new Error(error.message);
-
+  console.log("Main Error", error);
   return isLoading && !data ? (
     <ClassSkeleton />
   ) : (

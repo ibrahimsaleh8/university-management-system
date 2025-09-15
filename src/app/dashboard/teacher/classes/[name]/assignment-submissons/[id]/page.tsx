@@ -34,6 +34,9 @@ export default async function AssignmentSubmissonsById({
       Authorization: `Bearer ${token}`,
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const assignmentMainData: AssignmentResponse = await res.json();
 
   return (

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import SmallLoader from "@/components/Global/SmallLoader";
 import { StudentResDataType } from "./ShowStudentsTable";
@@ -26,10 +26,17 @@ async function searchInStudents({
   method: searchMethod;
   searchTxt: string;
 }): Promise<StudentResDataType[]> {
-  const res = await axios.get(
-    `/api/search/students?text=${searchTxt}&method=${method}`
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `/api/search/students?text=${searchTxt}&method=${method}`
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 export default function SearchInStudents({

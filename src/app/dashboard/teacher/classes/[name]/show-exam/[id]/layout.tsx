@@ -46,6 +46,9 @@ export default async function ShowExamLayout({
       Authorization: `Bearer ${token}`,
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const examData: ExamResponseType = await res.json();
 
   return (

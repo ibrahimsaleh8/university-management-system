@@ -2,13 +2,20 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { NumberOfStudents } from "@/variables/Pagination";
 import { StudentResDataType } from "@/app/dashboard/admin/students/_components/ShowStudentsTable";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { GetAllYears } from "@/lib/GetAllYears";
 
 async function getAllStudents(): Promise<StudentResDataType[]> {
-  const res = await axios.get(`${MainDomain}/api/get/students`);
-  return res.data;
+  try {
+    const res = await axios.get(`${MainDomain}/api/get/students`);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 export const useShowStudentsTable = () => {

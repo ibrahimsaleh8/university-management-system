@@ -1,7 +1,7 @@
 import { ExamQuestionType } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import ExamQuestionCard from "./ExamQuestionCard";
 import SubmitExamBtn from "./SubmitExamBtn";
@@ -31,15 +31,22 @@ async function getExamQuestions(
   className: string,
   token: string
 ): Promise<QuestionExamDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/student-class/${className}/exams/${examId}/questions`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/student-class/${className}/exams/${examId}/questions`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export default function ShowQuestions({
   examId,

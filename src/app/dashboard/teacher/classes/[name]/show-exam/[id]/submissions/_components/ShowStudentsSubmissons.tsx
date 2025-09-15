@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import StudentCardWithImage from "./StudentCardWithImage";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import SubmissonStatus from "./SubmissonStatus";
@@ -41,15 +41,22 @@ async function getSubmissions(
   token: string,
   examId: string
 ): Promise<StudentsSubmissonsDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/class/${className}/exams/${examId}/submissons`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/class/${className}/exams/${examId}/submissons`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 
 export default function ShowStudentsSubmissons({

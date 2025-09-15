@@ -2,7 +2,7 @@
 import { AssignmentSubmissionStatus } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import StudentAssignment from "./StudentAssignment";
 import LoadingTab from "./LoadingTab";
 import { AttachemntsFilesDataType } from "@/app/dashboard/teacher/classes/_components/TeacherClassAnnouncments";
@@ -33,15 +33,22 @@ async function getAssignmentsApi(
   className: string,
   token: string
 ): Promise<StudentAssignmentResponse[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/student-class/${className}/assignments`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/student-class/${className}/assignments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export default function ShowStudentAssignments({ name, token }: Props) {
   const { error, isError, data, isLoading } = useQuery({

@@ -1,6 +1,6 @@
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export type coursesDataType = {
   id: number;
@@ -14,10 +14,17 @@ export type coursesDataType = {
   isElective: boolean;
 };
 async function getAllCourses(): Promise<coursesDataType[]> {
-  const res = await axios.get(
-    `${MainDomain}/api/get/semester/active/main-courses`
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `${MainDomain}/api/get/semester/active/main-courses`
+    );
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export const GetActiveSemesterMainCourses = () => {
   const {

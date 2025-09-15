@@ -32,6 +32,9 @@ export default async function StudentGrades() {
       tags: ["user_grades"],
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const data: StudentCoursesResponse[] = await res.json();
   return (
     <div className="flex flex-col gap-5 p-3">

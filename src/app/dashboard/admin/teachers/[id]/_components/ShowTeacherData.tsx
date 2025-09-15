@@ -2,7 +2,7 @@
 import { TeacherDataResponse } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import CalendarTable from "@/app/dashboard/_components/Calender/CalenderTable";
 import UserOperations from "../../../../_components/Details/UserOperations";
@@ -23,8 +23,15 @@ type Props = {
 async function getTeacherDataApi(
   teacher_id: string
 ): Promise<TeacherDataResponse> {
-  const res = await axios.get(`${MainDomain}/api/get/teachers/${teacher_id}`);
-  return res.data;
+  try {
+    const res = await axios.get(`${MainDomain}/api/get/teachers/${teacher_id}`);
+    return res.data;
+  } catch (err) {
+    const error = err as AxiosError<{ message?: string }>;
+    throw new Error(
+      error.response?.data?.message || error.message || "Something went wrong"
+    );
+  }
 }
 export default function ShowTeacherData({ teacher_id, token }: Props) {
   const { data, isError, error, isLoading } = useQuery({

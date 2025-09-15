@@ -25,7 +25,9 @@ export default async function CoursesTeacherPage() {
       Authorization: `Bearer ${token}`,
     },
   });
-
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
   const courses: {
     activeSemesterCourses: TeacherCoursesResponse[];
     notActiveSemesterCourses: TeacherCoursesResponse[];
