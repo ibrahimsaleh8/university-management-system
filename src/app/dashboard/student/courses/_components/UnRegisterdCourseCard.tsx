@@ -31,6 +31,9 @@ export default function UnRegisterdCourseCard({ courseData, token }: Props) {
       <div className="flex flex-col gap-3">
         <p className="text-xl font-bold capitalize">
           {courseData.course_name}{" "}
+          <span className="text-sm text-low-white pt-2 font-medium">
+            ({courseData.course_code})
+          </span>
           {courseData.course_isElective && (
             <span className="text-sm text-low-white">(Elective)</span>
           )}

@@ -20,7 +20,10 @@ export default function RegisterdCourseCard({ courseData }: Props) {
       {/* Body */}
       <div className="flex flex-col gap-5">
         <p className="text-xl font-bold capitalize flex items-center gap-2">
-          {courseData.courseName}
+          {courseData.courseName}{" "}
+          <span className="text-sm text-low-white pt-2 font-medium">
+            ({courseData.courseCode})
+          </span>
           {courseData.courseIsElective && (
             <span className="text-sm text-low-white mt-2">(Elective)</span>
           )}
