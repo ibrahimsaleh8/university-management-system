@@ -17,7 +17,7 @@ async function getTeacherClasses(token: string): Promise<ClassTeacherData[]> {
 }
 export default function ShowTeacherClasses({ token }: { token: string }) {
   const { data, isError, error, isLoading } = useQuery({
-    queryKey: ["teacher_classes", token],
+    queryKey: ["teacher_classes"],
     queryFn: () => getTeacherClasses(token),
   });
 
@@ -45,8 +45,8 @@ export default function ShowTeacherClasses({ token }: { token: string }) {
       ))}
     </div>
   ) : (
-    <div className="w-full bg-Second-black rounded-md h-32 flex items-center justify-center text-low-white">
-      No Classes Found..
+    <div className="capitalize w-full bg-Second-black rounded-md h-32 flex items-center justify-center text-low-white">
+      no classes found active in current semester..
     </div>
   );
 }

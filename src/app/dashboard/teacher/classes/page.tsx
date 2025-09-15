@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import AddingModel from "../../_components/forms/AddingModel";
 import ShowTeacherClasses from "./_components/ShowTeacherClasses";
+import ShowOldTeacherClasses from "./_components/ShowOldTeacherClasses";
 
 export default async function TeacherClassesPage() {
   const token = (await (await cookies()).get("token")?.value) as string;
@@ -15,8 +16,10 @@ export default async function TeacherClassesPage() {
         </div>
         <AddingModel token={token} AddType="Class" />
       </div>
-
-      <ShowTeacherClasses token={token} />
+      <div className="flex flex-col gap-10">
+        <ShowTeacherClasses token={token} />
+        <ShowOldTeacherClasses token={token} />
+      </div>
     </div>
   );
 }

@@ -104,7 +104,7 @@ export const useAddClass = ({ setClose, token }: Props) => {
         queryKey: ["teacher_courses_class", teacherId],
       });
       queryClinet.refetchQueries({
-        queryKey: ["teacher_classes", token],
+        queryKey: ["teacher_classes"],
       });
     },
     onError: (err: ErrorResponseType) => {

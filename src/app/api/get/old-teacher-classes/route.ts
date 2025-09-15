@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     });
     if (!teacher) {
       return NextResponse.json(
-        { message: "Teacher not found " },
+        { message: "Teacher not found" },
         { status: 404 }
       );
     }
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
         teacherId: teacher.id,
         course: {
           semester: {
-            isActive: true,
+            isActive: false,
           },
         },
       },
