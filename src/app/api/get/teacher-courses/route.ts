@@ -15,9 +15,6 @@ export async function GET(req: NextRequest) {
     const courses = await prisma.courseOffering.findMany({
       where: {
         teacherId: authVerify.user.data.id,
-        semester: {
-          isActive: true,
-        },
       },
       select: {
         id: true,
@@ -49,7 +46,19 @@ export async function GET(req: NextRequest) {
       maxCapacity: c.maxCapacity,
       students: c._count.students,
     }));
-    return NextResponse.json(resCourses, { status: 200 });
+
+    const activeSemesterCourses = resCourses.filter((c) => c.semester.isActive);
+    const notActiveSemesterCourses = resCourses.filter(
+      (c) => !c.semester.isActive
+    );
+
+    return NextResponse.json(
+      {
+        activeSemesterCourses,
+        notActiveSemesterCourses,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(

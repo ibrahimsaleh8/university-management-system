@@ -26,7 +26,15 @@ export default async function CoursesTeacherPage() {
     },
   });
 
-  const courses: TeacherCoursesResponse[] = await res.json();
+  const courses: {
+    activeSemesterCourses: TeacherCoursesResponse[];
+    notActiveSemesterCourses: TeacherCoursesResponse[];
+  } = await res.json();
 
-  return <ShowCourses courses={courses} />;
+  return (
+    <ShowCourses
+      activeCourses={courses.activeSemesterCourses}
+      notActiveCourses={courses.notActiveSemesterCourses}
+    />
+  );
 }

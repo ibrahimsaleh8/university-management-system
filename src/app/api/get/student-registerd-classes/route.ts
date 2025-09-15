@@ -11,66 +11,80 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     // End Check Student Authorize
-    const studentClasses = await prisma.student.findUnique({
+    const student = await prisma.student.findUnique({
       where: {
         email: authVerify.user.data.email,
       },
       select: {
-        classes: {
-          select: {
-            classId: true,
-            classGrade: true,
-            class: {
-              select: {
-                name: true,
-                teacher: {
-                  select: {
-                    first_name: true,
-                    last_name: true,
-                    email: true,
-                    image: true,
-                    gender: true,
-                  },
-                },
-                created_at: true,
-                course: {
-                  select: {
-                    course: {
-                      select: {
-                        name: true,
-                        department: {
-                          select: {
-                            name: true,
-                            code: true,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-                _count: {
-                  select: {
-                    students: true,
-                    assignments: true,
-                    announcements: true,
-                  },
-                },
-                wide_image: true,
-              },
-            },
-          },
-        },
+        id: true,
       },
     });
 
-    if (!studentClasses) {
+    if (!student) {
       return NextResponse.json(
         { message: "Student not found" },
         { status: 404 }
       );
     }
 
-    const classesRes = studentClasses.classes.map((cls) => ({
+    const classes = await prisma.studentClass.findMany({
+      where: {
+        student: {
+          id: student.id,
+        },
+        class: {
+          course: {
+            semester: {
+              isActive: true,
+            },
+          },
+        },
+      },
+      select: {
+        classId: true,
+        classGrade: true,
+        class: {
+          select: {
+            name: true,
+            teacher: {
+              select: {
+                first_name: true,
+                last_name: true,
+                email: true,
+                image: true,
+                gender: true,
+              },
+            },
+            created_at: true,
+            course: {
+              select: {
+                course: {
+                  select: {
+                    name: true,
+                    department: {
+                      select: {
+                        name: true,
+                        code: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                students: true,
+                assignments: true,
+                announcements: true,
+              },
+            },
+            wide_image: true,
+          },
+        },
+      },
+    });
+
+    const classesRes = classes.map((cls) => ({
       id: cls.classId,
       name: cls.class.name,
       teacher: cls.class.teacher,
