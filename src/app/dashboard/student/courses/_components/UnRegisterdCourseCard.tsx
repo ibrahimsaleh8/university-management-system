@@ -2,6 +2,7 @@ import { Hourglass, MapPin, Users } from "lucide-react";
 import { StudentCourseDataType } from "./RegisterAvailabelCourses";
 import { differenceInHours } from "date-fns";
 import RegisterCourseBtn from "./RegisterCourseBtn";
+import Image from "next/image";
 
 type Props = {
   courseData: StudentCourseDataType;
@@ -58,7 +59,9 @@ export default function UnRegisterdCourseCard({ courseData, token }: Props) {
 
         {/* Teacher Info */}
         <div className="flex items-start gap-2 w-full sm:w-fit">
-          <img
+          <Image
+            width={1000}
+            height={1000}
             src={courseData.teacher.image}
             alt={courseData.teacher.first_name}
             className="w-9 h-9 object-center object-cover rounded-full"

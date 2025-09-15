@@ -5,6 +5,7 @@ import { MainDomain } from "@/variables/MainDomain";
 import { useQuery } from "@tanstack/react-query";
 import { GenderType } from "@/lib/globalTypes";
 import StudentClassCard from "./StudentClassCard";
+import SmallLoader from "@/components/Global/SmallLoader";
 
 type Props = {
   token: string;
@@ -55,7 +56,10 @@ export default function ShowUnRegisterdClasses({ token }: Props) {
   if (isError && error) throw new Error(error.message);
 
   return isLoading ? (
-    <div className="text-low-white">Loading unregisterd courses ...</div>
+    <div className="text-low-white flex items-center gap-2 justify-center text-center">
+      <SmallLoader color="white" />
+      Loading unregisterd courses ...
+    </div>
   ) : data && data.length > 0 ? (
     <div className="flex flex-col gap-3 ">
       {/* Header */}

@@ -69,7 +69,7 @@ export default function ShowChats({ token }: { token: string }) {
   return (
     <div className="sm:w-72 w-full sm:h-full h-96 overflow-y-auto p-1 bg-low-black border border-soft-border rounded-md flex flex-col gap-3">
       {/* Header */}
-      <div className="flex flex-col gap-2 p-1">
+      <div className="flex flex-col gap-2 p-1 pt-2">
         <div className="text-lg font-bold w-full border-b-2 border-soft-border pb-2 flex items-center justify-between">
           <p>Contacts</p>
           {email && role && <CreateNewChat email={email} role={role} />}

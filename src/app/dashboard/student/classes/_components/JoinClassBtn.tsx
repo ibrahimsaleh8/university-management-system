@@ -32,7 +32,7 @@ export default function JoinClassBtn({ classId, token }: Props) {
         queryKey: ["unregisterd_classes"],
       });
       queryClient.refetchQueries({
-        queryKey: ["registerd_courses"],
+        queryKey: ["registerd_classes"],
       });
       GlobalToast({
         icon: "success",

@@ -68,14 +68,14 @@ export default function SemesterWithCoursesCard({ data }: Props) {
       </Table>
 
       <div className="flex items-center gap-4 flex-wrap mt-3">
-        <div className="bg-Second-black p-4 flex flex-col gap-2 rounded-2xl min-w-52">
+        <div className="bg-Second-black py-2 px-4 flex items-center gap-2 rounded-md min-w-52">
           <p className="flex items-center gap-2 text-sm  font-medium">
             <Medal className="w-4 h-4" />
-            Semester GPA
+            Semester GPA:
           </p>
           <p className="font-black text-main-text">{data.cumulativeGpa}</p>
         </div>
-        <div className="bg-Second-black p-4 flex flex-col gap-2 rounded-2xl min-w-52">
+        <div className="bg-Second-black py-2 px-4 flex items-center gap-2 rounded-md min-w-52">
           <p className="flex items-center gap-2 text-sm font-medium">
             <Timer className="w-4 h-4" />
             Total Hours

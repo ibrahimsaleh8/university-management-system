@@ -24,7 +24,7 @@ async function getRegisterdCourses(
 }
 export default function ShowRegisterdClasses({ token }: Props) {
   const { data, isLoading, error, isError } = useQuery({
-    queryKey: ["registerd_courses"],
+    queryKey: ["registerd_classes"],
     queryFn: () => getRegisterdCourses(token),
   });
   if (error && isError) throw new Error(error.message);
