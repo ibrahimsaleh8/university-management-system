@@ -31,7 +31,7 @@ export default function ShowDetailsModel({ childComponent, title }: Props) {
           <div>{childComponent}</div>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="bg-red-500 h-7 w-7 rounded-sm !p-2 text-white border-red-500 hover:bg-red-600 hover:text-white duration-300 absolute sm:top-[-10px] sm:right-[-10px]  top-1 right-1">
+          <AlertDialogCancel className="bg-red-500 h-7 w-7 rounded-sm !p-2 text-white border-red-500 hover:bg-red-600 hover:text-white duration-300 absolute top-2 right-2">
             <X />
           </AlertDialogCancel>{" "}
         </AlertDialogFooter>
