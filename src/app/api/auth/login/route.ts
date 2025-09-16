@@ -8,7 +8,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const { role, email, password } = (await request.json()) as LoginDataType;
-    console.log("Role", role);
     let findUser;
     if (role == "teacher") {
       findUser = await prisma.teacher.findUnique({

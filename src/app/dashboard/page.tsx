@@ -1,22 +1,19 @@
-"use client";
-import { useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { VerifyUserFromToken } from "@/lib/VerifyUserFromToken";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function DashboardPage() {
-  const { role } = useAppSelector((state) => state.user.user);
-  const route = useRouter();
+export default async function DashboardPage() {
+  const token = await (await cookies()).get("token");
+  if (!token) {
+    redirect("/");
+  }
+  const user = await VerifyUserFromToken(token.value);
+  if (!user) {
+    redirect("/");
+  }
+  if (user.role) {
+    redirect(`/dashboard/${user.role}`);
+  }
 
-  useEffect(() => {
-    if (role == "admin") {
-      route.replace("/dashboard/admin");
-    }
-    if (role == "teacher") {
-      route.replace("/dashboard/teacher");
-    }
-    if (role == "student") {
-      route.replace("/dashboard/student");
-    }
-  }, [role, route]);
   return <></>;
 }
