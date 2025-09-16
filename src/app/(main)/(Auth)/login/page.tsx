@@ -75,11 +75,7 @@ export default function LoginPage() {
           </motion.p>
         </div>
 
-        <motion.div
-          className="flex gap-2 items-center flex-col sm:flex-row"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}>
+        <div className="flex gap-2 items-center flex-col sm:flex-row">
           {/* Email */}
           <InputForm
             isError={errors.email != undefined}
@@ -107,15 +103,11 @@ export default function LoginPage() {
               </SelectContent>
             </Select>
           </div>
-        </motion.div>
+        </div>
 
         <ErrorMessage error1={errors.email} error2={errors.role} />
 
-        <motion.div
-          className="flex flex-col gap-1"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}>
+        <div className="flex flex-col gap-1">
           <div className="flex gap-1 items-center">
             <InputForm
               isError={errors.password != undefined}
@@ -135,18 +127,14 @@ export default function LoginPage() {
               )}
             </Button>
           </div>
-        </motion.div>
+        </div>
 
         {errors.password && (
           <p className="text-sm text-red-500">{errors.password.message}</p>
         )}
 
-        <motion.div
-          className="flex items-center gap-4 flex-wrap justify-between"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <div className="flex items-center gap-4 flex-wrap justify-between">
+          <div>
             <Button
               variant={"mainWithShadow"}
               className="w-48"
@@ -160,9 +148,9 @@ export default function LoginPage() {
                 "Login"
               )}
             </Button>
-          </motion.div>
+          </div>
           <Link href={"/"}>Forgot Password?</Link>
-        </motion.div>
+        </div>
       </motion.form>
 
       {/* Right Image Animation */}
@@ -176,7 +164,7 @@ export default function LoginPage() {
           alt="Login Image"
           width={1000}
           height={1000}
-          className="w-full h-full object-contain rounded-2xl object-top border border-soft-border"
+          className="w-full h-full object-contain rounded-2xl object-top "
         />
       </motion.div>
     </div>
