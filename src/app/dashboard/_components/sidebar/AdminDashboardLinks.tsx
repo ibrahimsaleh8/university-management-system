@@ -15,6 +15,7 @@ import Link from "next/link";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
+import { useLogout } from "@/components/buttons/useLogout";
 
 export default function AdminDashboardLinks({
   pathname,
@@ -22,6 +23,7 @@ export default function AdminDashboardLinks({
   pathname: string;
 }) {
   const { setOpenMobile } = useSidebar();
+  const { HandleLogout } = useLogout();
 
   return (
     <MotionHighlight
@@ -137,8 +139,8 @@ export default function AdminDashboardLinks({
       </Link>
 
       <Button
-        onClick={() => setOpenMobile(false)}
-        className={`h-11 hover:text-black duration-200 font-medium flex items-start justify-start gap-3 px-10 pl-3 rounded-md w-full bg-transparent hover:bg-transparent `}>
+        onClick={() => HandleLogout()}
+        className={`h-11 hover:text-black duration-200 font-medium flex items-center justify-start gap-3 px-10 pl-3 rounded-md w-full bg-transparent hover:bg-transparent `}>
         <LogOut className="w-5 h-5" />
         <span>Logout</span>
       </Button>

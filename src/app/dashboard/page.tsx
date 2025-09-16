@@ -8,12 +8,8 @@ export default async function DashboardPage() {
     redirect("/");
   }
   const user = await VerifyUserFromToken(token.value);
-  if (!user) {
+  if (!user || !user.role) {
     redirect("/");
   }
-  if (user.role) {
-    redirect(`/dashboard/${user.role}`);
-  }
-
-  return <></>;
+  redirect(`/dashboard/${user.role}`);
 }

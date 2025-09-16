@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SiGoogleclassroom } from "react-icons/si";
 import { CgProfile } from "react-icons/cg";
+import { useLogout } from "@/components/buttons/useLogout";
 
 export default function TeacherDashboardLinks({
   pathname,
@@ -19,6 +20,7 @@ export default function TeacherDashboardLinks({
   pathname: string;
 }) {
   const { setOpenMobile } = useSidebar();
+  const { HandleLogout } = useLogout();
 
   return (
     <MotionHighlight
@@ -96,8 +98,8 @@ export default function TeacherDashboardLinks({
       </Link>
 
       <Button
-        onClick={() => setOpenMobile(false)}
-        className={`h-11 hover:text-black duration-200 font-medium flex items-start justify-start gap-3 px-10 pl-3 rounded-md w-full bg-transparent hover:bg-transparent `}>
+        onClick={() => HandleLogout()}
+        className={`h-11 hover:text-black duration-200 font-medium flex items-center justify-start gap-3 px-10 pl-3 rounded-md w-full bg-transparent hover:bg-transparent `}>
         <LogOut className="w-5 h-5" />
         <span>Logout</span>
       </Button>
