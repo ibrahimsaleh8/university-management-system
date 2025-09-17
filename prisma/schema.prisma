@@ -459,3 +459,12 @@ enum UserRole {
   STUDENT
   ADMIN
 }
+
+model ForgotPasswords {
+  id        String   @id @default(cuid())
+  token     String
+  email     String
+  userRole  UserRole
+  isValid   Boolean  @default(true)
+  createdAt DateTime @default(now())
+}

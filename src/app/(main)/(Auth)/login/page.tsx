@@ -149,7 +149,7 @@ export default function LoginPage() {
               )}
             </Button>
           </div>
-          <Link href={"/"}>Forgot Password?</Link>
+          <Link href={"/forgot-password"}>Forgot Password?</Link>
         </div>
       </motion.form>
 
