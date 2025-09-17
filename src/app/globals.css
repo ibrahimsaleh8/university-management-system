@@ -169,7 +169,7 @@
     @apply border-border outline-ring/50 font-['Inter'];
   }
   body {
-    @apply !bg-[#0f0f0f] !text-white;
+    @apply !bg-[#0f0f0f] !text-white !overflow-x-hidden;
   }
 }
 ::selection {

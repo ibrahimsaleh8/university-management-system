@@ -1,6 +1,6 @@
 "use client";
 
-import { Headset } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import Link from "next/link";
 import dashboardImage from "@images/dashboard.webp";
 import Image from "next/image";
@@ -48,9 +48,9 @@ export default function Home() {
         <HeroBtn />
         <Link
           className="flex items-center gap-2 px-8 py-2 bg-Second-black text-white rounded-sm font-bold text-sm"
-          href={"/login"}>
-          <Headset className="w-4 h-4" />
-          Contact us
+          href={"/about"}>
+          <Lightbulb className="w-4 h-4" />
+          About Project
         </Link>
       </motion.div>
 
