@@ -44,7 +44,6 @@ export default async function StudentProfilePage() {
   }
 
   const teacherData: TeacherResponse = await res.json();
-  console.log("teacherData", teacherData);
   return (
     <div className="sm:p-4 flex flex-col gap-6 xl:w-[80%] md:w-[95%] w-full mx-auto ">
       {/* Top */}

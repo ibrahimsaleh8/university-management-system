@@ -8,7 +8,6 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  console.log("Error", error);
   return (
     <div className="flex flex-col gap-1 items-center justify-center text-center">
       <Image

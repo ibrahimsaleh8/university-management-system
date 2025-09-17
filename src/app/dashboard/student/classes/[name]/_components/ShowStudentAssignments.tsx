@@ -56,7 +56,6 @@ export default function ShowStudentAssignments({ name, token }: Props) {
     queryFn: () => getAssignmentsApi(name, token),
   });
   if (error && isError) throw new Error(error.message);
-  console.log(data);
 
   return (
     <div className="flex flex-col gap-4 items-center w-full">

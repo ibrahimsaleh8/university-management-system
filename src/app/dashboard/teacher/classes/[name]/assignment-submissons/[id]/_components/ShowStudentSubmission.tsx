@@ -92,8 +92,6 @@ export default function ShowStudentSubmission({
     });
   };
 
-  console.log("submissionData", submissionData);
-
   return (
     <div className="flex flex-col gap-4">
       {/* Top */}

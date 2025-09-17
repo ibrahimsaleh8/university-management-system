@@ -32,8 +32,9 @@ export async function GET() {
 
     return NextResponse.json(offers, { status: 200 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "Server Error => " + (error as Error).message },
+      { message: "internal server error" },
       { status: 500 }
     );
   }

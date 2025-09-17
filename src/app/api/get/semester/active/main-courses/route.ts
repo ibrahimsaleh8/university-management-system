@@ -31,9 +31,12 @@ export async function GET() {
     const coursesRes = courses.filter(
       (c) => !coursesOffering.find((cf) => cf.courseId == c.id)
     );
-    console.log("coursesRes", coursesRes);
     return NextResponse.json(coursesRes, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Server Error =>  " + error });
+    console.error(error);
+    return NextResponse.json(
+      { message: "internal server error" },
+      { status: 500 }
+    );
   }
 }

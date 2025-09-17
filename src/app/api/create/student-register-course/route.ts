@@ -125,8 +125,9 @@ export async function POST(req: NextRequest) {
       message: `Student has been registered to ${course.course.name} course successfully`,
     });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "Internal server error => " + error },
+      { message: "internal server error" },
       { status: 500 }
     );
   }

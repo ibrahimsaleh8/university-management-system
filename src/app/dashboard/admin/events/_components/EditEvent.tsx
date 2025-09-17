@@ -39,7 +39,6 @@ async function updateEventApi(
   });
 }
 export default function EditEvent({ token, setClose, eventData }: Props) {
-  console.log("eventData", eventData);
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: (updateParams: {

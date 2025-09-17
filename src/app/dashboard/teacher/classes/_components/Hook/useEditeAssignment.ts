@@ -97,7 +97,6 @@ export const useEditeAssignment = ({
       });
     },
     onError: (err: ErrorResponseType) => {
-      console.log(err);
       GlobalToast({
         title: err.response.data.message,
         icon: "error",

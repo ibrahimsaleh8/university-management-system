@@ -60,7 +60,6 @@ export default function ShowClassInfo({
     queryFn: () => getTeacherClassInformation(className),
   });
   if (error && isError) throw new Error(error.message);
-  console.log("Main Error", error);
   return isLoading && !data ? (
     <ClassSkeleton />
   ) : (

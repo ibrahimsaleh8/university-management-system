@@ -72,8 +72,6 @@ export default function ShowScheduals({ token }: { token: string }) {
     }
   }, [academicYear, times]);
 
-  console.log("times", times);
-  console.log("academicYear", academicYear);
   useEffect(() => {
     if (years && years.length > 0) {
       setAcademicYear(years[1].year_label);

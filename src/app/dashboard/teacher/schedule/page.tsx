@@ -22,7 +22,6 @@ export default async function TeacherSchedulePage() {
   const schedualData: EventDataType[] = await res.json();
 
   const semester = await GetCurrentSemester();
-  console.log("schedualData", schedualData);
   return (
     <div className="p-4 flex flex-col gap-4">
       {semester && (

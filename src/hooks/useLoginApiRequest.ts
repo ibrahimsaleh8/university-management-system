@@ -31,7 +31,6 @@ export default function useLoginApiRequest() {
     },
     onError: (err: ErrorResponseType) => {
       GlobalToast({ title: err.response.data.message, icon: "error" });
-      console.log(err);
     },
   });
 

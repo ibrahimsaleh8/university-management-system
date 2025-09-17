@@ -33,7 +33,6 @@ async function getAllStudents(id: string): Promise<StudentResponse> {
   }
 }
 export default function ShowStudentData({ id, token, schedualData }: Props) {
-  console.log("schedualData", schedualData);
   const { data, isError, error, isLoading } = useQuery({
     queryKey: ["student_data_details", id],
     queryFn: () => getAllStudents(id),

@@ -52,9 +52,9 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(scheduals, { status: 200 });
   } catch (error) {
-    console.error("Get Student Schedule Error:", error);
+    console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "internal server error" },
       { status: 500 }
     );
   }

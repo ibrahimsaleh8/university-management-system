@@ -20,7 +20,6 @@ export default function TableCourseStudents({
   token,
   courseId,
 }: Props) {
-  console.log("Table Students", students);
   return (
     <Table>
       <TableHeader>

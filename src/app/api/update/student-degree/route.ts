@@ -87,7 +87,7 @@ export async function PATCH(req: NextRequest) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "internal server error" },
       { status: 500 }
     );
   }

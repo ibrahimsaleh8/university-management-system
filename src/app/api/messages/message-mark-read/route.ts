@@ -56,8 +56,9 @@ export async function PATCH(req: NextRequest) {
       message: "Message has been marked as read success",
     });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "Internal server error => " + error },
+      { message: "internal server error" },
       { status: 500 }
     );
   }

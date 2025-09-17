@@ -26,7 +26,6 @@ export default function EventOperations({ type, id, token, eventData }: Props) {
     }
   }, [close]);
 
-  console.log(close);
   const classes =
     type == "Edit Event"
       ? "text-green-500 hover:bg-green-500 hover:text-white border-green-500"

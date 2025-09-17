@@ -20,8 +20,9 @@ export async function GET() {
     });
     return NextResponse.json(years, { status: 200 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "Server Error => " + error },
+      { message: "internal server error" },
       { status: 500 }
     );
   }

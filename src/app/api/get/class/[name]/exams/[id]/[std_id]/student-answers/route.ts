@@ -14,7 +14,6 @@ export async function GET(
     // End Check Teacher Authorize
 
     const { id, std_id } = await params.params;
-    console.log("std_id", std_id);
     const student = await prisma.student.findUnique({
       where: {
         student_id: std_id,
@@ -72,8 +71,9 @@ export async function GET(
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "Server Error =>  " + error },
+      { message: "internal server error" },
       { status: 500 }
     );
   }

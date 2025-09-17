@@ -73,7 +73,6 @@ export default function FormAddTime({ setClose, token }: Props) {
 
   const onSubmit: SubmitHandler<courseTimeDataType> = (data) => {
     mutate({ schedualData: data, token });
-    console.log(data);
   };
 
   //   ******* Get Courses Offering API *******

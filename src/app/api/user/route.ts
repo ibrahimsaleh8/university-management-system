@@ -61,6 +61,10 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json({ ...userData, role: user.role });
   } catch (error) {
-    return NextResponse.json({ message: "Server Error =>  " + error });
+    console.error(error);
+    return NextResponse.json(
+      { message: "internal server error" },
+      { status: 500 }
+    );
   }
 }

@@ -12,7 +12,6 @@ export async function PATCH(req: NextRequest) {
     const { gradeLevelNumber } = (await req.json()) as {
       gradeLevelNumber: number;
     };
-    console.log("gradeLevelNumber", gradeLevelNumber);
     if (!gradeLevelNumber) {
       return NextResponse.json(
         { message: "Level number is missing" },
@@ -46,8 +45,9 @@ export async function PATCH(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "Internal server error => " + error },
+      { message: "internal server error" },
       { status: 500 }
     );
   }
