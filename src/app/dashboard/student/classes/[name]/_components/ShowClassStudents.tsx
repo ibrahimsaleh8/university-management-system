@@ -88,7 +88,9 @@ export default function ShowClassStudents({ name, token }: Props) {
           }}
           className="grid gap-4">
           {students.length > 0 ? (
-            students.map((std) => <StudentClassCard {...std} key={std.id} />)
+            students.map((std) => (
+              <StudentClassCard canShowDetails={false} {...std} key={std.id} />
+            ))
           ) : (
             <div className="p-4 text-low-white font-medium">
               No Students Found...

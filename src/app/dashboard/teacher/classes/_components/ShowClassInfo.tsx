@@ -156,7 +156,7 @@ export default function ShowClassInfo({
             <ShowClassExams className={className} />
           </TabsContent>
           <TabsContent value="students">
-            <ClassStudentsShow className={className} />
+            <ClassStudentsShow token={token} className={className} />
           </TabsContent>
         </Tabs>
       </div>

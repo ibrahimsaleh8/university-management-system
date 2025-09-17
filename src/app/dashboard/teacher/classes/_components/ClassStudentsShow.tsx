@@ -9,6 +9,7 @@ import LoadingTab from "@/app/dashboard/student/classes/[name]/_components/Loadi
 
 type Props = {
   className: string;
+  token: string;
 };
 
 export type ClassStudentDataType = {
@@ -33,7 +34,7 @@ async function getClassStudents(
     );
   }
 }
-export default function ClassStudentsShow({ className }: Props) {
+export default function ClassStudentsShow({ className, token }: Props) {
   const { error, isError, isLoading, data } = useQuery({
     queryKey: ["class_students", className],
     queryFn: () => getClassStudents(className),
@@ -78,7 +79,15 @@ export default function ClassStudentsShow({ className }: Props) {
           }}
           className="grid gap-4">
           {students.length > 0 ? (
-            students.map((std) => <StudentClassCard {...std} key={std.id} />)
+            students.map((std) => (
+              <StudentClassCard
+                token={token}
+                className={className}
+                canShowDetails={true}
+                {...std}
+                key={std.id}
+              />
+            ))
           ) : (
             <div className="p-4 text-low-white font-medium">
               No Students Found...
