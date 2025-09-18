@@ -48,7 +48,7 @@ export default function FormAddTime({ setClose, token }: Props) {
     formState: { errors },
   } = useForm<courseTimeDataType>({
     resolver: zodResolver(courseTimeSchema),
-    mode: "all",
+    mode: "onSubmit",
   });
   const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({

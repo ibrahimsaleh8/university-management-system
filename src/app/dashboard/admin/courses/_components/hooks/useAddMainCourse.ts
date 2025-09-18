@@ -30,7 +30,7 @@ export const useAddMainCourse = ({ setClose, token }: Props) => {
     formState: { errors },
   } = useForm<courseDataType>({
     resolver: zodResolver(addCourseSchema),
-    mode: "all",
+    mode: "onSubmit",
   });
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({

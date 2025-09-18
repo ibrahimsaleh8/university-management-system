@@ -70,7 +70,7 @@ export default function EditEvent({ token, setClose, eventData }: Props) {
     getValues,
   } = useForm<UniversityEventDataType>({
     resolver: zodResolver(EditEventSchema),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       title: eventData.title,
       description: eventData.description,

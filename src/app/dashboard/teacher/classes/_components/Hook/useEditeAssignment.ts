@@ -71,7 +71,7 @@ export const useEditeAssignment = ({
     formState: { errors },
   } = useForm<updateAssignmentDataType>({
     resolver: zodResolver(updateAssignmentSchema),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       title: data.title,
       description: data.description,

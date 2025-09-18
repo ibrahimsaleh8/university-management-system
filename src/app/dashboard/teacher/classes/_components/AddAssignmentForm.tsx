@@ -56,7 +56,7 @@ export default function AddAssignmentForm({
     formState: { errors },
   } = useForm<assignmentDataType>({
     resolver: zodResolver(assignmentSchema),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       classId,
     },

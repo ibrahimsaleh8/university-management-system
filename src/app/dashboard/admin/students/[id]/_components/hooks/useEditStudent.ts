@@ -46,7 +46,7 @@ export const useEditStudent = ({
     formState: { errors },
   } = useForm<editStudentDataType>({
     resolver: zodResolver(editStudentSchema),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: { ...studentDeafultData },
   });
 

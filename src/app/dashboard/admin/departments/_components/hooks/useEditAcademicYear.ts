@@ -38,7 +38,7 @@ export const useEditAcademicYear = ({ yearData, token }: Props) => {
     formState: { errors },
   } = useForm<academicYearDataType>({
     resolver: zodResolver(academicYearValidation),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       level_number: yearData.level_number,
       year_label: yearData.year_label,

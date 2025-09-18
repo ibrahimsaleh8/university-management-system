@@ -55,7 +55,7 @@ export default function TeacherAnnouncmentForm({
     formState: { errors },
   } = useForm<addAnnouncementDataType>({
     resolver: zodResolver(AddAnnouncementSchema),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       classId,
     },

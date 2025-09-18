@@ -73,7 +73,7 @@ export const useAddClass = ({ setClose, token }: Props) => {
     getValues,
   } = useForm<classCreationDataType>({
     resolver: zodResolver(classCreationSchema),
-    mode: "all",
+    mode: "onSubmit",
   });
 
   const teacherId = useAppSelector((state) => state.user.user.id);

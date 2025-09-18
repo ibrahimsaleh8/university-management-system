@@ -41,7 +41,7 @@ export const useEditTeacher = ({ teacherData, token, setIsClose }: Props) => {
     getValues,
   } = useForm<EditTeacherDataType>({
     resolver: zodResolver(editTeacherSchema),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       address: teacherData.address,
       email: teacherData.email,

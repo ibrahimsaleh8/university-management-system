@@ -40,7 +40,7 @@ export default function AddDepartmentForm({ token, setClose }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<departmentDataType>({
-    mode: "all",
+    mode: "onSubmit",
     resolver: zodResolver(departmentDataSchema),
   });
 

@@ -46,7 +46,7 @@ export const useEditDepartment = ({ departmentData, token }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<departmentDataType>({
-    mode: "all",
+    mode: "onSubmit",
     resolver: zodResolver(departmentDataSchema),
     defaultValues: {
       code: departmentData.code,

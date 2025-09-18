@@ -49,7 +49,7 @@ export default function SemestrAddForm({ setClose, token }: Props) {
     setValue,
   } = useForm<addSemesterDataType>({
     resolver: zodResolver(addSemesterValidation),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       isActive: false,
     },

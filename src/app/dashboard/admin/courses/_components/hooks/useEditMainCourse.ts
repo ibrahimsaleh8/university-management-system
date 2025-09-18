@@ -61,7 +61,7 @@ export const useEditMainCourse = ({ courseData, token }: Props) => {
     formState: { errors },
   } = useForm<courseDataType>({
     resolver: zodResolver(addCourseSchema),
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
       code: courseData.code,
       credit_hours: courseData.credit_hours,

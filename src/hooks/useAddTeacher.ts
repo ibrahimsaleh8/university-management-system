@@ -58,7 +58,7 @@ export const useAddTeacher = ({ setClose, token }: Props) => {
     setValue,
   } = useForm<AddTeacherDataType>({
     resolver: zodResolver(addTeacherSchema),
-    mode: "all",
+    mode: "onSubmit",
   });
 
   const { mutate: uploadTeacherImage, isPending: uploadingImage } = useMutation(

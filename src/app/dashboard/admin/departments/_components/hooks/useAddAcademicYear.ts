@@ -35,7 +35,7 @@ export const useAddAcademicYear = ({ token, setClose }: Props) => {
     formState: { errors },
   } = useForm<academicYearDataType>({
     resolver: zodResolver(academicYearValidation),
-    mode: "all",
+    mode: "onSubmit",
   });
 
   // Query Api

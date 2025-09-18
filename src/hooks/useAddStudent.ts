@@ -49,7 +49,7 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     formState: { errors },
   } = useForm<addStudentDataType>({
     resolver: zodResolver(addStudentSchema),
-    mode: "all",
+    mode: "onSubmit",
   });
 
   const { isPending, mutate: addNewStd } = useMutation({

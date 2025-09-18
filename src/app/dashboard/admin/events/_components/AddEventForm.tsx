@@ -59,7 +59,7 @@ export default function AddEventForm({ token, setClose }: Props) {
     formState: { errors },
   } = useForm<UniversityEventDataType>({
     resolver: zodResolver(UniversityEventSchema),
-    mode: "all",
+    mode: "onSubmit",
   });
   const submitNewEvent: SubmitHandler<UniversityEventDataType> = (data) => {
     mutate({

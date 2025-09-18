@@ -69,7 +69,7 @@ export const useAddCourseOffering = ({ setClose, token }: Props) => {
     formState: { errors },
   } = useForm<courseOfferingDataType>({
     resolver: zodResolver(courseOfferingValidationServer),
-    mode: "all",
+    mode: "onSubmit",
   });
 
   const submitNewCourseOffering: SubmitHandler<courseOfferingDataType> = (
