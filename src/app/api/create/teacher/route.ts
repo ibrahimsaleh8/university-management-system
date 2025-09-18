@@ -27,21 +27,20 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const isExistEmail = await prisma.teacher.findUnique({
-      where: {
-        email: request_body.email,
-      },
-    });
+    const [teacher, student, admin] = await Promise.all([
+      prisma.teacher.findUnique({ where: { email: request_body.email } }),
+      prisma.student.findUnique({ where: { email: request_body.email } }),
+      prisma.admin.findUnique({ where: { email: request_body.email } }),
+    ]);
 
-    const teacherID = request_body.teacher_id.toString();
-
-    if (isExistEmail) {
+    if (teacher || student || admin) {
       return NextResponse.json(
-        { message: "Teacher already exist" },
+        { message: "Email already exist" },
         { status: 400 }
       );
     }
 
+    const teacherID = request_body.teacher_id.toString();
     const isExistId = await prisma.teacher.findUnique({
       where: {
         teacher_id: teacherID,

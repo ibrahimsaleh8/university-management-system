@@ -26,7 +26,6 @@ export default function AddStudentForm({ token, setClose }: Props) {
     errors,
     handleStudentFormSubmit,
     handleSubmit,
-    isPending,
     register,
     setShowPass,
     setValue,
@@ -37,7 +36,7 @@ export default function AddStudentForm({ token, setClose }: Props) {
     years,
     image,
     setImage,
-    uploadingImage,
+    loading,
   } = useAddStudent({ token, setClose });
 
   return (
@@ -238,18 +237,10 @@ export default function AddStudentForm({ token, setClose }: Props) {
         error2={errors.academicYearId}
       />
 
-      <Button
-        variant={"mainWithShadow"}
-        disabled={isPending || uploadingImage}
-        type="submit">
-        {isPending ? (
+      <Button variant={"mainWithShadow"} disabled={loading} type="submit">
+        {loading ? (
           <div className="flex items-center gap-1">
             Adding....
-            <SmallLoader />
-          </div>
-        ) : uploadingImage ? (
-          <div className="flex items-center gap-1">
-            Uploading....
             <SmallLoader />
           </div>
         ) : (

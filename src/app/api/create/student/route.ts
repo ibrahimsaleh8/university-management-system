@@ -28,24 +28,29 @@ export async function POST(req: NextRequest) {
 
     const HashedPassword = await bcrypt.hash(studentData.password, 10);
 
+    const [teacher, student, admin] = await Promise.all([
+      prisma.teacher.findUnique({ where: { email: studentData.email } }),
+      prisma.student.findUnique({ where: { email: studentData.email } }),
+      prisma.admin.findUnique({ where: { email: studentData.email } }),
+    ]);
+
+    if (teacher || student || admin) {
+      return NextResponse.json(
+        { message: "Email already exist" },
+        { status: 400 }
+      );
+    }
+
     const isExist = await prisma.student.findFirst({
       where: {
-        OR: [
-          { email: studentData.email },
-          {
-            student_id: studentData.student_id,
-          },
-        ],
+        student_id: studentData.student_id,
       },
     });
 
     if (isExist) {
-      const msg = `${
-        isExist.email == studentData.email ? "Student Email" : "Student Id"
-      } is is Already exist`;
       return NextResponse.json(
         {
-          message: msg,
+          message: "Student Id is is Already exist",
         },
         { status: 400 }
       );

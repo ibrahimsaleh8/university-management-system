@@ -3,6 +3,7 @@ import GlobalToast from "@/components/Global/GlobalToast";
 import { GetAllYears } from "@/lib/GetAllYears";
 import { GetDepartmentsQuery } from "@/lib/GetDepartmentsQuery";
 import { ErrorResponseType } from "@/lib/globalTypes";
+import { UpdateTeacherAndStudentImage } from "@/lib/UpdateTeacherAndStudentImage";
 import {
   addStudentDataType,
   addStudentSchema,
@@ -40,8 +41,9 @@ export async function uploadImageApi(file: File): Promise<{ url: string }> {
 export const useAddStudent = ({ setClose, token }: Props) => {
   const [image, setImage] = useState<File | null>(null);
   const [showPass, setShowPass] = useState(false);
-  const [studentData, setStudentData] = useState<addStudentDataType | null>();
   const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -52,16 +54,12 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     mode: "onSubmit",
   });
 
-  const { isPending, mutate: addNewStd } = useMutation({
+  const { mutateAsync: addNewStd } = useMutation({
     mutationKey: ["add_student"],
     mutationFn: (data: { stdData: addStdDataType; token: string }) =>
       addNewStudent(data.stdData, data.token),
-    onSuccess: () => {
-      setClose(true);
-      GlobalToast({ title: "Student added success", icon: "success" });
-      queryClient.refetchQueries({ queryKey: ["get_all_students"] });
-    },
     onError: (err: ErrorResponseType) => {
+      setLoading(false);
       GlobalToast({
         title: err.response.data.message ?? "Something went wrong",
         icon: "error",
@@ -69,26 +67,21 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     },
   });
 
-  const { mutate: uploadStdImage, isPending: uploadingImage } = useMutation({
+  const { mutateAsync: uploadStdImage } = useMutation({
     mutationKey: ["upload_std_image"],
     mutationFn: (file: File) => uploadImageApi(file),
     onError: (err: ErrorResponseType) => {
+      setLoading(false);
       GlobalToast({
         title: err.response.data.message ?? "Something went wrong",
         icon: "error",
       });
     },
-    onSuccess: (imageUrl) => {
-      if (studentData) {
-        addNewStd({
-          stdData: { ...studentData, image: imageUrl.url },
-          token,
-        });
-      }
-    },
   });
 
-  const handleStudentFormSubmit: SubmitHandler<addStudentDataType> = (data) => {
+  const handleStudentFormSubmit: SubmitHandler<addStudentDataType> = async (
+    data
+  ) => {
     if (!image) {
       GlobalToast({
         icon: "error",
@@ -96,8 +89,28 @@ export const useAddStudent = ({ setClose, token }: Props) => {
       });
       return;
     }
-    setStudentData(data);
-    uploadStdImage(image);
+    setLoading(true);
+
+    await addNewStd({
+      stdData: { ...data, image: "" },
+      token,
+    });
+    const studentImage = await uploadStdImage(image);
+
+    const { isSuccess } = await UpdateTeacherAndStudentImage(
+      studentImage.url,
+      data.email,
+      "student"
+    ).finally(() => {
+      setLoading(false);
+    });
+    if (isSuccess) {
+      setClose(true);
+      GlobalToast({ title: "Student added success", icon: "success" });
+      queryClient.refetchQueries({ queryKey: ["get_all_students"] });
+    } else {
+      GlobalToast({ icon: "error", title: "Failed" });
+    }
   };
 
   // ****** Department api ******
@@ -121,7 +134,6 @@ export const useAddStudent = ({ setClose, token }: Props) => {
 
   return {
     handleStudentFormSubmit,
-    isPending,
     showPass,
     setShowPass,
     errors,
@@ -134,6 +146,6 @@ export const useAddStudent = ({ setClose, token }: Props) => {
     years,
     image,
     setImage,
-    uploadingImage,
+    loading,
   };
 };

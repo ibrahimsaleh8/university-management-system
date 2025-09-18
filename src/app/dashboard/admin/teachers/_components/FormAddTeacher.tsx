@@ -29,12 +29,11 @@ export default function FormAddTeacher({ setClose, token }: Props) {
     setValue,
     showPass,
     setShowPass,
-    isPending,
     image,
     setImage,
-    uploadingImage,
     loadingDepartment,
     departments,
+    loading,
   } = useAddTeacher({ setClose, token });
   return (
     <>
@@ -215,18 +214,10 @@ export default function FormAddTeacher({ setClose, token }: Props) {
           )
         )}
 
-        <Button
-          variant={"mainWithShadow"}
-          disabled={isPending || uploadingImage}
-          type="submit">
-          {isPending ? (
+        <Button variant={"mainWithShadow"} disabled={loading} type="submit">
+          {loading ? (
             <div className="flex items-center gap-1">
               Loading....
-              <SmallLoader />
-            </div>
-          ) : uploadingImage ? (
-            <div className="flex items-center gap-1">
-              Uploading....
               <SmallLoader />
             </div>
           ) : (
