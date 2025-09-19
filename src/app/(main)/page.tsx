@@ -10,7 +10,7 @@ import HeroBtn from "./(Auth)/login/_components/HeroBtn";
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-4 items-center justify-center p-3">
+    <div className="flex flex-col gap-6 items-center justify-center p-3">
       <p className="px-3 pl-1 py-1 bg-Second-black rounded-sm text-low-white text-xs flex items-center gap-1">
         <span className="px-1 py-0.5 bg-main-text text-black rounded-sm">
           New

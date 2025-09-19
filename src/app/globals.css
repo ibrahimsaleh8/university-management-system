@@ -97,7 +97,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --scrollbar-track: #2c2c2c;
+  --scrollbar-track: #151515;
   --scrollbar-thumb: #9f9f9f;
   --scrollbar-thumb-hover: #9f9f9f;
 }

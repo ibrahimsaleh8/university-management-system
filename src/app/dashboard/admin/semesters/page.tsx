@@ -3,6 +3,10 @@ import TabelShowSemesters from "./_components/TabelShowSemesters";
 import AddingModel from "../../_components/forms/AddingModel";
 import { cookies } from "next/headers";
 import ShowScheduals from "./_components/ShowScheduals";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Semesters",
+};
 
 export default async function SemestersPage() {
   const token = (await (await cookies()).get("token")?.value) as string;

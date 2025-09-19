@@ -1,6 +1,9 @@
 import { cookies } from "next/headers";
 import ShowClassInfo from "../_components/ShowClassInfo";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Class",
+};
 export default async function ClassTeacherPage({
   params,
 }: {

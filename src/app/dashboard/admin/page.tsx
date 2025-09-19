@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { GenderChart } from "../_components/Charts/GenderChart";
 import { UsersCountChart } from "../_components/Charts/UsersCountChart";
 import LatestEvents from "../_components/Overview/admin/LatestEvents";
@@ -7,6 +8,10 @@ import RecentRegisterdStudents, {
 import StatisticsMainCards from "../_components/Overview/admin/StatisticsMainCards";
 import { GetDashboardNumbers } from "../_components/ServerActions/GetDashboardNumbers";
 import { GetLatestRegisterdStudents } from "../_components/ServerActions/GetLatestRegisterdStudents";
+
+export const metadata: Metadata = {
+  title: "Overview",
+};
 
 export default async function AdminDashboard() {
   const {

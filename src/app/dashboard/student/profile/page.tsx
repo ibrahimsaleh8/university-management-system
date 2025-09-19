@@ -6,6 +6,11 @@ import ShowUserData from "./_components/ShowUserData";
 import ShowCurrentCourses from "./_components/ShowCurrentCourses";
 import StudentProfileTopData from "./_components/StudentProfileTopData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Profile",
+};
+
 export type StudentProfileCoursesDataType = {
   id: string;
   status: EnrollmentStatus;

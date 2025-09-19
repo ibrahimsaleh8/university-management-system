@@ -9,7 +9,10 @@ import { EventDataType } from "../_components/Calender/CalenderTable";
 import LatestEvents from "../_components/Overview/admin/LatestEvents";
 import LatestAnnouncments from "../_components/Overview/student/LatestAnnouncments";
 import { GetLatestStudentAnnouncments } from "../_components/ServerActions/GetLatestStudentAnnouncments";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Overveiw",
+};
 export default async function StudentMainPage() {
   const token = (await (await cookies()).get("token")?.value) as string;
   const user = VerifyUserFromToken(token);

@@ -6,6 +6,10 @@ import { cookies } from "next/headers";
 import AssignmentSmallInfo from "./_components/AssignmentSmallInfo";
 import Image from "next/image";
 import StudentSubmissionsTable from "./_components/StudentSubmissionsTable";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Assignment Submissions",
+};
 export type AssignmentResponse = {
   title: string;
   description: string;
@@ -21,6 +25,7 @@ export type AssignmentResponse = {
   classStudents: number;
   submission: number;
 };
+
 export default async function AssignmentSubmissonsById({
   params,
 }: {

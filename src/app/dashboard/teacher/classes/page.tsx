@@ -2,7 +2,10 @@ import { cookies } from "next/headers";
 import AddingModel from "../../_components/forms/AddingModel";
 import ShowTeacherClasses from "./_components/ShowTeacherClasses";
 import ShowOldTeacherClasses from "./_components/ShowOldTeacherClasses";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Classes",
+};
 export default async function TeacherClassesPage() {
   const token = (await (await cookies()).get("token")?.value) as string;
   return (

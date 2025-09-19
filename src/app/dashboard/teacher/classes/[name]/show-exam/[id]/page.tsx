@@ -2,7 +2,10 @@ import { ExamQuestionType } from "@/lib/globalTypes";
 import { MainDomain } from "@/variables/MainDomain";
 import { cookies } from "next/headers";
 import ExamQuestion from "./_components/ExamQuestion";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Exam",
+};
 export type typeExamQuestionDataType = {
   id: number;
   question: string;

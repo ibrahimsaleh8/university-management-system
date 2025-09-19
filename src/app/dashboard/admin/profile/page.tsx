@@ -4,6 +4,10 @@ import { MainDomain } from "@/variables/MainDomain";
 import UpdateUserPasswrod from "../../_components/profile/UpdateUserPasswrod";
 import AdminTopProfile from "./_components/AdminTopProfile";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Profile",
+};
 
 export default async function AdminProfilePage() {
   const token = (await (await cookies()).get("token")?.value) as string;

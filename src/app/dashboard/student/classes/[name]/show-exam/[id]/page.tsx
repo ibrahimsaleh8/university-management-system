@@ -1,7 +1,10 @@
 import { cookies } from "next/headers";
 import ShowExamDetails from "./_components/ShowExamDetails";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Exam",
+};
 export default async function ShowStudentExamById({
   params,
 }: {

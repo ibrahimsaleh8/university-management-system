@@ -1,7 +1,10 @@
 import { cookies } from "next/headers";
 import ShowStudentData from "./_components/ShowStudentData";
 import { GetStudentSchedual } from "./_components/actions/GetStudentSchedual";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Students Details",
+};
 export default async function ShowStudentDetails({
   params,
 }: {

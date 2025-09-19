@@ -2,6 +2,10 @@ import { MainDomain } from "@/variables/MainDomain";
 import SemesterWithCoursesCard from "./_components/SemesterWithCoursesCard";
 import { cookies } from "next/headers";
 import { EnrollmentStatus } from "@/lib/globalTypes";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Grades",
+};
 export type StudentCoursesResponse = {
   semester: {
     name: string;

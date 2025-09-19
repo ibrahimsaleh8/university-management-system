@@ -3,6 +3,10 @@ import TableShowCourses from "./_components/TableShowCourses";
 import AddingModel from "../../_components/forms/AddingModel";
 import { cookies } from "next/headers";
 import TabelShowCoursesOffers from "./_components/TabelShowCoursesOffers ";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Courses",
+};
 
 export default async function CoursesPage() {
   const token = (await (await cookies()).get("token")?.value) as string;

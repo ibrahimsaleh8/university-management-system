@@ -10,6 +10,10 @@ import ShowTeacherMainNumbers from "../_components/Overview/teacher/ShowTeacherM
 import TeacherCoursesDashboard from "../_components/Overview/teacher/TeacherCoursesDashboard";
 import { GetDashboardTeacherCourses } from "../_components/ServerActions/GetDashboardTeacherCourses";
 import LatestEvents from "../_components/Overview/admin/LatestEvents";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Overview",
+};
 
 export default async function TeacherDashboardPage() {
   const token = (await (await cookies()).get("token")?.value) as string;

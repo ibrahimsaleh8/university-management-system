@@ -5,7 +5,10 @@ import ErrorMessageCard from "@/app/dashboard/_components/ErrorMessageCard";
 import ShowCourseStudents from "./_components/ShowCourseStudents";
 import { cookies } from "next/headers";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Course Grade",
+};
 export default async function AssignCourseGrades({
   params,
 }: {

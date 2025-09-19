@@ -2,6 +2,10 @@ import { cookies } from "next/headers";
 import TabelShowDepartments from "./_components/TabelShowDepartments";
 import AddingModel from "../../_components/forms/AddingModel";
 import TableShowYears from "./_components/TableShowYears";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Departments",
+};
 
 export default async function DepartmentPage() {
   const token = (await (await cookies()).get("token")?.value) as string;

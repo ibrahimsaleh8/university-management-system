@@ -2,7 +2,10 @@ import React from "react";
 import ShowStudentClassInfo from "./_components/ShowStudentClassInfo";
 import { cookies } from "next/headers";
 import BackButton from "@/app/dashboard/_components/forms/BackButton";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Class",
+};
 export default async function StudentClassByNamePage({
   params,
 }: {

@@ -1,6 +1,9 @@
 import { cookies } from "next/headers";
 import ShowStudentsSubmissons from "./_components/ShowStudentsSubmissons";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Exam Submissions",
+};
 export default async function ExamSubmissons({
   params,
 }: {

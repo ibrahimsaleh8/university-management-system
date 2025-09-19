@@ -5,6 +5,11 @@ import ShowMainSchedual from "../_components/ShowMainSchedual";
 import { GetCurrentSemester } from "./_components/actions/GetCurrentSemester";
 import SchedualTable from "./_components/SchedualTable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Scheduale",
+};
+
 export default async function TeacherSchedulePage() {
   const token = (await (await cookies()).get("token")?.value) as string;
 

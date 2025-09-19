@@ -3,6 +3,11 @@ import ShowUnRegisterdClasses from "./_components/ShowUnRegisterdClasses";
 import ShowRegisterdClasses from "./_components/ShowRegisterdClasses";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ShowFinishedClasses from "./_components/ShowFinishedClasses";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Classes",
+};
+
 export default async function StudentCalsses() {
   const token = (await (await cookies()).get("token")?.value) as string;
   return (

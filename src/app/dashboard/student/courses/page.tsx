@@ -4,7 +4,10 @@ import RegisterAvailabelCourses from "./_components/RegisterAvailabelCourses";
 import { GetCurrentSemester } from "./_components/server action/GetCurrentSemester";
 import { GetDateFromTime } from "@/lib/GetDateFromTime";
 import { CalendarRange } from "lucide-react";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Courses",
+};
 export default async function StudentCourses() {
   const token = (await cookies()).get("token")?.value as string;
   const semester = await GetCurrentSemester();

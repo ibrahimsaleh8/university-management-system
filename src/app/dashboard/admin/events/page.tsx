@@ -1,6 +1,10 @@
 import { cookies } from "next/headers";
 import AddingModel from "../../_components/forms/AddingModel";
 import ShowAllEvents from "./_components/ShowAllEvents";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Events",
+};
 
 export default async function EventsPage() {
   const token = (await cookies()).get("token")?.value as string;

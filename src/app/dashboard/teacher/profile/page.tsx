@@ -5,6 +5,10 @@ import { GenderType } from "@/lib/globalTypes";
 import ShowTeacherProfileData from "./_components/ShowTeacherProfileData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TeacherTopData from "./_components/TeacherTopData";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Profile",
+};
 export type TeacherResponse = {
   teacher_id: string;
   first_name: string;

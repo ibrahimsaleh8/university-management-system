@@ -1,7 +1,10 @@
 import { MainDomain } from "@/variables/MainDomain";
 import { cookies } from "next/headers";
 import ShowCourses from "./_components/ShowCourses";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Courses",
+};
 export type TeacherCoursesResponse = {
   id: string;
   courseName: string;

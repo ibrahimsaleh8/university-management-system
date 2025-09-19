@@ -97,9 +97,9 @@ export default function LoginPage() {
                 <SelectValue placeholder="User Role" />
               </SelectTrigger>
               <SelectContent className="bg-Second-black text-white border-soft-border">
-                <SelectItem value="admin">Admin</SelectItem>
                 <SelectItem value="student">Student</SelectItem>
                 <SelectItem value="teacher">Teacher</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
               </SelectContent>
             </Select>
           </div>
