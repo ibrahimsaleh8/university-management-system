@@ -15,6 +15,12 @@ export async function GET() {
         hall: true,
         maxCapacity: true,
         semester: { select: { name: true, isActive: true } },
+        teacher: {
+          select: {
+            first_name: true,
+            last_name: true,
+          },
+        },
         _count: {
           select: {
             students: true,

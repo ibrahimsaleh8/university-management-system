@@ -47,6 +47,9 @@ export const useAddMainCourse = ({ setClose, token }: Props) => {
     onSuccess: () => {
       setClose(true);
       queryClient.refetchQueries({ queryKey: ["get_all_courses"] });
+      queryClient.refetchQueries({
+        queryKey: ["get_active_semester_main_courses"],
+      });
       GlobalToast({
         title: "Course has been created successfully",
         icon: "success",

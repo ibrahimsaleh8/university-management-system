@@ -16,6 +16,10 @@ export type CourseOfferingDataType = {
     name: string;
     isActive: boolean;
   };
+  teacher: {
+    first_name: string;
+    last_name: string;
+  };
   _count: {
     students: number;
   };
