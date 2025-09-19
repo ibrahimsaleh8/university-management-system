@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 type Props = {
   token: string;
 };
-import MsgImage from "@images/Messaging-cuate.png";
+import MsgImage from "@images/Messaging-cuate.webp";
 import Image from "next/image";
 import axios, { AxiosError } from "axios";
 import { MainDomain } from "@/variables/MainDomain";

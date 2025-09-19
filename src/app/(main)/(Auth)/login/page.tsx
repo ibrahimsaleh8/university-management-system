@@ -17,7 +17,7 @@ import {
 import InputForm from "@/app/dashboard/_components/forms/InputForm";
 import ErrorMessage from "@/app/dashboard/_components/forms/ErrorMessage";
 
-import loginImage from "@images/Young Man in Workshop.png";
+import loginImage from "@images/login-boy.webp";
 import Image from "next/image";
 import Link from "next/link";
 
