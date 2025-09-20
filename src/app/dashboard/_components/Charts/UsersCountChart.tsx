@@ -57,8 +57,10 @@ export function UsersCountChart({
       <div className="absolute right-[-1px] top-0 folder-clip-path w-[25%] h-2 bg-Main-black p-2 rounded-tr-2xl"></div>
 
       <CardHeader>
-        <CardTitle>Classrooms</CardTitle>
-        <CardDescription>Number of students in each class</CardDescription>
+        <CardTitle>Students</CardTitle>
+        <CardDescription>
+          Number of students in each academic year
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
