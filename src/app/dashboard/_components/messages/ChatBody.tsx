@@ -74,12 +74,11 @@ export default function ChatBody({ token }: Props) {
               {/* Header */}
               <div className="w-full p-3 bg-Second-black flex justify-between gap-3">
                 <div className="flex items-start gap-2">
-                  <img
+                  <Image
+                    width={1000}
+                    height={1000}
                     className="w-10 h-10 object-center object-cover rounded-full"
-                    src={
-                      data.anotheruser.image ??
-                      "https://i.ibb.co/kV27Z5B3/user-profile.jpg"
-                    }
+                    src={data.anotheruser.image}
                     alt={`${data.anotheruser.first_name}-image`}
                   />
                   <div>

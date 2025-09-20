@@ -23,7 +23,7 @@ export type UserMessageData = {
   first_name: string;
   last_name: string;
   email: string;
-  image?: string;
+  image: string;
 };
 export type ChatResponse = {
   id: string;
@@ -103,9 +103,7 @@ export default function ShowChats({ token }: { token: string }) {
           chats.map((chat) => (
             <PersonMessageCard
               id={chat.id}
-              image={
-                chat.user.image ?? "https://i.ibb.co/kV27Z5B3/user-profile.jpg"
-              }
+              image={chat.user.image}
               sender={chat.messages[0].sender}
               lastMessage={chat.messages[0].message}
               unreadMessages={chat.unreadMessages}
