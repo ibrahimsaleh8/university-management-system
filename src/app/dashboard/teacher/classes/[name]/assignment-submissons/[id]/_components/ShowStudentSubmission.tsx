@@ -116,21 +116,24 @@ export default function ShowStudentSubmission({
       </div>
 
       {/* Student Answer Url */}
-      <div className="bg-Second-Card-bg p-4 rounded-md flex flex-col gap-2">
-        <p className="font-medium text-low-white">Student Answer Url:</p>
-        <a
-          target="_blank"
-          href={submissionData.external_url}
-          className="text-sm flex items-center gap-1 text-main-text hover:underline">
-          <LinkIcon className="w-3 h-3" />
-          Show Answer
-        </a>
-      </div>
-
-      <ShowAttachments
-        fullView={false}
-        attachments={submissionData.attachment}
-      />
+      {submissionData.external_url && (
+        <div className="bg-Second-Card-bg p-4 rounded-md flex flex-col gap-2">
+          <p className="font-medium text-low-white">Student Answer Url:</p>
+          <a
+            target="_blank"
+            href={submissionData.external_url}
+            className="text-sm flex items-center gap-1 text-main-text hover:underline">
+            <LinkIcon className="w-3 h-3" />
+            Show Answer
+          </a>
+        </div>
+      )}
+      {submissionData.attachment.length > 0 && (
+        <ShowAttachments
+          fullView={false}
+          attachments={submissionData.attachment}
+        />
+      )}
 
       {/* Mark Answer */}
       <div className="flex flex-col gap-4">
