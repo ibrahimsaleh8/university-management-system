@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 University Management System
 
-## Getting Started
+A **full-featured web application** designed to manage universities **100% online** – simple, organized, and efficient.  
+This project includes **role-based dashboards** for Admins, Teachers, and Students, making it easy to manage all university operations in one place.
 
-First, run the development server:
+🔗 **Live Demo:** [university-management-system-eta.vercel.app](https://university-management-system-eta.vercel.app/)  
+🔗 **Source Code:** [GitHub Repository](https://github.com/ibrahimsaleh8/university-management-system)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 👨‍💼 Admin Dashboard
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Teacher & Student Management:** Add, edit, delete, search, and promote students to the next academic year.
+- **Courses & Departments:** Create and manage main courses, course offerings, departments, academic years, and semesters.
+- **Scheduling:** Add course schedules and manage semester timings.
+- **Events & Announcements:** Add, edit, and manage university events.
+- **Messaging System:** Chat with teachers and students.
+- **Profile Management:** View and update admin profile & password.
 
-## Learn More
+### 🎓 Student Dashboard
 
-To learn more about Next.js, take a look at the following resources:
+- **Course Enrollment:** View available courses, enroll or drop them easily.
+- **Classrooms:**
+  - View announcements and interact (like, dislike, comment).
+  - View assignments and submit work online.
+  - Register for exams and check grades.
+  - See classmates inside each classroom.
+- **Grades & Schedule:** Track enrolled courses, view grades, and personal schedule (calendar or table view).
+- **Messaging:** Chat with teachers and classmates.
+- **Profile Management:** View and update student profile & password.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 👨‍🏫 Teacher Dashboard
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Classroom Management:**
+  - Create classrooms.
+  - Post announcements with attachments (PDF, images).
+  - Add, edit, and delete assignments.
+  - Add exams and manage submissions.
+- **Grading:** Review submissions and assign grades.
+- **Schedule:** View assigned courses (calendar or table view).
+- **Messaging:** Chat with students and other teachers.
+- **Profile:** Edit teacher bio and password.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Frontend:** Next.js 14 + TypeScript, Tailwind CSS, Shadcn UI
+- **Backend:** Next.js API Routes
+- **Database:** PostgreSQL + Prisma ORM
+- **Authentication:** JWT (JSON Web Token)
+- **Other Tools:** Cloudinary (file uploads), Nodemailer (emails)
+
+---
+
+## 🎯 Goal of the Project
+
+To bring **all university operations into one platform** – from student registration to course enrollment, assignments, exams, grading, and communication – making the process smooth and fully digital.
+
+---
+
+## 📸 Screenshots
+
+> (Optional: Add some screenshots here to visually showcase the UI)
+
+---
+
+## 📂 Installation & Setup
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/ibrahimsaleh8/university-management-system.git
+   cd university-management-system
+   ```
