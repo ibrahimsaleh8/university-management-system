@@ -16,7 +16,11 @@ export default async function ShowStudentExamById({
     <div className="flex flex-col gap-3">
       <BackButton withText={false} />
 
-      <ShowExamDetails className={name} examId={id} token={token} />
+      <ShowExamDetails
+        className={name.split("%20").join(" ")}
+        examId={id}
+        token={token}
+      />
     </div>
   );
 }
