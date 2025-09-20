@@ -52,106 +52,126 @@ export default function LoginPage() {
       className="flex gap-3 pt-3 px-2 overflow-x-hidden"
       style={{ height: "calc(100vh - 100px)" }}>
       {/* Form Animation */}
-      <motion.form
-        onSubmit={handleSubmit(submitHandler)}
-        className="h-full lg:w-1/2 w-full mx-auto flex gap-5 flex-col p-4 pt-28 relative"
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}>
-        <div className="flex flex-col gap-1">
-          <motion.p
-            className="text-2xl font-bold"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}>
-            Welcome back!
-          </motion.p>
-          <motion.p
-            className="text-low-white"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}>
-            Please enter your Details to login
-          </motion.p>
-        </div>
-
-        <div className="flex gap-2 items-center flex-col sm:flex-row">
-          {/* Email */}
-          <InputForm
-            isError={errors.email != undefined}
-            label="Email"
-            placeholder="Email"
-            register={register("email")}
-            type="email"
-          />
-
-          {/* Role */}
-          <div className="flex flex-col gap-1 w-full sm:w-fit">
-            <label className="text-sm font-bold" htmlFor="role">
-              Role:
-            </label>
-            <Select onValueChange={(e) => setValue("role", e)}>
-              <SelectTrigger
-                id="role"
-                className="sm:w-[140px] w-full text-left cursor-pointer h-10 bg-Second-black border-soft-border ">
-                <SelectValue placeholder="User Role" />
-              </SelectTrigger>
-              <SelectContent className="bg-Second-black text-white border-soft-border">
-                <SelectItem value="student">Student</SelectItem>
-                <SelectItem value="teacher">Teacher</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-              </SelectContent>
-            </Select>
+      <div className="flex flex-col gap-5 h-full lg:w-1/2 w-full mx-auto ">
+        <motion.form
+          onSubmit={handleSubmit(submitHandler)}
+          className="flex gap-5 flex-col p-4 pt-28 relative"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}>
+          <div className="flex flex-col gap-1">
+            <motion.p
+              className="text-2xl font-bold"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}>
+              Welcome back!
+            </motion.p>
+            <motion.p
+              className="text-low-white"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}>
+              Please enter your Details to login
+            </motion.p>
           </div>
-        </div>
 
-        <ErrorMessage error1={errors.email} error2={errors.role} />
-
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-1 items-center">
+          <div className="flex gap-2 items-center flex-col sm:flex-row">
+            {/* Email */}
             <InputForm
-              isError={errors.password != undefined}
-              label="Password"
-              placeholder="Password"
-              register={register("password")}
-              type={showPass ? "text" : "password"}
+              isError={errors.email != undefined}
+              label="Email"
+              placeholder="Email"
+              register={register("email")}
+              type="email"
             />
-            <Button
-              type="button"
-              onClick={() => setShowPass((pre) => !pre)}
-              className="bg-Second-black h-10 w-10 cursor-pointer flex items-center justify-center rounded-md mt-7">
-              {showPass ? (
-                <EyeOff className="!w-5 !h-5" />
-              ) : (
-                <Eye className="!w-5 !h-5" />
-              )}
-            </Button>
+
+            {/* Role */}
+            <div className="flex flex-col gap-1 w-full sm:w-fit">
+              <label className="text-sm font-bold" htmlFor="role">
+                Role:
+              </label>
+              <Select onValueChange={(e) => setValue("role", e)}>
+                <SelectTrigger
+                  id="role"
+                  className="sm:w-[140px] w-full text-left cursor-pointer h-10 bg-Second-black border-soft-border ">
+                  <SelectValue placeholder="User Role" />
+                </SelectTrigger>
+                <SelectContent className="bg-Second-black text-white border-soft-border">
+                  <SelectItem value="student">Student</SelectItem>
+                  <SelectItem value="teacher">Teacher</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </div>
 
-        {errors.password && (
-          <p className="text-sm text-red-500">{errors.password.message}</p>
-        )}
+          <ErrorMessage error1={errors.email} error2={errors.role} />
 
-        <div className="flex items-center gap-4 flex-wrap justify-between">
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-1 items-center">
+              <InputForm
+                isError={errors.password != undefined}
+                label="Password"
+                placeholder="Password"
+                register={register("password")}
+                type={showPass ? "text" : "password"}
+              />
+              <Button
+                type="button"
+                onClick={() => setShowPass((pre) => !pre)}
+                className="bg-Second-black h-10 w-10 cursor-pointer flex items-center justify-center rounded-md mt-7">
+                {showPass ? (
+                  <EyeOff className="!w-5 !h-5" />
+                ) : (
+                  <Eye className="!w-5 !h-5" />
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {errors.password && (
+            <p className="text-sm text-red-500">{errors.password.message}</p>
+          )}
+
+          <div className="flex items-center gap-4 flex-wrap justify-between">
+            <div>
+              <Button
+                variant={"mainWithShadow"}
+                className="w-48"
+                disabled={isPending}>
+                {isPending ? (
+                  <div className="flex items-center gap-1">
+                    <SmallLoader />
+                    Loading...
+                  </div>
+                ) : (
+                  "Login"
+                )}
+              </Button>
+            </div>
+            <Link href={"/forgot-password"}>Forgot Password?</Link>
+          </div>
+        </motion.form>
+        <div className="p-4 flex flex-col gap-4">
+          <p>If You want to try the project You can try by this accounts:</p>
           <div>
-            <Button
-              variant={"mainWithShadow"}
-              className="w-48"
-              disabled={isPending}>
-              {isPending ? (
-                <div className="flex items-center gap-1">
-                  <SmallLoader />
-                  Loading...
-                </div>
-              ) : (
-                "Login"
-              )}
-            </Button>
+            <p className="font-bold text-low-white">Admin</p>
+            <p>Email: ebrihm576@gmail.com</p>
+            <p>Password: 12345678</p>
           </div>
-          <Link href={"/forgot-password"}>Forgot Password?</Link>
+          <div>
+            <p className="font-bold text-low-white">Teacher</p>
+            <p>Email: xalyrubeco@mailinator.com</p>
+            <p>Password: xalyrubeco@mailinator.com</p>
+          </div>
+          <div>
+            <p className="font-bold text-low-white">Student</p>
+            <p>Email: gulaxejic@mailinator.com</p>
+            <p>Password: gulaxejic@mailinator.com</p>
+          </div>
         </div>
-      </motion.form>
+      </div>
 
       {/* Right Image Animation */}
       <motion.div
