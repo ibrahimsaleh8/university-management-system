@@ -21,6 +21,7 @@ export const GetUserFromEmail = async (
         first_name: true,
         last_name: true,
         email: true,
+        image: true,
       },
     });
     if (admin) return { ...admin, role: "ADMIN" };
