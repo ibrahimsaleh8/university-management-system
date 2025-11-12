@@ -56,8 +56,8 @@ export default function LoginPage() {
         <motion.form
           onSubmit={handleSubmit(submitHandler)}
           className="flex gap-5 flex-col p-4 pt-28 relative"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}>
           <div className="flex flex-col gap-1">
             <motion.p
@@ -176,8 +176,8 @@ export default function LoginPage() {
       {/* Right Image Animation */}
       <motion.div
         className="hidden lg:flex w-fit h-full rounded-2xl overflow-hidden auth-image"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}>
         <Image
           src={loginImage}
